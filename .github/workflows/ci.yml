@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: trading
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U app -d trading"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Node dependencies
+        run: pnpm install
+
+      - name: Build shared package
+        run: pnpm --filter @quantagent/shared build
+
+      - name: Lint (TypeScript)
+        run: pnpm lint
+
+      - name: Test (Vitest)
+        run: pnpm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgres://app:app@localhost:5432/trading
+          JWT_ACCESS_SECRET: test-access-secret
+          JWT_REFRESH_SECRET: test-refresh-secret
+          APP_ENCRYPTION_KEY: base64:dGhpcy1pcy1hLTMyLWJ5dGUtdGVzdC1rZXku
+          QUANT_SERVICE_URL: http://localhost:8000
+          BACKEND_PORT: 4000
+          FRONTEND_ORIGIN: http://localhost:5173
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        working-directory: services/quant
+        run: |
+          pip install uv
+          uv pip install --system -e ".[dev]"
+
+      - name: Test (Pytest)
+        working-directory: services/quant
+        run: pytest -v
