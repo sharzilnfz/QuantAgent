@@ -2,6 +2,7 @@
 FROM node:22-slim AS base
 RUN corepack enable
 WORKDIR /repo
+ENV CI=true
 
 # Install workspace deps
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
