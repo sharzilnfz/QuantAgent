@@ -18,7 +18,14 @@ const envSchema = z.object({
   REFRESH_TOKEN_TTL: z.string().default("30d"),
 
   // Encryption
-  APP_ENCRYPTION_KEY: z.string().min(10),
+  APP_ENCRYPTION_KEY: z.string().refine((val) => {
+    try {
+      const raw = val.startsWith("base64:") ? val.slice(7) : val;
+      return Buffer.from(raw, "base64").length === 32;
+    } catch {
+      return false;
+    }
+  }, { message: "APP_ENCRYPTION_KEY must decode to exactly 32 bytes from base64" }),
 
   // Services
   QUANT_SERVICE_URL: z.string().url(),
