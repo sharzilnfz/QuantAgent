@@ -8,7 +8,7 @@ import {
 import { config } from "../../config.js";
 import { BaseAgent, NO_OPINION, type BaseAgentOptions } from "../base.js";
 import { classify, hasNoUsableFacts, type IndicatorFacts } from "./classify.js";
-import { AnthropicLlmClient, type LlmClient } from "./llm-client.js";
+import { createLlmClient, type LlmClient } from "./llm-client.js";
 import {
   AGENT_OUTPUT_TOOL_NAME,
   TECHNICAL_SYSTEM_PROMPT,
