@@ -1,0 +1,18 @@
+packages:
+  - packages/*
+  - apps/api
+  - apps/web
+
+allowBuilds:
+  esbuild: true
+  argon2: false
+
+# Pin a SINGLE @types/react across the workspace. drizzle-orm declares
+# @types/react as an optional peer, which otherwise pulls v19 into pnpm's
+# hoisted fallback; library .d.ts files (react-router, recharts) then resolve
+# React types through it and get typed against v19 while apps/web is React 18.
+# The two ReactNode definitions are incompatible, which surfaces as TS2786
+# "cannot be used as a JSX component" on every <Route>/<AreaChart>.
+overrides:
+  "@types/react": "^18.3.18"
+  "@types/react-dom": "^18.3.5"
