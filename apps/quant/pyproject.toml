@@ -1,0 +1,19 @@
+[project]
+name = "committee-quant"
+version = "0.1.0"
+description = "The Committee — Python quant service (indicators, backtesting, evaluation)"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    # False positive: FastAPI builds a TypeAdapter over the request-body
+    # annotation, and pydantic >= 2.13 warns about field aliases seen in that
+    # position even though they are correctly attached to the model fields.
+    # tests/test_api.py proves the `from`/`to`/`asOfMax` aliases work.
+    "ignore::pydantic.warnings.UnsupportedFieldAttributeWarning",
+]
+
+[tool.ruff]
+line-length = 100
