@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:pg17-alpine
     environment:
       POSTGRES_USER: committee
       POSTGRES_PASSWORD: committee
