@@ -18,6 +18,7 @@ const EnvSchema = z.object({
   ALPACA_SECRET: z.string().default(""),
   ALPACA_DATA_URL: z.string().default("https://data.alpaca.markets"),
   ANTHROPIC_API_KEY: z.string().default(""),
+  ANTHROPIC_BASE_URL: z.string().default(""),
   LLM_CHEAP_MODEL: z.string().default("claude-haiku-4-5"),
   QUANT_SERVICE_URL: z.string().default("http://localhost:8000"),
   API_PORT: z.coerce.number().int().positive().default(3000),

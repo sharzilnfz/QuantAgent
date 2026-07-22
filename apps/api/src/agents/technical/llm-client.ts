@@ -59,7 +59,10 @@ export class AnthropicLlmClient implements LlmClient {
       if (!this.apiKey) {
         throw new Error("ANTHROPIC_API_KEY is not configured");
       }
-      this.client = new Anthropic({ apiKey: this.apiKey });
+      this.client = new Anthropic({
+        apiKey: this.apiKey,
+        ...(config.ANTHROPIC_BASE_URL ? { baseURL: config.ANTHROPIC_BASE_URL } : {}),
+      });
     }
     return this.client;
   }
