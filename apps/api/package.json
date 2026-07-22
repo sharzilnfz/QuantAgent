@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
+    "start": "pnpm --filter @committee/db migrate && pnpm --filter @committee/db seed && tsx src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "ingest:prices": "tsx src/ingest/cli.ts"
