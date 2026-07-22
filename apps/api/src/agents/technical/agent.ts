@@ -57,7 +57,7 @@ export class TechnicalAgent extends BaseAgent {
 
   constructor(options: TechnicalAgentOptions = {}) {
     super(options);
-    this.llm = options.llm ?? new AnthropicLlmClient();
+    this.llm = options.llm ?? createLlmClient();
     this.snapshots =
       options.snapshots === undefined
         ? resolveDefaultSnapshotProvider()

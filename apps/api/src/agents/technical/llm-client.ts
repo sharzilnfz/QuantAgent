@@ -38,12 +38,7 @@ export interface AnthropicLlmClientOptions {
 
 /**
  * Real Claude-backed client. Uses forced tool use to obtain structured JSON that
- * matches `AgentOutputJsonSchema` — the SDK pinned in this repo predates the
- * `output_config.format` structured-outputs parameter, and a forced single-tool
- * call is the supported equivalent on that version.
- *
- * The SDK instance is constructed LAZILY so importing this module never requires
- * `ANTHROPIC_API_KEY` to be present (tests import it; CI has no key).
+ * matches `AgentOutputJsonSchema`.
  */
 export class AnthropicLlmClient implements LlmClient {
   private client: Anthropic | undefined;
@@ -95,8 +90,78 @@ export class AnthropicLlmClient implements LlmClient {
 }
 
 /**
- * Test double. Returns queued payloads in order; the last one repeats once the
- * queue drains, which makes "malformed then malformed again" easy to express.
+ * Native OpenRouter LLM client (calls OpenRouter Chat Completions endpoint).
+ */
+export class OpenRouterLlmClient implements LlmClient {
+  private readonly apiKey: string;
+  private readonly baseUrl: string;
+
+  constructor(options: { apiKey?: string; baseUrl?: string } = {}) {
+    this.apiKey = options.apiKey ?? config.ANTHROPIC_API_KEY;
+    this.baseUrl = options.baseUrl || config.ANTHROPIC_BASE_URL || "https://openrouter.ai/api/v1";
+  }
+
+  async completeStructured(request: LlmStructuredRequest): Promise<unknown> {
+    const model = request.model.includes("/")
+      ? request.model
+      : `anthropic/${request.model.replace("claude-haiku-4-5", "claude-3-haiku")}`;
+
+    const res = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          ...(request.system ? [{ role: "system", content: request.system }] : []),
+          { role: "user", content: request.user },
+        ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: request.toolName,
+              description: "Emit the validated agent output. This is the only way to reply.",
+              parameters: request.toolSchema,
+            },
+          },
+        ],
+        tool_choice: { type: "function", function: { name: request.toolName } },
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`OpenRouter API error (${res.status}): ${errText}`);
+    }
+
+    const data = (await res.json()) as any;
+    const toolCall = data?.choices?.[0]?.message?.tool_calls?.[0];
+    if (toolCall?.function?.arguments) {
+      const raw = toolCall.function.arguments;
+      return typeof raw === "string" ? JSON.parse(raw) : raw;
+    }
+
+    throw new Error("OpenRouter returned no tool call response");
+  }
+}
+
+/**
+ * Factory function to create the appropriate LLM client based on configuration.
+ */
+export function createLlmClient(options: AnthropicLlmClientOptions = {}): LlmClient {
+  const key = options.apiKey ?? config.ANTHROPIC_API_KEY;
+  const baseUrl = config.ANTHROPIC_BASE_URL;
+  if (key.startsWith("sk-or-v1-") || baseUrl.includes("openrouter.ai")) {
+    return new OpenRouterLlmClient({ apiKey: key, baseUrl: baseUrl || undefined });
+  }
+  return new AnthropicLlmClient(options);
+}
+
+/**
+ * Test double. Returns queued payloads in order.
  */
 export class ScriptedLlmClient implements LlmClient {
   readonly requests: LlmStructuredRequest[] = [];
