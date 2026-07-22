@@ -1,0 +1,14 @@
+{
+  "_comment": "Recorded shape of GET /v2/stocks/AAPL/bars?timeframe=1Day. Spans the 2024 US DST change (Mar 10) on purpose: bars before it close at 21:00Z (EST) and after it at 20:00Z (EDT). One row uses string numerics and one has a bad timestamp to exercise normalization.",
+  "symbol": "AAPL",
+  "next_page_token": null,
+  "bars": [
+    { "t": "2024-03-05T05:00:00Z", "o": 170.76, "h": 172.04, "l": 169.62, "c": 170.12, "v": 95132400, "n": 812345, "vw": 170.5 },
+    { "t": "2024-03-06T05:00:00Z", "o": 171.06, "h": 171.24, "l": 168.68, "c": 169.12, "v": 68587700, "n": 654321, "vw": 169.9 },
+    { "t": "2024-03-07T05:00:00Z", "o": 169.15, "h": 170.73, "l": 168.49, "c": 169.0, "v": 71765100, "n": 601234, "vw": 169.4 },
+    { "t": "2024-03-08T05:00:00Z", "o": 169.0, "h": 173.7, "l": 168.94, "c": 170.73, "v": 76267200, "n": 700123, "vw": 171.2 },
+    { "t": "2024-03-11T04:00:00Z", "o": 172.94, "h": 174.38, "l": 172.05, "c": 172.75, "v": 60139500, "n": 555555, "vw": 173.1 },
+    { "t": "2024-03-12T04:00:00Z", "o": "173.15", "h": "174.03", "l": "171.01", "c": "173.23", "v": "59544800", "n": 512345, "vw": 172.8 },
+    { "t": "not-a-timestamp", "o": 1, "h": 2, "l": 0.5, "c": 1.5, "v": 10 }
+  ]
+}
