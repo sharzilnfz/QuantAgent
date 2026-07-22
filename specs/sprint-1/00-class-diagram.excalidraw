@@ -6,7 +6,10 @@
     {
       "type": "rectangle",
       "id": "direction_name_rect",
-      "x": 100, "y": 50, "width": 200, "height": 70,
+      "x": 100,
+      "y": 50,
+      "width": 200,
+      "height": 70,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -19,8 +22,15 @@
       "version": 1,
       "versionNonce": 100002,
       "isDeleted": false,
-      "groupIds": ["direction_group"],
-      "boundElements": [{"id": "direction_name_text", "type": "text"}],
+      "groupIds": [
+        "direction_group"
+      ],
+      "boundElements": [
+        {
+          "id": "direction_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -28,10 +38,12 @@
     {
       "type": "text",
       "id": "direction_name_text",
-      "x": 110, "y": 58,
-      "width": 180, "height": 55,
-      "text": "«enumeration»\nDirection",
-      "originalText": "«enumeration»\nDirection",
+      "x": 110,
+      "y": 58,
+      "width": 180,
+      "height": 55,
+      "text": "\u00abenumeration\u00bb\nDirection",
+      "originalText": "\u00abenumeration\u00bb\nDirection",
       "fontSize": 16,
       "fontFamily": 3,
       "textAlign": "center",
@@ -48,7 +60,9 @@
       "version": 1,
       "versionNonce": 100004,
       "isDeleted": false,
-      "groupIds": ["direction_group"],
+      "groupIds": [
+        "direction_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -58,7 +72,10 @@
     {
       "type": "rectangle",
       "id": "direction_values_rect",
-      "x": 100, "y": 120, "width": 200, "height": 75,
+      "x": 100,
+      "y": 120,
+      "width": 200,
+      "height": 75,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -71,8 +88,15 @@
       "version": 1,
       "versionNonce": 100006,
       "isDeleted": false,
-      "groupIds": ["direction_group"],
-      "boundElements": [{"id": "direction_values_text", "type": "text"}],
+      "groupIds": [
+        "direction_group"
+      ],
+      "boundElements": [
+        {
+          "id": "direction_values_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -80,8 +104,10 @@
     {
       "type": "text",
       "id": "direction_values_text",
-      "x": 110, "y": 128,
-      "width": 180, "height": 60,
+      "x": 110,
+      "y": 128,
+      "width": 180,
+      "height": 60,
       "text": "BULLISH\nBEARISH\nNEUTRAL",
       "originalText": "BULLISH\nBEARISH\nNEUTRAL",
       "fontSize": 14,
@@ -100,18 +126,22 @@
       "version": 1,
       "versionNonce": 100008,
       "isDeleted": false,
-      "groupIds": ["direction_group"],
+      "groupIds": [
+        "direction_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "direction_values_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "agentname_name_rect",
-      "x": 400, "y": 50, "width": 200, "height": 70,
+      "x": 400,
+      "y": 50,
+      "width": 200,
+      "height": 70,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -124,8 +154,15 @@
       "version": 1,
       "versionNonce": 110002,
       "isDeleted": false,
-      "groupIds": ["agentname_group"],
-      "boundElements": [{"id": "agentname_name_text", "type": "text"}],
+      "groupIds": [
+        "agentname_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentname_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -133,10 +170,12 @@
     {
       "type": "text",
       "id": "agentname_name_text",
-      "x": 410, "y": 58,
-      "width": 180, "height": 55,
-      "text": "«enumeration»\nAgentName",
-      "originalText": "«enumeration»\nAgentName",
+      "x": 410,
+      "y": 58,
+      "width": 180,
+      "height": 55,
+      "text": "\u00abenumeration\u00bb\nAgentName",
+      "originalText": "\u00abenumeration\u00bb\nAgentName",
       "fontSize": 16,
       "fontFamily": 3,
       "textAlign": "center",
@@ -153,7 +192,9 @@
       "version": 1,
       "versionNonce": 110004,
       "isDeleted": false,
-      "groupIds": ["agentname_group"],
+      "groupIds": [
+        "agentname_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -163,7 +204,10 @@
     {
       "type": "rectangle",
       "id": "agentname_values_rect",
-      "x": 400, "y": 120, "width": 200, "height": 75,
+      "x": 400,
+      "y": 120,
+      "width": 200,
+      "height": 75,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -176,8 +220,15 @@
       "version": 1,
       "versionNonce": 110006,
       "isDeleted": false,
-      "groupIds": ["agentname_group"],
-      "boundElements": [{"id": "agentname_values_text", "type": "text"}],
+      "groupIds": [
+        "agentname_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentname_values_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -185,8 +236,10 @@
     {
       "type": "text",
       "id": "agentname_values_text",
-      "x": 410, "y": 128,
-      "width": 180, "height": 60,
+      "x": 410,
+      "y": 128,
+      "width": 180,
+      "height": 60,
       "text": "TECHNICAL\nSENTIMENT\nFUNDAMENTAL",
       "originalText": "TECHNICAL\nSENTIMENT\nFUNDAMENTAL",
       "fontSize": 14,
@@ -205,18 +258,22 @@
       "version": 1,
       "versionNonce": 110008,
       "isDeleted": false,
-      "groupIds": ["agentname_group"],
+      "groupIds": [
+        "agentname_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "agentname_values_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "timeframe_name_rect",
-      "x": 700, "y": 50, "width": 200, "height": 70,
+      "x": 700,
+      "y": 50,
+      "width": 200,
+      "height": 70,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -229,8 +286,15 @@
       "version": 1,
       "versionNonce": 120002,
       "isDeleted": false,
-      "groupIds": ["timeframe_group"],
-      "boundElements": [{"id": "timeframe_name_text", "type": "text"}],
+      "groupIds": [
+        "timeframe_group"
+      ],
+      "boundElements": [
+        {
+          "id": "timeframe_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -238,10 +302,12 @@
     {
       "type": "text",
       "id": "timeframe_name_text",
-      "x": 710, "y": 58,
-      "width": 180, "height": 55,
-      "text": "«enumeration»\nTimeframe",
-      "originalText": "«enumeration»\nTimeframe",
+      "x": 710,
+      "y": 58,
+      "width": 180,
+      "height": 55,
+      "text": "\u00abenumeration\u00bb\nTimeframe",
+      "originalText": "\u00abenumeration\u00bb\nTimeframe",
       "fontSize": 16,
       "fontFamily": 3,
       "textAlign": "center",
@@ -258,7 +324,9 @@
       "version": 1,
       "versionNonce": 120004,
       "isDeleted": false,
-      "groupIds": ["timeframe_group"],
+      "groupIds": [
+        "timeframe_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -268,7 +336,10 @@
     {
       "type": "rectangle",
       "id": "timeframe_values_rect",
-      "x": 700, "y": 120, "width": 200, "height": 50,
+      "x": 700,
+      "y": 120,
+      "width": 200,
+      "height": 50,
       "strokeColor": "#b45309",
       "backgroundColor": "#fef3c7",
       "fillStyle": "solid",
@@ -281,8 +352,15 @@
       "version": 1,
       "versionNonce": 120006,
       "isDeleted": false,
-      "groupIds": ["timeframe_group"],
-      "boundElements": [{"id": "timeframe_values_text", "type": "text"}],
+      "groupIds": [
+        "timeframe_group"
+      ],
+      "boundElements": [
+        {
+          "id": "timeframe_values_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -290,8 +368,10 @@
     {
       "type": "text",
       "id": "timeframe_values_text",
-      "x": 710, "y": 128,
-      "width": 180, "height": 35,
+      "x": 710,
+      "y": 128,
+      "width": 180,
+      "height": 35,
       "text": "1Day\n1Hour",
       "originalText": "1Day\n1Hour",
       "fontSize": 14,
@@ -310,18 +390,22 @@
       "version": 1,
       "versionNonce": 120008,
       "isDeleted": false,
-      "groupIds": ["timeframe_group"],
+      "groupIds": [
+        "timeframe_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "timeframe_values_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "pricebar_name_rect",
-      "x": 100, "y": 300, "width": 280, "height": 50,
+      "x": 100,
+      "y": 300,
+      "width": 280,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -334,8 +418,15 @@
       "version": 1,
       "versionNonce": 200002,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
-      "boundElements": [{"id": "pricebar_name_text", "type": "text"}],
+      "groupIds": [
+        "pricebar_group"
+      ],
+      "boundElements": [
+        {
+          "id": "pricebar_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -343,8 +434,10 @@
     {
       "type": "text",
       "id": "pricebar_name_text",
-      "x": 110, "y": 312,
-      "width": 260, "height": 25,
+      "x": 110,
+      "y": 312,
+      "width": 260,
+      "height": 25,
       "text": "PriceBar",
       "originalText": "PriceBar",
       "fontSize": 20,
@@ -363,7 +456,9 @@
       "version": 1,
       "versionNonce": 200004,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
+      "groupIds": [
+        "pricebar_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -373,7 +468,10 @@
     {
       "type": "rectangle",
       "id": "pricebar_attrs_rect",
-      "x": 100, "y": 350, "width": 280, "height": 225,
+      "x": 100,
+      "y": 350,
+      "width": 280,
+      "height": 225,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -386,8 +484,15 @@
       "version": 1,
       "versionNonce": 200006,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
-      "boundElements": [{"id": "pricebar_attrs_text", "type": "text"}],
+      "groupIds": [
+        "pricebar_group"
+      ],
+      "boundElements": [
+        {
+          "id": "pricebar_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -395,8 +500,10 @@
     {
       "type": "text",
       "id": "pricebar_attrs_text",
-      "x": 110, "y": 358,
-      "width": 260, "height": 210,
+      "x": 110,
+      "y": 358,
+      "width": 260,
+      "height": 210,
       "text": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- ts: timestamptz\n- open: numeric\n- high: numeric\n- low: numeric\n- close: numeric\n- volume: numeric\n- asOf: timestamptz\n- source: String\n- createdAt: timestamptz",
       "originalText": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- ts: timestamptz\n- open: numeric\n- high: numeric\n- low: numeric\n- close: numeric\n- volume: numeric\n- asOf: timestamptz\n- source: String\n- createdAt: timestamptz",
       "fontSize": 14,
@@ -415,7 +522,9 @@
       "version": 1,
       "versionNonce": 200008,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
+      "groupIds": [
+        "pricebar_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -425,7 +534,10 @@
     {
       "type": "rectangle",
       "id": "pricebar_methods_rect",
-      "x": 100, "y": 575, "width": 280, "height": 40,
+      "x": 100,
+      "y": 575,
+      "width": 280,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -438,8 +550,15 @@
       "version": 1,
       "versionNonce": 200010,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
-      "boundElements": [{"id": "pricebar_methods_text", "type": "text"}],
+      "groupIds": [
+        "pricebar_group"
+      ],
+      "boundElements": [
+        {
+          "id": "pricebar_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -447,8 +566,10 @@
     {
       "type": "text",
       "id": "pricebar_methods_text",
-      "x": 110, "y": 583,
-      "width": 260, "height": 18,
+      "x": 110,
+      "y": 583,
+      "width": 260,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -467,18 +588,22 @@
       "version": 1,
       "versionNonce": 200012,
       "isDeleted": false,
-      "groupIds": ["pricebar_group"],
+      "groupIds": [
+        "pricebar_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "pricebar_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "indicator_name_rect",
-      "x": 480, "y": 300, "width": 310, "height": 50,
+      "x": 480,
+      "y": 300,
+      "width": 310,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -491,8 +616,15 @@
       "version": 1,
       "versionNonce": 210002,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
-      "boundElements": [{"id": "indicator_name_text", "type": "text"}],
+      "groupIds": [
+        "indicator_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indicator_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -500,8 +632,10 @@
     {
       "type": "text",
       "id": "indicator_name_text",
-      "x": 490, "y": 312,
-      "width": 290, "height": 25,
+      "x": 490,
+      "y": 312,
+      "width": 290,
+      "height": 25,
       "text": "IndicatorSnapshot",
       "originalText": "IndicatorSnapshot",
       "fontSize": 20,
@@ -520,7 +654,9 @@
       "version": 1,
       "versionNonce": 210004,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
+      "groupIds": [
+        "indicator_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -530,7 +666,10 @@
     {
       "type": "rectangle",
       "id": "indicator_attrs_rect",
-      "x": 480, "y": 350, "width": 310, "height": 275,
+      "x": 480,
+      "y": 350,
+      "width": 310,
+      "height": 275,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -543,8 +682,15 @@
       "version": 1,
       "versionNonce": 210006,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
-      "boundElements": [{"id": "indicator_attrs_text", "type": "text"}],
+      "groupIds": [
+        "indicator_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indicator_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -552,8 +698,10 @@
     {
       "type": "text",
       "id": "indicator_attrs_text",
-      "x": 490, "y": 358,
-      "width": 290, "height": 260,
+      "x": 490,
+      "y": 358,
+      "width": 290,
+      "height": 260,
       "text": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- ts: timestamptz\n- rsi: number | null\n- macd: number | null\n- macdSignal: number | null\n- bbUpper: number | null\n- bbLower: number | null\n- sma20: number | null\n- sma50: number | null\n- asOf: timestamptz\n- createdAt: timestamptz",
       "originalText": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- ts: timestamptz\n- rsi: number | null\n- macd: number | null\n- macdSignal: number | null\n- bbUpper: number | null\n- bbLower: number | null\n- sma20: number | null\n- sma50: number | null\n- asOf: timestamptz\n- createdAt: timestamptz",
       "fontSize": 14,
@@ -572,7 +720,9 @@
       "version": 1,
       "versionNonce": 210008,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
+      "groupIds": [
+        "indicator_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -582,7 +732,10 @@
     {
       "type": "rectangle",
       "id": "indicator_methods_rect",
-      "x": 480, "y": 625, "width": 310, "height": 40,
+      "x": 480,
+      "y": 625,
+      "width": 310,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -595,8 +748,15 @@
       "version": 1,
       "versionNonce": 210010,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
-      "boundElements": [{"id": "indicator_methods_text", "type": "text"}],
+      "groupIds": [
+        "indicator_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indicator_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -604,8 +764,10 @@
     {
       "type": "text",
       "id": "indicator_methods_text",
-      "x": 490, "y": 633,
-      "width": 290, "height": 18,
+      "x": 490,
+      "y": 633,
+      "width": 290,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -624,18 +786,22 @@
       "version": 1,
       "versionNonce": 210012,
       "isDeleted": false,
-      "groupIds": ["indicator_group"],
+      "groupIds": [
+        "indicator_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "indicator_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "agentinput_name_rect",
-      "x": 100, "y": 720, "width": 330, "height": 50,
+      "x": 100,
+      "y": 720,
+      "width": 330,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -648,8 +814,15 @@
       "version": 1,
       "versionNonce": 220002,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
-      "boundElements": [{"id": "agentinput_name_text", "type": "text"}],
+      "groupIds": [
+        "agentinput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentinput_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -657,8 +830,10 @@
     {
       "type": "text",
       "id": "agentinput_name_text",
-      "x": 110, "y": 732,
-      "width": 310, "height": 25,
+      "x": 110,
+      "y": 732,
+      "width": 310,
+      "height": 25,
       "text": "AgentInput",
       "originalText": "AgentInput",
       "fontSize": 20,
@@ -677,7 +852,9 @@
       "version": 1,
       "versionNonce": 220004,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
+      "groupIds": [
+        "agentinput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -687,7 +864,10 @@
     {
       "type": "rectangle",
       "id": "agentinput_attrs_rect",
-      "x": 100, "y": 770, "width": 330, "height": 150,
+      "x": 100,
+      "y": 770,
+      "width": 330,
+      "height": 150,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -700,8 +880,15 @@
       "version": 1,
       "versionNonce": 220006,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
-      "boundElements": [{"id": "agentinput_attrs_text", "type": "text"}],
+      "groupIds": [
+        "agentinput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentinput_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -709,8 +896,10 @@
     {
       "type": "text",
       "id": "agentinput_attrs_text",
-      "x": 110, "y": 778,
-      "width": 310, "height": 135,
+      "x": 110,
+      "y": 778,
+      "width": 310,
+      "height": 135,
       "text": "- runId: uuid\n- symbol: String\n- timeframe: Timeframe\n- decisionTs: datetime\n- bars: PriceBar[]\n- indicators: IndicatorSnapshot?\n- memory: unknown?",
       "originalText": "- runId: uuid\n- symbol: String\n- timeframe: Timeframe\n- decisionTs: datetime\n- bars: PriceBar[]\n- indicators: IndicatorSnapshot?\n- memory: unknown?",
       "fontSize": 14,
@@ -729,7 +918,9 @@
       "version": 1,
       "versionNonce": 220008,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
+      "groupIds": [
+        "agentinput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -739,7 +930,10 @@
     {
       "type": "rectangle",
       "id": "agentinput_methods_rect",
-      "x": 100, "y": 920, "width": 330, "height": 40,
+      "x": 100,
+      "y": 920,
+      "width": 330,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -752,8 +946,15 @@
       "version": 1,
       "versionNonce": 220010,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
-      "boundElements": [{"id": "agentinput_methods_text", "type": "text"}],
+      "groupIds": [
+        "agentinput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentinput_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -761,8 +962,10 @@
     {
       "type": "text",
       "id": "agentinput_methods_text",
-      "x": 110, "y": 928,
-      "width": 310, "height": 18,
+      "x": 110,
+      "y": 928,
+      "width": 310,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -781,18 +984,22 @@
       "version": 1,
       "versionNonce": 220012,
       "isDeleted": false,
-      "groupIds": ["agentinput_group"],
+      "groupIds": [
+        "agentinput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "agentinput_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "agentoutput_name_rect",
-      "x": 530, "y": 720, "width": 330, "height": 50,
+      "x": 530,
+      "y": 720,
+      "width": 330,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -805,8 +1012,15 @@
       "version": 1,
       "versionNonce": 230002,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
-      "boundElements": [{"id": "agentoutput_name_text", "type": "text"}],
+      "groupIds": [
+        "agentoutput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentoutput_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -814,8 +1028,10 @@
     {
       "type": "text",
       "id": "agentoutput_name_text",
-      "x": 540, "y": 732,
-      "width": 310, "height": 25,
+      "x": 540,
+      "y": 732,
+      "width": 310,
+      "height": 25,
       "text": "AgentOutput",
       "originalText": "AgentOutput",
       "fontSize": 20,
@@ -834,7 +1050,9 @@
       "version": 1,
       "versionNonce": 230004,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
+      "groupIds": [
+        "agentoutput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -844,7 +1062,10 @@
     {
       "type": "rectangle",
       "id": "agentoutput_attrs_rect",
-      "x": 530, "y": 770, "width": 330, "height": 125,
+      "x": 530,
+      "y": 770,
+      "width": 330,
+      "height": 125,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -857,8 +1078,15 @@
       "version": 1,
       "versionNonce": 230006,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
-      "boundElements": [{"id": "agentoutput_attrs_text", "type": "text"}],
+      "groupIds": [
+        "agentoutput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentoutput_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -866,8 +1094,10 @@
     {
       "type": "text",
       "id": "agentoutput_attrs_text",
-      "x": 540, "y": 778,
-      "width": 310, "height": 110,
+      "x": 540,
+      "y": 778,
+      "width": 310,
+      "height": 110,
       "text": "- agent: AgentName\n- direction: Direction\n- confidence: number [0,1]\n- rationale: String\n- evidence: Record<String, any>",
       "originalText": "- agent: AgentName\n- direction: Direction\n- confidence: number [0,1]\n- rationale: String\n- evidence: Record<String, any>",
       "fontSize": 14,
@@ -886,7 +1116,9 @@
       "version": 1,
       "versionNonce": 230008,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
+      "groupIds": [
+        "agentoutput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -896,7 +1128,10 @@
     {
       "type": "rectangle",
       "id": "agentoutput_methods_rect",
-      "x": 530, "y": 895, "width": 330, "height": 40,
+      "x": 530,
+      "y": 895,
+      "width": 330,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -909,8 +1144,15 @@
       "version": 1,
       "versionNonce": 230010,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
-      "boundElements": [{"id": "agentoutput_methods_text", "type": "text"}],
+      "groupIds": [
+        "agentoutput_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentoutput_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -918,8 +1160,10 @@
     {
       "type": "text",
       "id": "agentoutput_methods_text",
-      "x": 540, "y": 903,
-      "width": 310, "height": 18,
+      "x": 540,
+      "y": 903,
+      "width": 310,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -938,18 +1182,22 @@
       "version": 1,
       "versionNonce": 230012,
       "isDeleted": false,
-      "groupIds": ["agentoutput_group"],
+      "groupIds": [
+        "agentoutput_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "agentoutput_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "portfolio_name_rect",
-      "x": 960, "y": 300, "width": 330, "height": 50,
+      "x": 960,
+      "y": 300,
+      "width": 330,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -962,8 +1210,15 @@
       "version": 1,
       "versionNonce": 240002,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
-      "boundElements": [{"id": "portfolio_name_text", "type": "text"}],
+      "groupIds": [
+        "portfolio_group"
+      ],
+      "boundElements": [
+        {
+          "id": "portfolio_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -971,8 +1226,10 @@
     {
       "type": "text",
       "id": "portfolio_name_text",
-      "x": 970, "y": 312,
-      "width": 310, "height": 25,
+      "x": 970,
+      "y": 312,
+      "width": 310,
+      "height": 25,
       "text": "PortfolioState",
       "originalText": "PortfolioState",
       "fontSize": 20,
@@ -991,7 +1248,9 @@
       "version": 1,
       "versionNonce": 240004,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
+      "groupIds": [
+        "portfolio_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1001,7 +1260,10 @@
     {
       "type": "rectangle",
       "id": "portfolio_attrs_rect",
-      "x": 960, "y": 350, "width": 330, "height": 100,
+      "x": 960,
+      "y": 350,
+      "width": 330,
+      "height": 100,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1014,8 +1276,15 @@
       "version": 1,
       "versionNonce": 240006,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
-      "boundElements": [{"id": "portfolio_attrs_text", "type": "text"}],
+      "groupIds": [
+        "portfolio_group"
+      ],
+      "boundElements": [
+        {
+          "id": "portfolio_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1023,8 +1292,10 @@
     {
       "type": "text",
       "id": "portfolio_attrs_text",
-      "x": 970, "y": 358,
-      "width": 310, "height": 85,
+      "x": 970,
+      "y": 358,
+      "width": 310,
+      "height": 85,
       "text": "- cash: number\n- equity: number\n- positions: Position[]\n- asOf: datetime",
       "originalText": "- cash: number\n- equity: number\n- positions: Position[]\n- asOf: datetime",
       "fontSize": 14,
@@ -1043,7 +1314,9 @@
       "version": 1,
       "versionNonce": 240008,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
+      "groupIds": [
+        "portfolio_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1053,7 +1326,10 @@
     {
       "type": "rectangle",
       "id": "portfolio_methods_rect",
-      "x": 960, "y": 450, "width": 330, "height": 40,
+      "x": 960,
+      "y": 450,
+      "width": 330,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1066,8 +1342,15 @@
       "version": 1,
       "versionNonce": 240010,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
-      "boundElements": [{"id": "portfolio_methods_text", "type": "text"}],
+      "groupIds": [
+        "portfolio_group"
+      ],
+      "boundElements": [
+        {
+          "id": "portfolio_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1075,8 +1358,10 @@
     {
       "type": "text",
       "id": "portfolio_methods_text",
-      "x": 970, "y": 458,
-      "width": 310, "height": 18,
+      "x": 970,
+      "y": 458,
+      "width": 310,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1095,18 +1380,22 @@
       "version": 1,
       "versionNonce": 240012,
       "isDeleted": false,
-      "groupIds": ["portfolio_group"],
+      "groupIds": [
+        "portfolio_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "portfolio_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "user_name_rect",
-      "x": 1400, "y": 50, "width": 240, "height": 50,
+      "x": 1400,
+      "y": 50,
+      "width": 240,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1119,8 +1408,15 @@
       "version": 1,
       "versionNonce": 300002,
       "isDeleted": false,
-      "groupIds": ["user_group"],
-      "boundElements": [{"id": "user_name_text", "type": "text"}],
+      "groupIds": [
+        "user_group"
+      ],
+      "boundElements": [
+        {
+          "id": "user_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1128,8 +1424,10 @@
     {
       "type": "text",
       "id": "user_name_text",
-      "x": 1410, "y": 62,
-      "width": 220, "height": 25,
+      "x": 1410,
+      "y": 62,
+      "width": 220,
+      "height": 25,
       "text": "User",
       "originalText": "User",
       "fontSize": 20,
@@ -1148,7 +1446,9 @@
       "version": 1,
       "versionNonce": 300004,
       "isDeleted": false,
-      "groupIds": ["user_group"],
+      "groupIds": [
+        "user_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1158,7 +1458,10 @@
     {
       "type": "rectangle",
       "id": "user_attrs_rect",
-      "x": 1400, "y": 100, "width": 240, "height": 100,
+      "x": 1400,
+      "y": 100,
+      "width": 240,
+      "height": 100,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1171,8 +1474,15 @@
       "version": 1,
       "versionNonce": 300006,
       "isDeleted": false,
-      "groupIds": ["user_group"],
-      "boundElements": [{"id": "user_attrs_text", "type": "text"}],
+      "groupIds": [
+        "user_group"
+      ],
+      "boundElements": [
+        {
+          "id": "user_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1180,8 +1490,10 @@
     {
       "type": "text",
       "id": "user_attrs_text",
-      "x": 1410, "y": 108,
-      "width": 220, "height": 85,
+      "x": 1410,
+      "y": 108,
+      "width": 220,
+      "height": 85,
       "text": "- id: uuid\n- email: String\n- passwordHash: String\n- createdAt: timestamptz",
       "originalText": "- id: uuid\n- email: String\n- passwordHash: String\n- createdAt: timestamptz",
       "fontSize": 14,
@@ -1200,7 +1512,9 @@
       "version": 1,
       "versionNonce": 300008,
       "isDeleted": false,
-      "groupIds": ["user_group"],
+      "groupIds": [
+        "user_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1210,7 +1524,10 @@
     {
       "type": "rectangle",
       "id": "user_methods_rect",
-      "x": 1400, "y": 200, "width": 240, "height": 40,
+      "x": 1400,
+      "y": 200,
+      "width": 240,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1223,8 +1540,15 @@
       "version": 1,
       "versionNonce": 300010,
       "isDeleted": false,
-      "groupIds": ["user_group"],
-      "boundElements": [{"id": "user_methods_text", "type": "text"}],
+      "groupIds": [
+        "user_group"
+      ],
+      "boundElements": [
+        {
+          "id": "user_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1232,8 +1556,10 @@
     {
       "type": "text",
       "id": "user_methods_text",
-      "x": 1410, "y": 208,
-      "width": 220, "height": 18,
+      "x": 1410,
+      "y": 208,
+      "width": 220,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1252,18 +1578,22 @@
       "version": 1,
       "versionNonce": 300012,
       "isDeleted": false,
-      "groupIds": ["user_group"],
+      "groupIds": [
+        "user_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "user_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "session_name_rect",
-      "x": 1400, "y": 340, "width": 240, "height": 50,
+      "x": 1400,
+      "y": 340,
+      "width": 240,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1276,8 +1606,15 @@
       "version": 1,
       "versionNonce": 310002,
       "isDeleted": false,
-      "groupIds": ["session_group"],
-      "boundElements": [{"id": "session_name_text", "type": "text"}],
+      "groupIds": [
+        "session_group"
+      ],
+      "boundElements": [
+        {
+          "id": "session_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1285,8 +1622,10 @@
     {
       "type": "text",
       "id": "session_name_text",
-      "x": 1410, "y": 352,
-      "width": 220, "height": 25,
+      "x": 1410,
+      "y": 352,
+      "width": 220,
+      "height": 25,
       "text": "Session",
       "originalText": "Session",
       "fontSize": 20,
@@ -1305,7 +1644,9 @@
       "version": 1,
       "versionNonce": 310004,
       "isDeleted": false,
-      "groupIds": ["session_group"],
+      "groupIds": [
+        "session_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1315,7 +1656,10 @@
     {
       "type": "rectangle",
       "id": "session_attrs_rect",
-      "x": 1400, "y": 390, "width": 240, "height": 100,
+      "x": 1400,
+      "y": 390,
+      "width": 240,
+      "height": 100,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1328,8 +1672,15 @@
       "version": 1,
       "versionNonce": 310006,
       "isDeleted": false,
-      "groupIds": ["session_group"],
-      "boundElements": [{"id": "session_attrs_text", "type": "text"}],
+      "groupIds": [
+        "session_group"
+      ],
+      "boundElements": [
+        {
+          "id": "session_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1337,8 +1688,10 @@
     {
       "type": "text",
       "id": "session_attrs_text",
-      "x": 1410, "y": 398,
-      "width": 220, "height": 85,
+      "x": 1410,
+      "y": 398,
+      "width": 220,
+      "height": 85,
       "text": "- id: uuid\n- userId: uuid\n- expiresAt: timestamptz\n- createdAt: timestamptz",
       "originalText": "- id: uuid\n- userId: uuid\n- expiresAt: timestamptz\n- createdAt: timestamptz",
       "fontSize": 14,
@@ -1357,7 +1710,9 @@
       "version": 1,
       "versionNonce": 310008,
       "isDeleted": false,
-      "groupIds": ["session_group"],
+      "groupIds": [
+        "session_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1367,7 +1722,10 @@
     {
       "type": "rectangle",
       "id": "session_methods_rect",
-      "x": 1400, "y": 490, "width": 240, "height": 40,
+      "x": 1400,
+      "y": 490,
+      "width": 240,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1380,8 +1738,15 @@
       "version": 1,
       "versionNonce": 310010,
       "isDeleted": false,
-      "groupIds": ["session_group"],
-      "boundElements": [{"id": "session_methods_text", "type": "text"}],
+      "groupIds": [
+        "session_group"
+      ],
+      "boundElements": [
+        {
+          "id": "session_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1389,8 +1754,10 @@
     {
       "type": "text",
       "id": "session_methods_text",
-      "x": 1410, "y": 498,
-      "width": 220, "height": 18,
+      "x": 1410,
+      "y": 498,
+      "width": 220,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1409,18 +1776,22 @@
       "version": 1,
       "versionNonce": 310012,
       "isDeleted": false,
-      "groupIds": ["session_group"],
+      "groupIds": [
+        "session_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "session_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "alpacacreds_name_rect",
-      "x": 1750, "y": 50, "width": 310, "height": 50,
+      "x": 1750,
+      "y": 50,
+      "width": 310,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1433,8 +1804,15 @@
       "version": 1,
       "versionNonce": 320002,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
-      "boundElements": [{"id": "alpacacreds_name_text", "type": "text"}],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
+      "boundElements": [
+        {
+          "id": "alpacacreds_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1442,8 +1820,10 @@
     {
       "type": "text",
       "id": "alpacacreds_name_text",
-      "x": 1760, "y": 62,
-      "width": 290, "height": 25,
+      "x": 1760,
+      "y": 62,
+      "width": 290,
+      "height": 25,
       "text": "AlpacaCredentials",
       "originalText": "AlpacaCredentials",
       "fontSize": 20,
@@ -1462,7 +1842,9 @@
       "version": 1,
       "versionNonce": 320004,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1472,7 +1854,10 @@
     {
       "type": "rectangle",
       "id": "alpacacreds_attrs_rect",
-      "x": 1750, "y": 100, "width": 310, "height": 125,
+      "x": 1750,
+      "y": 100,
+      "width": 310,
+      "height": 125,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1485,8 +1870,15 @@
       "version": 1,
       "versionNonce": 320006,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
-      "boundElements": [{"id": "alpacacreds_attrs_text", "type": "text"}],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
+      "boundElements": [
+        {
+          "id": "alpacacreds_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1494,8 +1886,10 @@
     {
       "type": "text",
       "id": "alpacacreds_attrs_text",
-      "x": 1760, "y": 108,
-      "width": 290, "height": 110,
+      "x": 1760,
+      "y": 108,
+      "width": 290,
+      "height": 110,
       "text": "- userId: uuid\n- keyCiphertext: bytes\n- secretCiphertext: bytes\n- iv: bytes\n- authTag: bytes",
       "originalText": "- userId: uuid\n- keyCiphertext: bytes\n- secretCiphertext: bytes\n- iv: bytes\n- authTag: bytes",
       "fontSize": 14,
@@ -1514,7 +1908,9 @@
       "version": 1,
       "versionNonce": 320008,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1524,7 +1920,10 @@
     {
       "type": "rectangle",
       "id": "alpacacreds_methods_rect",
-      "x": 1750, "y": 225, "width": 310, "height": 40,
+      "x": 1750,
+      "y": 225,
+      "width": 310,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1537,8 +1936,15 @@
       "version": 1,
       "versionNonce": 320010,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
-      "boundElements": [{"id": "alpacacreds_methods_text", "type": "text"}],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
+      "boundElements": [
+        {
+          "id": "alpacacreds_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1546,8 +1952,10 @@
     {
       "type": "text",
       "id": "alpacacreds_methods_text",
-      "x": 1760, "y": 233,
-      "width": 290, "height": 18,
+      "x": 1760,
+      "y": 233,
+      "width": 290,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1566,18 +1974,22 @@
       "version": 1,
       "versionNonce": 320012,
       "isDeleted": false,
-      "groupIds": ["alpacacreds_group"],
+      "groupIds": [
+        "alpacacreds_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "alpacacreds_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "watchlist_name_rect",
-      "x": 1750, "y": 340, "width": 260, "height": 50,
+      "x": 1750,
+      "y": 340,
+      "width": 260,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1590,8 +2002,15 @@
       "version": 1,
       "versionNonce": 330002,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
-      "boundElements": [{"id": "watchlist_name_text", "type": "text"}],
+      "groupIds": [
+        "watchlist_group"
+      ],
+      "boundElements": [
+        {
+          "id": "watchlist_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1599,8 +2018,10 @@
     {
       "type": "text",
       "id": "watchlist_name_text",
-      "x": 1760, "y": 352,
-      "width": 240, "height": 25,
+      "x": 1760,
+      "y": 352,
+      "width": 240,
+      "height": 25,
       "text": "WatchlistItem",
       "originalText": "WatchlistItem",
       "fontSize": 20,
@@ -1619,7 +2040,9 @@
       "version": 1,
       "versionNonce": 330004,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
+      "groupIds": [
+        "watchlist_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1629,7 +2052,10 @@
     {
       "type": "rectangle",
       "id": "watchlist_attrs_rect",
-      "x": 1750, "y": 390, "width": 260, "height": 100,
+      "x": 1750,
+      "y": 390,
+      "width": 260,
+      "height": 100,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1642,8 +2068,15 @@
       "version": 1,
       "versionNonce": 330006,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
-      "boundElements": [{"id": "watchlist_attrs_text", "type": "text"}],
+      "groupIds": [
+        "watchlist_group"
+      ],
+      "boundElements": [
+        {
+          "id": "watchlist_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1651,8 +2084,10 @@
     {
       "type": "text",
       "id": "watchlist_attrs_text",
-      "x": 1760, "y": 398,
-      "width": 240, "height": 85,
+      "x": 1760,
+      "y": 398,
+      "width": 240,
+      "height": 85,
       "text": "- id: uuid\n- userId: uuid\n- symbol: String\n- createdAt: timestamptz",
       "originalText": "- id: uuid\n- userId: uuid\n- symbol: String\n- createdAt: timestamptz",
       "fontSize": 14,
@@ -1671,7 +2106,9 @@
       "version": 1,
       "versionNonce": 330008,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
+      "groupIds": [
+        "watchlist_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1681,7 +2118,10 @@
     {
       "type": "rectangle",
       "id": "watchlist_methods_rect",
-      "x": 1750, "y": 490, "width": 260, "height": 40,
+      "x": 1750,
+      "y": 490,
+      "width": 260,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1694,8 +2134,15 @@
       "version": 1,
       "versionNonce": 330010,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
-      "boundElements": [{"id": "watchlist_methods_text", "type": "text"}],
+      "groupIds": [
+        "watchlist_group"
+      ],
+      "boundElements": [
+        {
+          "id": "watchlist_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1703,8 +2150,10 @@
     {
       "type": "text",
       "id": "watchlist_methods_text",
-      "x": 1760, "y": 498,
-      "width": 240, "height": 18,
+      "x": 1760,
+      "y": 498,
+      "width": 240,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1723,18 +2172,22 @@
       "version": 1,
       "versionNonce": 330012,
       "isDeleted": false,
-      "groupIds": ["watchlist_group"],
+      "groupIds": [
+        "watchlist_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "watchlist_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "agentrun_name_rect",
-      "x": 960, "y": 600, "width": 350, "height": 50,
+      "x": 960,
+      "y": 600,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1747,8 +2200,15 @@
       "version": 1,
       "versionNonce": 340002,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
-      "boundElements": [{"id": "agentrun_name_text", "type": "text"}],
+      "groupIds": [
+        "agentrun_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentrun_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1756,8 +2216,10 @@
     {
       "type": "text",
       "id": "agentrun_name_text",
-      "x": 970, "y": 612,
-      "width": 330, "height": 25,
+      "x": 970,
+      "y": 612,
+      "width": 330,
+      "height": 25,
       "text": "AgentRun",
       "originalText": "AgentRun",
       "fontSize": 20,
@@ -1776,7 +2238,9 @@
       "version": 1,
       "versionNonce": 340004,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
+      "groupIds": [
+        "agentrun_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1786,7 +2250,10 @@
     {
       "type": "rectangle",
       "id": "agentrun_attrs_rect",
-      "x": 960, "y": 650, "width": 350, "height": 150,
+      "x": 960,
+      "y": 650,
+      "width": 350,
+      "height": 150,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1799,8 +2266,15 @@
       "version": 1,
       "versionNonce": 340006,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
-      "boundElements": [{"id": "agentrun_attrs_text", "type": "text"}],
+      "groupIds": [
+        "agentrun_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentrun_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1808,8 +2282,10 @@
     {
       "type": "text",
       "id": "agentrun_attrs_text",
-      "x": 970, "y": 658,
-      "width": 330, "height": 135,
+      "x": 970,
+      "y": 658,
+      "width": 330,
+      "height": 135,
       "text": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- decisionTs: timestamptz\n- status: running|completed|failed\n- startedAt: timestamptz\n- finishedAt: timestamptz?",
       "originalText": "- id: uuid\n- symbol: String\n- timeframe: Timeframe\n- decisionTs: timestamptz\n- status: running|completed|failed\n- startedAt: timestamptz\n- finishedAt: timestamptz?",
       "fontSize": 14,
@@ -1828,7 +2304,9 @@
       "version": 1,
       "versionNonce": 340008,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
+      "groupIds": [
+        "agentrun_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1838,7 +2316,10 @@
     {
       "type": "rectangle",
       "id": "agentrun_methods_rect",
-      "x": 960, "y": 800, "width": 350, "height": 40,
+      "x": 960,
+      "y": 800,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -1851,8 +2332,15 @@
       "version": 1,
       "versionNonce": 340010,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
-      "boundElements": [{"id": "agentrun_methods_text", "type": "text"}],
+      "groupIds": [
+        "agentrun_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agentrun_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1860,8 +2348,10 @@
     {
       "type": "text",
       "id": "agentrun_methods_text",
-      "x": 970, "y": 808,
-      "width": 330, "height": 18,
+      "x": 970,
+      "y": 808,
+      "width": 330,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -1880,18 +2370,22 @@
       "version": 1,
       "versionNonce": 340012,
       "isDeleted": false,
-      "groupIds": ["agentrun_group"],
+      "groupIds": [
+        "agentrun_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "agentrun_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "agent_iface_name_rect",
-      "x": 100, "y": 1080, "width": 350, "height": 70,
+      "x": 100,
+      "y": 1080,
+      "width": 350,
+      "height": 70,
       "strokeColor": "#047857",
       "backgroundColor": "#d1fae5",
       "fillStyle": "solid",
@@ -1904,8 +2398,15 @@
       "version": 1,
       "versionNonce": 400002,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
-      "boundElements": [{"id": "agent_iface_name_text", "type": "text"}],
+      "groupIds": [
+        "agent_iface_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agent_iface_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1913,10 +2414,12 @@
     {
       "type": "text",
       "id": "agent_iface_name_text",
-      "x": 110, "y": 1088,
-      "width": 330, "height": 55,
-      "text": "«interface»\nAgent",
-      "originalText": "«interface»\nAgent",
+      "x": 110,
+      "y": 1088,
+      "width": 330,
+      "height": 55,
+      "text": "\u00abinterface\u00bb\nAgent",
+      "originalText": "\u00abinterface\u00bb\nAgent",
       "fontSize": 16,
       "fontFamily": 3,
       "textAlign": "center",
@@ -1933,7 +2436,9 @@
       "version": 1,
       "versionNonce": 400004,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
+      "groupIds": [
+        "agent_iface_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1943,7 +2448,10 @@
     {
       "type": "rectangle",
       "id": "agent_iface_attrs_rect",
-      "x": 100, "y": 1150, "width": 350, "height": 40,
+      "x": 100,
+      "y": 1150,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#047857",
       "backgroundColor": "#d1fae5",
       "fillStyle": "solid",
@@ -1956,8 +2464,15 @@
       "version": 1,
       "versionNonce": 400006,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
-      "boundElements": [{"id": "agent_iface_attrs_text", "type": "text"}],
+      "groupIds": [
+        "agent_iface_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agent_iface_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -1965,8 +2480,10 @@
     {
       "type": "text",
       "id": "agent_iface_attrs_text",
-      "x": 110, "y": 1158,
-      "width": 330, "height": 25,
+      "x": 110,
+      "y": 1158,
+      "width": 330,
+      "height": 25,
       "text": "+ name: AgentName",
       "originalText": "+ name: AgentName",
       "fontSize": 14,
@@ -1985,7 +2502,9 @@
       "version": 1,
       "versionNonce": 400008,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
+      "groupIds": [
+        "agent_iface_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -1995,7 +2514,10 @@
     {
       "type": "rectangle",
       "id": "agent_iface_methods_rect",
-      "x": 100, "y": 1190, "width": 350, "height": 40,
+      "x": 100,
+      "y": 1190,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#047857",
       "backgroundColor": "#d1fae5",
       "fillStyle": "solid",
@@ -2008,8 +2530,15 @@
       "version": 1,
       "versionNonce": 400010,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
-      "boundElements": [{"id": "agent_iface_methods_text", "type": "text"}],
+      "groupIds": [
+        "agent_iface_group"
+      ],
+      "boundElements": [
+        {
+          "id": "agent_iface_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2017,8 +2546,10 @@
     {
       "type": "text",
       "id": "agent_iface_methods_text",
-      "x": 110, "y": 1198,
-      "width": 330, "height": 25,
+      "x": 110,
+      "y": 1198,
+      "width": 330,
+      "height": 25,
       "text": "+ analyze(in input: AgentInput): AgentOutput",
       "originalText": "+ analyze(in input: AgentInput): AgentOutput",
       "fontSize": 14,
@@ -2037,18 +2568,22 @@
       "version": 1,
       "versionNonce": 400012,
       "isDeleted": false,
-      "groupIds": ["agent_iface_group"],
+      "groupIds": [
+        "agent_iface_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "agent_iface_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "baseagent_name_rect",
-      "x": 100, "y": 1340, "width": 350, "height": 70,
+      "x": 100,
+      "y": 1340,
+      "width": 350,
+      "height": 70,
       "strokeColor": "#6d28d9",
       "backgroundColor": "#ede9fe",
       "fillStyle": "solid",
@@ -2061,8 +2596,15 @@
       "version": 1,
       "versionNonce": 410002,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
-      "boundElements": [{"id": "baseagent_name_text", "type": "text"}],
+      "groupIds": [
+        "baseagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "baseagent_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2070,10 +2612,12 @@
     {
       "type": "text",
       "id": "baseagent_name_text",
-      "x": 110, "y": 1348,
-      "width": 330, "height": 55,
-      "text": "«abstract»\nBaseAgent",
-      "originalText": "«abstract»\nBaseAgent",
+      "x": 110,
+      "y": 1348,
+      "width": 330,
+      "height": 55,
+      "text": "\u00ababstract\u00bb\nBaseAgent",
+      "originalText": "\u00ababstract\u00bb\nBaseAgent",
       "fontSize": 16,
       "fontFamily": 3,
       "textAlign": "center",
@@ -2090,7 +2634,9 @@
       "version": 1,
       "versionNonce": 410004,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
+      "groupIds": [
+        "baseagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2100,7 +2646,10 @@
     {
       "type": "rectangle",
       "id": "baseagent_attrs_rect",
-      "x": 100, "y": 1410, "width": 350, "height": 50,
+      "x": 100,
+      "y": 1410,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#6d28d9",
       "backgroundColor": "#ede9fe",
       "fillStyle": "solid",
@@ -2113,8 +2662,15 @@
       "version": 1,
       "versionNonce": 410006,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
-      "boundElements": [{"id": "baseagent_attrs_text", "type": "text"}],
+      "groupIds": [
+        "baseagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "baseagent_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2122,8 +2678,10 @@
     {
       "type": "text",
       "id": "baseagent_attrs_text",
-      "x": 110, "y": 1418,
-      "width": 330, "height": 35,
+      "x": 110,
+      "y": 1418,
+      "width": 330,
+      "height": 35,
       "text": "# timeoutMs: number",
       "originalText": "# timeoutMs: number",
       "fontSize": 14,
@@ -2142,7 +2700,9 @@
       "version": 1,
       "versionNonce": 410008,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
+      "groupIds": [
+        "baseagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2152,7 +2712,10 @@
     {
       "type": "rectangle",
       "id": "baseagent_methods_rect",
-      "x": 100, "y": 1460, "width": 350, "height": 75,
+      "x": 100,
+      "y": 1460,
+      "width": 350,
+      "height": 75,
       "strokeColor": "#6d28d9",
       "backgroundColor": "#ede9fe",
       "fillStyle": "solid",
@@ -2165,8 +2728,15 @@
       "version": 1,
       "versionNonce": 410010,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
-      "boundElements": [{"id": "baseagent_methods_text", "type": "text"}],
+      "groupIds": [
+        "baseagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "baseagent_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2174,8 +2744,10 @@
     {
       "type": "text",
       "id": "baseagent_methods_text",
-      "x": 110, "y": 1468,
-      "width": 330, "height": 55,
+      "x": 110,
+      "y": 1468,
+      "width": 330,
+      "height": 55,
       "text": "+ analyze(in input: AgentInput): AgentOutput\n# *run(in input: AgentInput): AgentOutput",
       "originalText": "+ analyze(in input: AgentInput): AgentOutput\n# *run(in input: AgentInput): AgentOutput",
       "fontSize": 14,
@@ -2194,18 +2766,22 @@
       "version": 1,
       "versionNonce": 410012,
       "isDeleted": false,
-      "groupIds": ["baseagent_group"],
+      "groupIds": [
+        "baseagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "baseagent_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "techagent_name_rect",
-      "x": 100, "y": 1650, "width": 350, "height": 50,
+      "x": 100,
+      "y": 1650,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2218,8 +2794,15 @@
       "version": 1,
       "versionNonce": 500002,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
-      "boundElements": [{"id": "techagent_name_text", "type": "text"}],
+      "groupIds": [
+        "techagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techagent_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2227,8 +2810,10 @@
     {
       "type": "text",
       "id": "techagent_name_text",
-      "x": 110, "y": 1662,
-      "width": 330, "height": 25,
+      "x": 110,
+      "y": 1662,
+      "width": 330,
+      "height": 25,
       "text": "TechnicalAgent",
       "originalText": "TechnicalAgent",
       "fontSize": 20,
@@ -2247,7 +2832,9 @@
       "version": 1,
       "versionNonce": 500004,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
+      "groupIds": [
+        "techagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2257,7 +2844,10 @@
     {
       "type": "rectangle",
       "id": "techagent_attrs_rect",
-      "x": 100, "y": 1700, "width": 350, "height": 75,
+      "x": 100,
+      "y": 1700,
+      "width": 350,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2270,8 +2860,15 @@
       "version": 1,
       "versionNonce": 500006,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
-      "boundElements": [{"id": "techagent_attrs_text", "type": "text"}],
+      "groupIds": [
+        "techagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techagent_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2279,8 +2876,10 @@
     {
       "type": "text",
       "id": "techagent_attrs_text",
-      "x": 110, "y": 1708,
-      "width": 330, "height": 55,
+      "x": 110,
+      "y": 1708,
+      "width": 330,
+      "height": 55,
       "text": "- classifier: TechnicalClassifier\n- llmClient: LLMClient",
       "originalText": "- classifier: TechnicalClassifier\n- llmClient: LLMClient",
       "fontSize": 14,
@@ -2299,7 +2898,9 @@
       "version": 1,
       "versionNonce": 500008,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
+      "groupIds": [
+        "techagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2309,7 +2910,10 @@
     {
       "type": "rectangle",
       "id": "techagent_methods_rect",
-      "x": 100, "y": 1775, "width": 350, "height": 40,
+      "x": 100,
+      "y": 1775,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2322,8 +2926,15 @@
       "version": 1,
       "versionNonce": 500010,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
-      "boundElements": [{"id": "techagent_methods_text", "type": "text"}],
+      "groupIds": [
+        "techagent_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techagent_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2331,8 +2942,10 @@
     {
       "type": "text",
       "id": "techagent_methods_text",
-      "x": 110, "y": 1783,
-      "width": 330, "height": 25,
+      "x": 110,
+      "y": 1783,
+      "width": 330,
+      "height": 25,
       "text": "# run(in input: AgentInput): AgentOutput",
       "originalText": "# run(in input: AgentInput): AgentOutput",
       "fontSize": 14,
@@ -2351,18 +2964,22 @@
       "version": 1,
       "versionNonce": 500012,
       "isDeleted": false,
-      "groupIds": ["techagent_group"],
+      "groupIds": [
+        "techagent_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "techagent_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "techclass_name_rect",
-      "x": 560, "y": 1650, "width": 350, "height": 50,
+      "x": 560,
+      "y": 1650,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2375,8 +2992,15 @@
       "version": 1,
       "versionNonce": 510002,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
-      "boundElements": [{"id": "techclass_name_text", "type": "text"}],
+      "groupIds": [
+        "techclass_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techclass_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2384,8 +3008,10 @@
     {
       "type": "text",
       "id": "techclass_name_text",
-      "x": 570, "y": 1662,
-      "width": 330, "height": 25,
+      "x": 570,
+      "y": 1662,
+      "width": 330,
+      "height": 25,
       "text": "TechnicalClassifier",
       "originalText": "TechnicalClassifier",
       "fontSize": 20,
@@ -2404,7 +3030,9 @@
       "version": 1,
       "versionNonce": 510004,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
+      "groupIds": [
+        "techclass_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2414,7 +3042,10 @@
     {
       "type": "rectangle",
       "id": "techclass_attrs_rect",
-      "x": 560, "y": 1700, "width": 350, "height": 40,
+      "x": 560,
+      "y": 1700,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2427,8 +3058,15 @@
       "version": 1,
       "versionNonce": 510006,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
-      "boundElements": [{"id": "techclass_attrs_text", "type": "text"}],
+      "groupIds": [
+        "techclass_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techclass_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2436,8 +3074,10 @@
     {
       "type": "text",
       "id": "techclass_attrs_text",
-      "x": 570, "y": 1708,
-      "width": 330, "height": 18,
+      "x": 570,
+      "y": 1708,
+      "width": 330,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -2456,7 +3096,9 @@
       "version": 1,
       "versionNonce": 510008,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
+      "groupIds": [
+        "techclass_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2466,7 +3108,10 @@
     {
       "type": "rectangle",
       "id": "techclass_methods_rect",
-      "x": 560, "y": 1740, "width": 350, "height": 75,
+      "x": 560,
+      "y": 1740,
+      "width": 350,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2479,8 +3124,15 @@
       "version": 1,
       "versionNonce": 510010,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
-      "boundElements": [{"id": "techclass_methods_text", "type": "text"}],
+      "groupIds": [
+        "techclass_group"
+      ],
+      "boundElements": [
+        {
+          "id": "techclass_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2488,8 +3140,10 @@
     {
       "type": "text",
       "id": "techclass_methods_text",
-      "x": 570, "y": 1748,
-      "width": 330, "height": 55,
+      "x": 570,
+      "y": 1748,
+      "width": 330,
+      "height": 55,
       "text": "+ classify(in snap: IndicatorSnapshot):\n    { bias: Direction, confidence: number }",
       "originalText": "+ classify(in snap: IndicatorSnapshot):\n    { bias: Direction, confidence: number }",
       "fontSize": 14,
@@ -2508,18 +3162,22 @@
       "version": 1,
       "versionNonce": 510012,
       "isDeleted": false,
-      "groupIds": ["techclass_group"],
+      "groupIds": [
+        "techclass_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "techclass_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "llmclient_name_rect",
-      "x": 560, "y": 1880, "width": 350, "height": 50,
+      "x": 560,
+      "y": 1880,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2532,8 +3190,15 @@
       "version": 1,
       "versionNonce": 520002,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
-      "boundElements": [{"id": "llmclient_name_text", "type": "text"}],
+      "groupIds": [
+        "llmclient_group"
+      ],
+      "boundElements": [
+        {
+          "id": "llmclient_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2541,8 +3206,10 @@
     {
       "type": "text",
       "id": "llmclient_name_text",
-      "x": 570, "y": 1892,
-      "width": 330, "height": 25,
+      "x": 570,
+      "y": 1892,
+      "width": 330,
+      "height": 25,
       "text": "LLMClient",
       "originalText": "LLMClient",
       "fontSize": 20,
@@ -2561,7 +3228,9 @@
       "version": 1,
       "versionNonce": 520004,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
+      "groupIds": [
+        "llmclient_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2571,7 +3240,10 @@
     {
       "type": "rectangle",
       "id": "llmclient_attrs_rect",
-      "x": 560, "y": 1930, "width": 350, "height": 40,
+      "x": 560,
+      "y": 1930,
+      "width": 350,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2584,8 +3256,15 @@
       "version": 1,
       "versionNonce": 520006,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
-      "boundElements": [{"id": "llmclient_attrs_text", "type": "text"}],
+      "groupIds": [
+        "llmclient_group"
+      ],
+      "boundElements": [
+        {
+          "id": "llmclient_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2593,8 +3272,10 @@
     {
       "type": "text",
       "id": "llmclient_attrs_text",
-      "x": 570, "y": 1938,
-      "width": 330, "height": 25,
+      "x": 570,
+      "y": 1938,
+      "width": 330,
+      "height": 25,
       "text": "- model: String",
       "originalText": "- model: String",
       "fontSize": 14,
@@ -2613,7 +3294,9 @@
       "version": 1,
       "versionNonce": 520008,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
+      "groupIds": [
+        "llmclient_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2623,7 +3306,10 @@
     {
       "type": "rectangle",
       "id": "llmclient_methods_rect",
-      "x": 560, "y": 1970, "width": 350, "height": 50,
+      "x": 560,
+      "y": 1970,
+      "width": 350,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2636,8 +3322,15 @@
       "version": 1,
       "versionNonce": 520010,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
-      "boundElements": [{"id": "llmclient_methods_text", "type": "text"}],
+      "groupIds": [
+        "llmclient_group"
+      ],
+      "boundElements": [
+        {
+          "id": "llmclient_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2645,8 +3338,10 @@
     {
       "type": "text",
       "id": "llmclient_methods_text",
-      "x": 570, "y": 1978,
-      "width": 330, "height": 35,
+      "x": 570,
+      "y": 1978,
+      "width": 330,
+      "height": 35,
       "text": "+ generate(in prompt: String): AgentOutput",
       "originalText": "+ generate(in prompt: String): AgentOutput",
       "fontSize": 14,
@@ -2665,18 +3360,22 @@
       "version": 1,
       "versionNonce": 520012,
       "isDeleted": false,
-      "groupIds": ["llmclient_group"],
+      "groupIds": [
+        "llmclient_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "llmclient_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "runner_name_rect",
-      "x": 560, "y": 1080, "width": 370, "height": 50,
+      "x": 560,
+      "y": 1080,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2689,8 +3388,15 @@
       "version": 1,
       "versionNonce": 530002,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
-      "boundElements": [{"id": "runner_name_text", "type": "text"}],
+      "groupIds": [
+        "runner_group"
+      ],
+      "boundElements": [
+        {
+          "id": "runner_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2698,8 +3404,10 @@
     {
       "type": "text",
       "id": "runner_name_text",
-      "x": 570, "y": 1092,
-      "width": 350, "height": 25,
+      "x": 570,
+      "y": 1092,
+      "width": 350,
+      "height": 25,
       "text": "AgentRunner",
       "originalText": "AgentRunner",
       "fontSize": 20,
@@ -2718,7 +3426,9 @@
       "version": 1,
       "versionNonce": 530004,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
+      "groupIds": [
+        "runner_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2728,7 +3438,10 @@
     {
       "type": "rectangle",
       "id": "runner_attrs_rect",
-      "x": 560, "y": 1130, "width": 370, "height": 50,
+      "x": 560,
+      "y": 1130,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2741,8 +3454,15 @@
       "version": 1,
       "versionNonce": 530006,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
-      "boundElements": [{"id": "runner_attrs_text", "type": "text"}],
+      "groupIds": [
+        "runner_group"
+      ],
+      "boundElements": [
+        {
+          "id": "runner_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2750,8 +3470,10 @@
     {
       "type": "text",
       "id": "runner_attrs_text",
-      "x": 570, "y": 1138,
-      "width": 350, "height": 35,
+      "x": 570,
+      "y": 1138,
+      "width": 350,
+      "height": 35,
       "text": "- agents: Agent[]\n- timeoutMs: number",
       "originalText": "- agents: Agent[]\n- timeoutMs: number",
       "fontSize": 14,
@@ -2770,7 +3492,9 @@
       "version": 1,
       "versionNonce": 530008,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
+      "groupIds": [
+        "runner_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2780,7 +3504,10 @@
     {
       "type": "rectangle",
       "id": "runner_methods_rect",
-      "x": 560, "y": 1180, "width": 370, "height": 50,
+      "x": 560,
+      "y": 1180,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2793,8 +3520,15 @@
       "version": 1,
       "versionNonce": 530010,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
-      "boundElements": [{"id": "runner_methods_text", "type": "text"}],
+      "groupIds": [
+        "runner_group"
+      ],
+      "boundElements": [
+        {
+          "id": "runner_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2802,8 +3536,10 @@
     {
       "type": "text",
       "id": "runner_methods_text",
-      "x": 570, "y": 1188,
-      "width": 350, "height": 35,
+      "x": 570,
+      "y": 1188,
+      "width": 350,
+      "height": 35,
       "text": "+ runAgents(in input: AgentInput):\n    { runId: uuid, outputs: AgentOutput[] }",
       "originalText": "+ runAgents(in input: AgentInput):\n    { runId: uuid, outputs: AgentOutput[] }",
       "fontSize": 14,
@@ -2822,18 +3558,22 @@
       "version": 1,
       "versionNonce": 530012,
       "isDeleted": false,
-      "groupIds": ["runner_group"],
+      "groupIds": [
+        "runner_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "runner_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "authsvc_name_rect",
-      "x": 1400, "y": 600, "width": 340, "height": 50,
+      "x": 1400,
+      "y": 600,
+      "width": 340,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2846,8 +3586,15 @@
       "version": 1,
       "versionNonce": 600002,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
-      "boundElements": [{"id": "authsvc_name_text", "type": "text"}],
+      "groupIds": [
+        "authsvc_group"
+      ],
+      "boundElements": [
+        {
+          "id": "authsvc_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2855,8 +3602,10 @@
     {
       "type": "text",
       "id": "authsvc_name_text",
-      "x": 1410, "y": 612,
-      "width": 320, "height": 25,
+      "x": 1410,
+      "y": 612,
+      "width": 320,
+      "height": 25,
       "text": "AuthService",
       "originalText": "AuthService",
       "fontSize": 20,
@@ -2875,7 +3624,9 @@
       "version": 1,
       "versionNonce": 600004,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
+      "groupIds": [
+        "authsvc_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2885,7 +3636,10 @@
     {
       "type": "rectangle",
       "id": "authsvc_attrs_rect",
-      "x": 1400, "y": 650, "width": 340, "height": 50,
+      "x": 1400,
+      "y": 650,
+      "width": 340,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2898,8 +3652,15 @@
       "version": 1,
       "versionNonce": 600006,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
-      "boundElements": [{"id": "authsvc_attrs_text", "type": "text"}],
+      "groupIds": [
+        "authsvc_group"
+      ],
+      "boundElements": [
+        {
+          "id": "authsvc_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2907,8 +3668,10 @@
     {
       "type": "text",
       "id": "authsvc_attrs_text",
-      "x": 1410, "y": 658,
-      "width": 320, "height": 35,
+      "x": 1410,
+      "y": 658,
+      "width": 320,
+      "height": 35,
       "text": "- cryptoUtil: CryptoUtil",
       "originalText": "- cryptoUtil: CryptoUtil",
       "fontSize": 14,
@@ -2927,7 +3690,9 @@
       "version": 1,
       "versionNonce": 600008,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
+      "groupIds": [
+        "authsvc_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -2937,7 +3702,10 @@
     {
       "type": "rectangle",
       "id": "authsvc_methods_rect",
-      "x": 1400, "y": 700, "width": 340, "height": 150,
+      "x": 1400,
+      "y": 700,
+      "width": 340,
+      "height": 150,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -2950,8 +3718,15 @@
       "version": 1,
       "versionNonce": 600010,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
-      "boundElements": [{"id": "authsvc_methods_text", "type": "text"}],
+      "groupIds": [
+        "authsvc_group"
+      ],
+      "boundElements": [
+        {
+          "id": "authsvc_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -2959,8 +3734,10 @@
     {
       "type": "text",
       "id": "authsvc_methods_text",
-      "x": 1410, "y": 708,
-      "width": 320, "height": 135,
+      "x": 1410,
+      "y": 708,
+      "width": 320,
+      "height": 135,
       "text": "+ register(in email, password): User\n+ login(in email, password): Session\n+ logout(in sessionId: uuid): void\n+ getMe(in sessionId: uuid): User\n+ storeCredentials(in userId,\n    key, secret): void\n+ getCredentialStatus(in userId): Status",
       "originalText": "+ register(in email, password): User\n+ login(in email, password): Session\n+ logout(in sessionId: uuid): void\n+ getMe(in sessionId: uuid): User\n+ storeCredentials(in userId,\n    key, secret): void\n+ getCredentialStatus(in userId): Status",
       "fontSize": 14,
@@ -2979,18 +3756,22 @@
       "version": 1,
       "versionNonce": 600012,
       "isDeleted": false,
-      "groupIds": ["authsvc_group"],
+      "groupIds": [
+        "authsvc_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "authsvc_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "crypto_name_rect",
-      "x": 1800, "y": 600, "width": 370, "height": 50,
+      "x": 1800,
+      "y": 600,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3003,8 +3784,15 @@
       "version": 1,
       "versionNonce": 610002,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
-      "boundElements": [{"id": "crypto_name_text", "type": "text"}],
+      "groupIds": [
+        "crypto_group"
+      ],
+      "boundElements": [
+        {
+          "id": "crypto_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3012,8 +3800,10 @@
     {
       "type": "text",
       "id": "crypto_name_text",
-      "x": 1810, "y": 612,
-      "width": 350, "height": 25,
+      "x": 1810,
+      "y": 612,
+      "width": 350,
+      "height": 25,
       "text": "CryptoUtil",
       "originalText": "CryptoUtil",
       "fontSize": 20,
@@ -3032,7 +3822,9 @@
       "version": 1,
       "versionNonce": 610004,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
+      "groupIds": [
+        "crypto_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3042,7 +3834,10 @@
     {
       "type": "rectangle",
       "id": "crypto_attrs_rect",
-      "x": 1800, "y": 650, "width": 370, "height": 40,
+      "x": 1800,
+      "y": 650,
+      "width": 370,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3055,8 +3850,15 @@
       "version": 1,
       "versionNonce": 610006,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
-      "boundElements": [{"id": "crypto_attrs_text", "type": "text"}],
+      "groupIds": [
+        "crypto_group"
+      ],
+      "boundElements": [
+        {
+          "id": "crypto_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3064,8 +3866,10 @@
     {
       "type": "text",
       "id": "crypto_attrs_text",
-      "x": 1810, "y": 658,
-      "width": 350, "height": 25,
+      "x": 1810,
+      "y": 658,
+      "width": 350,
+      "height": 25,
       "text": "- encKey: Buffer",
       "originalText": "- encKey: Buffer",
       "fontSize": 14,
@@ -3084,7 +3888,9 @@
       "version": 1,
       "versionNonce": 610008,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
+      "groupIds": [
+        "crypto_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3094,7 +3900,10 @@
     {
       "type": "rectangle",
       "id": "crypto_methods_rect",
-      "x": 1800, "y": 690, "width": 370, "height": 75,
+      "x": 1800,
+      "y": 690,
+      "width": 370,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3107,8 +3916,15 @@
       "version": 1,
       "versionNonce": 610010,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
-      "boundElements": [{"id": "crypto_methods_text", "type": "text"}],
+      "groupIds": [
+        "crypto_group"
+      ],
+      "boundElements": [
+        {
+          "id": "crypto_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3116,8 +3932,10 @@
     {
       "type": "text",
       "id": "crypto_methods_text",
-      "x": 1810, "y": 698,
-      "width": 350, "height": 55,
+      "x": 1810,
+      "y": 698,
+      "width": 350,
+      "height": 55,
       "text": "+ encrypt(in plaintext: String): Cipher\n+ decrypt(in cipher: Cipher): String",
       "originalText": "+ encrypt(in plaintext: String): Cipher\n+ decrypt(in cipher: Cipher): String",
       "fontSize": 14,
@@ -3136,18 +3954,22 @@
       "version": 1,
       "versionNonce": 610012,
       "isDeleted": false,
-      "groupIds": ["crypto_group"],
+      "groupIds": [
+        "crypto_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "crypto_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "mktdata_name_rect",
-      "x": 960, "y": 1080, "width": 370, "height": 50,
+      "x": 960,
+      "y": 1080,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3160,8 +3982,15 @@
       "version": 1,
       "versionNonce": 700002,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
-      "boundElements": [{"id": "mktdata_name_text", "type": "text"}],
+      "groupIds": [
+        "mktdata_group"
+      ],
+      "boundElements": [
+        {
+          "id": "mktdata_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3169,8 +3998,10 @@
     {
       "type": "text",
       "id": "mktdata_name_text",
-      "x": 970, "y": 1092,
-      "width": 350, "height": 25,
+      "x": 970,
+      "y": 1092,
+      "width": 350,
+      "height": 25,
       "text": "MarketDataService",
       "originalText": "MarketDataService",
       "fontSize": 20,
@@ -3189,7 +4020,9 @@
       "version": 1,
       "versionNonce": 700004,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
+      "groupIds": [
+        "mktdata_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3199,7 +4032,10 @@
     {
       "type": "rectangle",
       "id": "mktdata_attrs_rect",
-      "x": 960, "y": 1130, "width": 370, "height": 40,
+      "x": 960,
+      "y": 1130,
+      "width": 370,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3212,8 +4048,15 @@
       "version": 1,
       "versionNonce": 700006,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
-      "boundElements": [{"id": "mktdata_attrs_text", "type": "text"}],
+      "groupIds": [
+        "mktdata_group"
+      ],
+      "boundElements": [
+        {
+          "id": "mktdata_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3221,8 +4064,10 @@
     {
       "type": "text",
       "id": "mktdata_attrs_text",
-      "x": 970, "y": 1138,
-      "width": 350, "height": 25,
+      "x": 970,
+      "y": 1138,
+      "width": 350,
+      "height": 25,
       "text": "- alpacaClient: AlpacaClient",
       "originalText": "- alpacaClient: AlpacaClient",
       "fontSize": 14,
@@ -3241,7 +4086,9 @@
       "version": 1,
       "versionNonce": 700008,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
+      "groupIds": [
+        "mktdata_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3251,7 +4098,10 @@
     {
       "type": "rectangle",
       "id": "mktdata_methods_rect",
-      "x": 960, "y": 1170, "width": 370, "height": 75,
+      "x": 960,
+      "y": 1170,
+      "width": 370,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3264,8 +4114,15 @@
       "version": 1,
       "versionNonce": 700010,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
-      "boundElements": [{"id": "mktdata_methods_text", "type": "text"}],
+      "groupIds": [
+        "mktdata_group"
+      ],
+      "boundElements": [
+        {
+          "id": "mktdata_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3273,8 +4130,10 @@
     {
       "type": "text",
       "id": "mktdata_methods_text",
-      "x": 970, "y": 1178,
-      "width": 350, "height": 55,
+      "x": 970,
+      "y": 1178,
+      "width": 350,
+      "height": 55,
       "text": "+ fetchBars(in symbol, timeframe,\n    from, to): PriceBar[]\n+ ingest(in symbols, range): Result",
       "originalText": "+ fetchBars(in symbol, timeframe,\n    from, to): PriceBar[]\n+ ingest(in symbols, range): Result",
       "fontSize": 14,
@@ -3293,18 +4152,22 @@
       "version": 1,
       "versionNonce": 700012,
       "isDeleted": false,
-      "groupIds": ["mktdata_group"],
+      "groupIds": [
+        "mktdata_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "mktdata_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "indengine_name_rect",
-      "x": 960, "y": 1340, "width": 370, "height": 50,
+      "x": 960,
+      "y": 1340,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3317,8 +4180,15 @@
       "version": 1,
       "versionNonce": 710002,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
-      "boundElements": [{"id": "indengine_name_text", "type": "text"}],
+      "groupIds": [
+        "indengine_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indengine_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3326,8 +4196,10 @@
     {
       "type": "text",
       "id": "indengine_name_text",
-      "x": 970, "y": 1352,
-      "width": 350, "height": 25,
+      "x": 970,
+      "y": 1352,
+      "width": 350,
+      "height": 25,
       "text": "IndicatorEngine",
       "originalText": "IndicatorEngine",
       "fontSize": 20,
@@ -3346,7 +4218,9 @@
       "version": 1,
       "versionNonce": 710004,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
+      "groupIds": [
+        "indengine_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3356,7 +4230,10 @@
     {
       "type": "rectangle",
       "id": "indengine_attrs_rect",
-      "x": 960, "y": 1390, "width": 370, "height": 40,
+      "x": 960,
+      "y": 1390,
+      "width": 370,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3369,8 +4246,15 @@
       "version": 1,
       "versionNonce": 710006,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
-      "boundElements": [{"id": "indengine_attrs_text", "type": "text"}],
+      "groupIds": [
+        "indengine_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indengine_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3378,8 +4262,10 @@
     {
       "type": "text",
       "id": "indengine_attrs_text",
-      "x": 970, "y": 1398,
-      "width": 350, "height": 18,
+      "x": 970,
+      "y": 1398,
+      "width": 350,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -3398,7 +4284,9 @@
       "version": 1,
       "versionNonce": 710008,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
+      "groupIds": [
+        "indengine_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3408,7 +4296,10 @@
     {
       "type": "rectangle",
       "id": "indengine_methods_rect",
-      "x": 960, "y": 1430, "width": 370, "height": 75,
+      "x": 960,
+      "y": 1430,
+      "width": 370,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3421,8 +4312,15 @@
       "version": 1,
       "versionNonce": 710010,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
-      "boundElements": [{"id": "indengine_methods_text", "type": "text"}],
+      "groupIds": [
+        "indengine_group"
+      ],
+      "boundElements": [
+        {
+          "id": "indengine_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3430,8 +4328,10 @@
     {
       "type": "text",
       "id": "indengine_methods_text",
-      "x": 970, "y": 1438,
-      "width": 350, "height": 55,
+      "x": 970,
+      "y": 1438,
+      "width": 350,
+      "height": 55,
       "text": "+ compute(in symbol, timeframe,\n    from, to): IndicatorSnapshot[]",
       "originalText": "+ compute(in symbol, timeframe,\n    from, to): IndicatorSnapshot[]",
       "fontSize": 14,
@@ -3450,18 +4350,22 @@
       "version": 1,
       "versionNonce": 710012,
       "isDeleted": false,
-      "groupIds": ["indengine_group"],
+      "groupIds": [
+        "indengine_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "indengine_methods_rect",
       "lineHeight": 1.25
     },
-
     {
       "type": "rectangle",
       "id": "backtest_name_rect",
-      "x": 960, "y": 1600, "width": 370, "height": 50,
+      "x": 960,
+      "y": 1600,
+      "width": 370,
+      "height": 50,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3474,8 +4378,15 @@
       "version": 1,
       "versionNonce": 720002,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
-      "boundElements": [{"id": "backtest_name_text", "type": "text"}],
+      "groupIds": [
+        "backtest_group"
+      ],
+      "boundElements": [
+        {
+          "id": "backtest_name_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3483,8 +4394,10 @@
     {
       "type": "text",
       "id": "backtest_name_text",
-      "x": 970, "y": 1612,
-      "width": 350, "height": 25,
+      "x": 970,
+      "y": 1612,
+      "width": 350,
+      "height": 25,
       "text": "BacktestHarness",
       "originalText": "BacktestHarness",
       "fontSize": 20,
@@ -3503,7 +4416,9 @@
       "version": 1,
       "versionNonce": 720004,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
+      "groupIds": [
+        "backtest_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3513,7 +4428,10 @@
     {
       "type": "rectangle",
       "id": "backtest_attrs_rect",
-      "x": 960, "y": 1650, "width": 370, "height": 40,
+      "x": 960,
+      "y": 1650,
+      "width": 370,
+      "height": 40,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3526,8 +4444,15 @@
       "version": 1,
       "versionNonce": 720006,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
-      "boundElements": [{"id": "backtest_attrs_text", "type": "text"}],
+      "groupIds": [
+        "backtest_group"
+      ],
+      "boundElements": [
+        {
+          "id": "backtest_attrs_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3535,8 +4460,10 @@
     {
       "type": "text",
       "id": "backtest_attrs_text",
-      "x": 970, "y": 1658,
-      "width": 350, "height": 18,
+      "x": 970,
+      "y": 1658,
+      "width": 350,
+      "height": 18,
       "text": "",
       "originalText": "",
       "fontSize": 14,
@@ -3555,7 +4482,9 @@
       "version": 1,
       "versionNonce": 720008,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
+      "groupIds": [
+        "backtest_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
@@ -3565,7 +4494,10 @@
     {
       "type": "rectangle",
       "id": "backtest_methods_rect",
-      "x": 960, "y": 1690, "width": 370, "height": 75,
+      "x": 960,
+      "y": 1690,
+      "width": 370,
+      "height": 75,
       "strokeColor": "#1e40af",
       "backgroundColor": "#dbeafe",
       "fillStyle": "solid",
@@ -3578,8 +4510,15 @@
       "version": 1,
       "versionNonce": 720010,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
-      "boundElements": [{"id": "backtest_methods_text", "type": "text"}],
+      "groupIds": [
+        "backtest_group"
+      ],
+      "boundElements": [
+        {
+          "id": "backtest_methods_text",
+          "type": "text"
+        }
+      ],
       "link": null,
       "locked": false,
       "roundness": null
@@ -3587,8 +4526,10 @@
     {
       "type": "text",
       "id": "backtest_methods_text",
-      "x": 970, "y": 1698,
-      "width": 350, "height": 55,
+      "x": 970,
+      "y": 1698,
+      "width": 350,
+      "height": 55,
       "text": "+ runBacktest(in strategy, bars,\n    cash): BacktestResult",
       "originalText": "+ runBacktest(in strategy, bars,\n    cash): BacktestResult",
       "fontSize": 14,
@@ -3607,19 +4548,22 @@
       "version": 1,
       "versionNonce": 720012,
       "isDeleted": false,
-      "groupIds": ["backtest_group"],
+      "groupIds": [
+        "backtest_group"
+      ],
       "boundElements": null,
       "link": null,
       "locked": false,
       "containerId": "backtest_methods_rect",
       "lineHeight": 1.25
     },
-
-
     {
       "type": "arrow",
       "id": "realization_baseagent_agent",
-      "x": 275, "y": 1340, "width": 0, "height": 110,
+      "x": 275,
+      "y": 1340,
+      "width": 0,
+      "height": 110,
       "strokeColor": "#047857",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3636,17 +4580,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -110]],
-      "startBinding": {"elementId": "baseagent_name_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "agent_iface_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -110
+        ]
+      ],
+      "startBinding": {
+        "elementId": "baseagent_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agent_iface_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "triangle"
     },
-
     {
       "type": "arrow",
       "id": "inherit_techagent_baseagent",
-      "x": 275, "y": 1650, "width": 0, "height": 115,
+      "x": 275,
+      "y": 1650,
+      "width": 0,
+      "height": 115,
       "strokeColor": "#1e40af",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3663,17 +4626,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -115]],
-      "startBinding": {"elementId": "techagent_name_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "baseagent_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -115
+        ]
+      ],
+      "startBinding": {
+        "elementId": "techagent_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "baseagent_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "triangle"
     },
-
     {
       "type": "arrow",
       "id": "dep_techagent_classifier",
-      "x": 450, "y": 1730, "width": 110, "height": 0,
+      "x": 450,
+      "y": 1730,
+      "width": 110,
+      "height": 0,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3690,17 +4672,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [110, 0]],
-      "startBinding": {"elementId": "techagent_attrs_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "techclass_attrs_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          110,
+          0
+        ]
+      ],
+      "startBinding": {
+        "elementId": "techagent_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "techclass_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_techagent_llm",
-      "x": 450, "y": 1790, "width": 110, "height": 165,
+      "x": 450,
+      "y": 1790,
+      "width": 110,
+      "height": 165,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3717,17 +4718,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [110, 165]],
-      "startBinding": {"elementId": "techagent_methods_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "llmclient_attrs_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          110,
+          165
+        ]
+      ],
+      "startBinding": {
+        "elementId": "techagent_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "llmclient_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dirassoc_runner_agent",
-      "x": 560, "y": 1140, "width": 110, "height": 5,
+      "x": 560,
+      "y": 1140,
+      "width": 110,
+      "height": 5,
       "strokeColor": "#374151",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3744,18 +4764,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-110, 5]],
-      "startBinding": {"elementId": "runner_attrs_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "agent_iface_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -110,
+          5
+        ]
+      ],
+      "startBinding": {
+        "elementId": "runner_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agent_iface_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "text",
       "id": "mult_runner_agent_star",
-      "x": 465, "y": 1122,
-      "width": 20, "height": 18,
+      "x": 465,
+      "y": 1122,
+      "width": 20,
+      "height": 18,
       "text": "*",
       "originalText": "*",
       "fontSize": 12,
@@ -3781,11 +4819,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "dep_runner_agentrun",
-      "x": 930, "y": 1130, "width": 30, "height": 510,
+      "x": 930,
+      "y": 1130,
+      "width": 30,
+      "height": 510,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3802,17 +4842,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [30, -510]],
-      "startBinding": {"elementId": "runner_methods_rect", "focus": -0.8, "gap": 2},
-      "endBinding": {"elementId": "agentrun_attrs_rect", "focus": 0.8, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          30,
+          -510
+        ]
+      ],
+      "startBinding": {
+        "elementId": "runner_methods_rect",
+        "focus": -0.8,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agentrun_attrs_rect",
+        "focus": 0.8,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_runner_agentoutput",
-      "x": 860, "y": 1210, "width": 0, "height": 280,
+      "x": 860,
+      "y": 1210,
+      "width": 0,
+      "height": 280,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3829,17 +4888,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -280]],
-      "startBinding": {"elementId": "runner_methods_rect", "focus": 0.5, "gap": 2},
-      "endBinding": {"elementId": "agentoutput_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -280
+        ]
+      ],
+      "startBinding": {
+        "elementId": "runner_methods_rect",
+        "focus": 0.5,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agentoutput_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "comp_agentinput_pricebar",
-      "x": 265, "y": 720, "width": 0, "height": 105,
+      "x": 265,
+      "y": 720,
+      "width": 0,
+      "height": 105,
       "strokeColor": "#b45309",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3856,17 +4934,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -105]],
-      "startBinding": {"elementId": "agentinput_name_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "pricebar_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -105
+        ]
+      ],
+      "startBinding": {
+        "elementId": "agentinput_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "pricebar_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": "diamond",
       "endArrowhead": null
     },
     {
       "type": "text",
       "id": "mult_input_bars",
-      "x": 275, "y": 635,
-      "width": 20, "height": 18,
+      "x": 275,
+      "y": 635,
+      "width": 20,
+      "height": 18,
       "text": "*",
       "originalText": "*",
       "fontSize": 12,
@@ -3892,11 +4989,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "assoc_agentinput_indicator",
-      "x": 430, "y": 780, "width": 210, "height": 150,
+      "x": 430,
+      "y": 780,
+      "width": 210,
+      "height": 150,
       "strokeColor": "#374151",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3913,17 +5012,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [210, -150]],
-      "startBinding": {"elementId": "agentinput_attrs_rect", "focus": -0.8, "gap": 2},
-      "endBinding": {"elementId": "indicator_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          210,
+          -150
+        ]
+      ],
+      "startBinding": {
+        "elementId": "agentinput_attrs_rect",
+        "focus": -0.8,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "indicator_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
     {
       "type": "text",
       "id": "mult_input_ind",
-      "x": 590, "y": 660,
-      "width": 30, "height": 18,
+      "x": 590,
+      "y": 660,
+      "width": 30,
+      "height": 18,
       "text": "0..1",
       "originalText": "0..1",
       "fontSize": 12,
@@ -3949,11 +5067,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "comp_agentrun_agentoutput",
-      "x": 1135, "y": 840, "width": 0, "height": 120,
+      "x": 1135,
+      "y": 840,
+      "width": 0,
+      "height": 120,
       "strokeColor": "#b45309",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3970,17 +5090,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-340, -60]],
-      "startBinding": {"elementId": "agentrun_methods_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "agentoutput_attrs_rect", "focus": 0.8, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -340,
+          -60
+        ]
+      ],
+      "startBinding": {
+        "elementId": "agentrun_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agentoutput_attrs_rect",
+        "focus": 0.8,
+        "gap": 2
+      },
       "startArrowhead": "diamond",
       "endArrowhead": null
     },
-
     {
       "type": "arrow",
       "id": "comp_user_session",
-      "x": 1520, "y": 240, "width": 0, "height": 100,
+      "x": 1520,
+      "y": 240,
+      "width": 0,
+      "height": 100,
       "strokeColor": "#b45309",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -3997,17 +5136,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, 100]],
-      "startBinding": {"elementId": "user_methods_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "session_name_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "startBinding": {
+        "elementId": "user_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "session_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": "diamond",
       "endArrowhead": null
     },
     {
       "type": "text",
       "id": "mult_user_session",
-      "x": 1530, "y": 270,
-      "width": 20, "height": 18,
+      "x": 1530,
+      "y": 270,
+      "width": 20,
+      "height": 18,
       "text": "*",
       "originalText": "*",
       "fontSize": 12,
@@ -4033,11 +5191,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "comp_user_creds",
-      "x": 1640, "y": 130, "width": 110, "height": 0,
+      "x": 1640,
+      "y": 130,
+      "width": 110,
+      "height": 0,
       "strokeColor": "#b45309",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4054,17 +5214,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [110, 0]],
-      "startBinding": {"elementId": "user_attrs_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "alpacacreds_attrs_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          110,
+          0
+        ]
+      ],
+      "startBinding": {
+        "elementId": "user_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "alpacacreds_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": "diamond",
       "endArrowhead": null
     },
     {
       "type": "text",
       "id": "mult_user_creds",
-      "x": 1700, "y": 112,
-      "width": 30, "height": 18,
+      "x": 1700,
+      "y": 112,
+      "width": 30,
+      "height": 18,
       "text": "0..1",
       "originalText": "0..1",
       "fontSize": 12,
@@ -4090,11 +5269,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "comp_user_watchlist",
-      "x": 1640, "y": 170, "width": 250, "height": 220,
+      "x": 1640,
+      "y": 170,
+      "width": 250,
+      "height": 220,
       "strokeColor": "#b45309",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4111,17 +5292,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [250, 220]],
-      "startBinding": {"elementId": "user_attrs_rect", "focus": 0.5, "gap": 2},
-      "endBinding": {"elementId": "watchlist_attrs_rect", "focus": -0.5, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          250,
+          220
+        ]
+      ],
+      "startBinding": {
+        "elementId": "user_attrs_rect",
+        "focus": 0.5,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "watchlist_attrs_rect",
+        "focus": -0.5,
+        "gap": 2
+      },
       "startArrowhead": "diamond",
       "endArrowhead": null
     },
     {
       "type": "text",
       "id": "mult_user_watchlist",
-      "x": 1820, "y": 370,
-      "width": 20, "height": 18,
+      "x": 1820,
+      "y": 370,
+      "width": 20,
+      "height": 18,
       "text": "*",
       "originalText": "*",
       "fontSize": 12,
@@ -4147,11 +5347,13 @@
       "containerId": null,
       "lineHeight": 1.25
     },
-
     {
       "type": "arrow",
       "id": "dep_authsvc_user",
-      "x": 1520, "y": 600, "width": 0, "height": 360,
+      "x": 1520,
+      "y": 600,
+      "width": 0,
+      "height": 360,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4168,17 +5370,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -360]],
-      "startBinding": {"elementId": "authsvc_name_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "user_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -360
+        ]
+      ],
+      "startBinding": {
+        "elementId": "authsvc_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "user_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_authsvc_session",
-      "x": 1440, "y": 600, "width": 0, "height": 70,
+      "x": 1440,
+      "y": 600,
+      "width": 0,
+      "height": 70,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4195,17 +5416,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, -70]],
-      "startBinding": {"elementId": "authsvc_name_rect", "focus": -0.5, "gap": 2},
-      "endBinding": {"elementId": "session_methods_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -70
+        ]
+      ],
+      "startBinding": {
+        "elementId": "authsvc_name_rect",
+        "focus": -0.5,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "session_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_authsvc_crypto",
-      "x": 1740, "y": 700, "width": 60, "height": 0,
+      "x": 1740,
+      "y": 700,
+      "width": 60,
+      "height": 0,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4222,17 +5462,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [60, 0]],
-      "startBinding": {"elementId": "authsvc_methods_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "crypto_attrs_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "startBinding": {
+        "elementId": "authsvc_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "crypto_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_mktdata_pricebar",
-      "x": 1020, "y": 1080, "width": 0, "height": 240,
+      "x": 1020,
+      "y": 1080,
+      "width": 0,
+      "height": 240,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4249,17 +5508,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-780, -465]],
-      "startBinding": {"elementId": "mktdata_name_rect", "focus": -0.5, "gap": 2},
-      "endBinding": {"elementId": "pricebar_methods_rect", "focus": 0.5, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -780,
+          -465
+        ]
+      ],
+      "startBinding": {
+        "elementId": "mktdata_name_rect",
+        "focus": -0.5,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "pricebar_methods_rect",
+        "focus": 0.5,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_indengine_pricebar",
-      "x": 960, "y": 1400, "width": 530, "height": 780,
+      "x": 960,
+      "y": 1400,
+      "width": 530,
+      "height": 780,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4276,17 +5554,36 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-530, -780]],
-      "startBinding": {"elementId": "indengine_attrs_rect", "focus": -0.8, "gap": 2},
-      "endBinding": {"elementId": "pricebar_methods_rect", "focus": -0.5, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -530,
+          -780
+        ]
+      ],
+      "startBinding": {
+        "elementId": "indengine_attrs_rect",
+        "focus": -0.8,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "pricebar_methods_rect",
+        "focus": -0.5,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "type": "arrow",
       "id": "dep_indengine_indicator",
-      "x": 1050, "y": 1340, "width": 0, "height": 675,
+      "x": 1050,
+      "y": 1340,
+      "width": 0,
+      "height": 675,
       "strokeColor": "#6b7280",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
@@ -4303,9 +5600,164 @@
       "boundElements": null,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-415, -675]],
-      "startBinding": {"elementId": "indengine_name_rect", "focus": -0.5, "gap": 2},
-      "endBinding": {"elementId": "indicator_methods_rect", "focus": 0.5, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -415,
+          -675
+        ]
+      ],
+      "startBinding": {
+        "elementId": "indengine_name_rect",
+        "focus": -0.5,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "indicator_methods_rect",
+        "focus": 0.5,
+        "gap": 2
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow",
+      "id": "dep_backtest_indengine",
+      "x": 1100,
+      "y": 1600,
+      "width": 0,
+      "height": 125,
+      "strokeColor": "#2563eb",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 0,
+      "opacity": 100,
+      "angle": 0,
+      "seed": 990001,
+      "version": 1,
+      "versionNonce": 990002,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -125
+        ]
+      ],
+      "startBinding": {
+        "elementId": "backtest_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "indengine_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow",
+      "id": "dep_backtest_pricebar",
+      "x": 960,
+      "y": 1650,
+      "width": 570,
+      "height": 1100,
+      "strokeColor": "#2563eb",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 0,
+      "opacity": 100,
+      "angle": 0,
+      "seed": 990003,
+      "version": 1,
+      "versionNonce": 990004,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -570,
+          -1100
+        ]
+      ],
+      "startBinding": {
+        "elementId": "backtest_attrs_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "pricebar_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow",
+      "id": "dep_portfoliostate_agentrun",
+      "x": 1050,
+      "y": 470,
+      "width": 0,
+      "height": 130,
+      "strokeColor": "#2563eb",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 0,
+      "opacity": 100,
+      "angle": 0,
+      "seed": 990005,
+      "version": 1,
+      "versionNonce": 990006,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          130
+        ]
+      ],
+      "startBinding": {
+        "elementId": "portfolio_methods_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "agentrun_name_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     }
