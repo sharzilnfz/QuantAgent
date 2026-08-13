@@ -227,67 +227,15 @@ export interface IngestOptions extends FetchBarsOptions {
 }
 
 /**
- * Fetch + upsert for a list of symbols. Partial failure is a first-class
- * outcome: one bad symbol reports its error and the rest still land.
+ * Fetch + upsert for a list of symbols. Delegated to MarketDataIngestor.
  */
 export async function ingestPrices(
   request: IngestRequest,
   options: IngestOptions = {},
 ): Promise<IngestResult> {
-  const parsed = IngestRequest.parse(request);
-  const from = new Date(parsed.from);
-  const to = new Date(parsed.to);
-  if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) {
-    throw new Error(`ingestPrices: unparseable date range ${parsed.from}..${parsed.to}`);
-  }
-  if (from.getTime() > to.getTime()) {
-    throw new Error(`ingestPrices: 'from' (${parsed.from}) is after 'to' (${parsed.to})`);
-  }
-
-  const store = options.store ?? (await createDrizzleStore());
-  const source = options.source ?? SOURCE;
-
-  const results: PerSymbolResult[] = [];
-  for (const symbol of parsed.symbols) {
-    try {
-      const { bars, dropped } = await fetchBarsDetailed(
-        symbol,
-        parsed.timeframe,
-        from,
-        to,
-        options,
-      );
-      const report = await upsertBars(bars, store, source);
-      results.push({
-        symbol,
-        fetched: bars.length,
-        inserted: report.inserted,
-        skipped: report.skipped,
-        dropped,
-      });
-    } catch (error) {
-      results.push({
-        symbol,
-        fetched: 0,
-        inserted: 0,
-        skipped: 0,
-        dropped: 0,
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
-
-  const succeeded = results.filter((r) => !r.error);
-  return {
-    timeframe: parsed.timeframe,
-    from: from.toISOString(),
-    to: to.toISOString(),
-    inserted: succeeded.reduce((a, r) => a + r.inserted, 0),
-    skipped: succeeded.reduce((a, r) => a + r.skipped, 0),
-    dropped: succeeded.reduce((a, r) => a + r.dropped, 0),
-    symbols: results,
-    partial: succeeded.length > 0 && succeeded.length < results.length,
-  };
+  const { MarketDataIngestor } = await import("./market-data-ingestor.js");
+  return MarketDataIngestor.ingest(request, options);
 }
 
 export { computeAsOf, sessionCloseUtc };
+

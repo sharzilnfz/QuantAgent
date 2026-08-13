@@ -6,8 +6,9 @@ import {
   chunkRange,
   isRetryableStatus,
   parseRetryAfter,
+  ResilientHttpClient,
 } from "../src/ingest/alpaca-client.js";
-import { ingestPrices } from "../src/ingest/prices.js";
+import { MarketDataIngestor } from "../src/ingest/market-data-ingestor.js";
 import { InMemoryPriceBarStore } from "../src/ingest/store.js";
 
 import dayFixture from "./fixtures/ingest-alpaca-1day.json" with { type: "json" };
@@ -41,12 +42,35 @@ describe("rate limiting & backoff", () => {
     expect(parseRetryAfter("garbage")).toBeNull();
   });
 
-  it("429 then 200 succeeds via the backoff path, without duplicating", async () => {
+  it("ResilientHttpClient retries 429 and returns response", async () => {
+    const slept: number[] = [];
+    let attempts = 0;
+    const client = new ResilientHttpClient({
+      baseDelayMs: 10,
+      random: () => 0,
+      sleep: async (ms) => {
+        slept.push(ms);
+      },
+      fetchImpl: async () => {
+        attempts += 1;
+        return attempts === 1
+          ? jsonResponse(429, { message: "rate limit" }, { "retry-after": "2" })
+          : jsonResponse(200, dayFixture);
+      },
+    });
+
+    const data = await client.getJson("https://data.example.test", {});
+    expect(attempts).toBe(2);
+    expect(slept).toEqual([2000]);
+    expect(data).toEqual(dayFixture);
+  });
+
+  it("429 then 200 succeeds via MarketDataIngestor backoff path, without duplicating", async () => {
     const store = new InMemoryPriceBarStore();
     const slept: number[] = [];
     let attempts = 0;
 
-    const result = await ingestPrices(
+    const result = await MarketDataIngestor.ingest(
       {
         symbols: ["AAPL"],
         from: "2024-03-01T00:00:00.000Z",
