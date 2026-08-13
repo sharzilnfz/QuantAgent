@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { AlpacaRawBar } from "../src/ingest/alpaca-client.js";
+import { MarketDataIngestor } from "../src/ingest/market-data-ingestor.js";
 import { ingestPrices, normalizeBars, upsertBars } from "../src/ingest/prices.js";
 import { InMemoryPriceBarStore } from "../src/ingest/store.js";
 
@@ -53,8 +54,8 @@ describe("upsertBars — idempotency", () => {
   });
 });
 
-describe("ingestPrices — end to end against an in-memory store", () => {
-  it("reports inserted/skipped across two identical runs", async () => {
+describe("MarketDataIngestor — end to end against an in-memory store", () => {
+  it("reports inserted/skipped across two identical runs via MarketDataIngestor", async () => {
     const store = new InMemoryPriceBarStore();
     const options = {
       store,
@@ -71,13 +72,14 @@ describe("ingestPrices — end to end against an in-memory store", () => {
       timeframe: "1Day" as const,
     };
 
-    const run1 = await ingestPrices(request, options);
+    const ingestor = new MarketDataIngestor(options);
+    const run1 = await ingestor.ingest(request);
     expect(run1.inserted).toBe(12);
     expect(run1.skipped).toBe(0);
     expect(run1.partial).toBe(false);
     expect(store.rows.size).toBe(12);
 
-    const run2 = await ingestPrices(request, options);
+    const run2 = await MarketDataIngestor.ingest(request, options);
     expect(run2.inserted).toBe(0);
     expect(run2.skipped).toBe(12);
     expect(store.rows.size).toBe(12);
@@ -85,7 +87,7 @@ describe("ingestPrices — end to end against an in-memory store", () => {
 
   it("isolates a failing symbol and still ingests the rest (partial failure)", async () => {
     const store = new InMemoryPriceBarStore();
-    const result = await ingestPrices(
+    const result = await MarketDataIngestor.ingest(
       {
         symbols: ["AAPL", "BOOM"],
         from: "2024-03-01T00:00:00.000Z",
@@ -115,7 +117,7 @@ describe("ingestPrices — end to end against an in-memory store", () => {
 
   it("rejects an inverted date range", async () => {
     await expect(
-      ingestPrices(
+      MarketDataIngestor.ingest(
         {
           symbols: ["AAPL"],
           from: "2024-03-15T00:00:00.000Z",
@@ -126,4 +128,27 @@ describe("ingestPrices — end to end against an in-memory store", () => {
       ),
     ).rejects.toThrow(/is after/);
   });
+
+  it("delegated ingestPrices wrapper delegates to MarketDataIngestor", async () => {
+    const store = new InMemoryPriceBarStore();
+    const result = await ingestPrices(
+      {
+        symbols: ["AAPL"],
+        from: "2024-03-01T00:00:00.000Z",
+        to: "2024-03-15T00:00:00.000Z",
+        timeframe: "1Day",
+      },
+      {
+        store,
+        now: NOW,
+        apiKey: "k",
+        apiSecret: "s",
+        baseUrl: "https://data.example.test",
+        fetchImpl: async () => jsonResponse(200, dayFixture),
+      },
+    );
+    expect(result.inserted).toBe(6);
+    expect(store.rows.size).toBe(6);
+  });
 });
+

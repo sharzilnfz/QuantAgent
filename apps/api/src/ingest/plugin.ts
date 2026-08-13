@@ -1,15 +1,15 @@
 import type { FastifyInstance } from "fastify";
 
 import { requireAuth } from "../auth/require-auth.js";
-import { IngestRequest, ingestPrices } from "./prices.js";
+import { MarketDataIngestor } from "./market-data-ingestor.js";
+import { IngestRequest } from "./prices.js";
 
 /**
  * OWNER: M2 (spec 04) — Market Data Ingestion.
  * Registers: POST /ingest/prices (auth required).
  *
- * Thin transport shell only. All ingestion logic lives in `./prices.ts` so it
- * is unit-testable without Fastify, and all point-in-time semantics live in
- * `./as-of.ts`.
+ * Thin transport shell only. Ingestion logic is delegated to `MarketDataIngestor`,
+ * and point-in-time semantics live in `./as-of.ts`.
  */
 export async function ingestPlugin(app: FastifyInstance): Promise<void> {
   app.post("/ingest/prices", { preHandler: requireAuth }, async (request, reply) => {
@@ -22,7 +22,7 @@ export async function ingestPlugin(app: FastifyInstance): Promise<void> {
     }
 
     try {
-      const result = await ingestPrices(parsed.data);
+      const result = await MarketDataIngestor.ingest(parsed.data);
       // Partial failure is reported, not thrown: the caller sees exactly what
       // was ingested and which symbols failed.
       return reply.code(200).send(result);
@@ -35,3 +35,4 @@ export async function ingestPlugin(app: FastifyInstance): Promise<void> {
     }
   });
 }
+
