@@ -9,8 +9,7 @@ import {
 } from "./base.js";
 import {
   resolveDefaultPersistence,
-  runRecordFromInput,
-  type AgentRunPersistence,
+  type AgentRunStore,
 } from "./persistence.js";
 
 /**
@@ -36,7 +35,7 @@ export interface RunAgentsOptions {
    * `undefined` -> use the default (Postgres when `DATABASE_URL` is set, else skip).
    * `null`      -> explicitly skip all writes (unit tests, dry runs).
    */
-  persistence?: AgentRunPersistence | null;
+  persistence?: AgentRunStore | null;
   logger?: StructuredLogger;
   /** Supply a run id (replay / test determinism). Defaults to a fresh uuid. */
   runId?: string;
@@ -59,7 +58,6 @@ export async function runAgents(
     opts.persistence === undefined ? resolveDefaultPersistence() : opts.persistence;
 
   const startedAt = Date.now();
-  let persistenceHealthy = true;
 
   log({
     event: "agent_run.start",
@@ -69,21 +67,6 @@ export async function runAgents(
     agentCount: agents.length,
     persisted: persistence !== null,
   });
-
-  if (persistence) {
-    try {
-      await persistence.createRun(runRecordFromInput(runId, input));
-    } catch (err) {
-      // A dead DB must not take the run down — degrade to in-memory.
-      persistenceHealthy = false;
-      log({
-        event: "agent_run.persist_failed",
-        runId,
-        outcome: "error",
-        detail: describe(err),
-      });
-    }
-  }
 
   const fullInput: AgentInput = { ...input, runId };
 
@@ -123,24 +106,14 @@ export async function runAgents(
     return validated.data;
   });
 
-  if (persistence && persistenceHealthy) {
-    const writes = await Promise.allSettled(
-      outputs.map((output) => persistence.saveOutput(runId, output)),
-    );
-    for (const write of writes) {
-      if (write.status === "rejected") {
-        persistenceHealthy = false;
-        log({
-          event: "agent_run.persist_failed",
-          runId,
-          outcome: "error",
-          detail: describe(write.reason),
-        });
-      }
-    }
-
+  if (persistence) {
     try {
-      await persistence.finishRun(runId, persistenceHealthy ? "completed" : "failed");
+      await persistence.recordRun({
+        runId,
+        input,
+        outputs,
+        status: "completed",
+      });
     } catch (err) {
       log({
         event: "agent_run.persist_failed",

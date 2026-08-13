@@ -30,9 +30,7 @@ export {
 export {
   createDbPersistence,
   resolveDefaultPersistence,
-  runRecordFromInput,
-  type AgentRunPersistence,
-  type AgentRunRecord,
+  type AgentRunStore,
   type AgentRunStatus,
 } from "./persistence.js";
 

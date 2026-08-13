@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { AgentOutput, type AgentName } from "@committee/contracts";
+import { AgentOutput, type AgentInput, type AgentName } from "@committee/contracts";
 
 import { NO_OPINION, type Agent, type AgentLogRecord } from "../src/agents/base.js";
-import type { AgentRunPersistence, AgentRunRecord } from "../src/agents/persistence.js";
+import type { AgentRunStore, AgentRunStatus } from "../src/agents/persistence.js";
 import { runAgents } from "../src/agents/runner.js";
 import {
   HealthyAgent,
@@ -20,23 +20,20 @@ import {
  */
 
 function recordingPersistence() {
-  const runs: AgentRunRecord[] = [];
-  const outputs: Array<{ runId: string; output: AgentOutput }> = [];
-  const finished: Array<{ runId: string; status: string }> = [];
+  const records: Array<{
+    runId: string;
+    input: Omit<AgentInput, "runId">;
+    outputs: AgentOutput[];
+    status: AgentRunStatus;
+  }> = [];
 
-  const persistence: AgentRunPersistence = {
-    async createRun(record) {
-      runs.push(record);
-    },
-    async saveOutput(runId, output) {
-      outputs.push({ runId, output });
-    },
-    async finishRun(runId, status) {
-      finished.push({ runId, status });
+  const persistence: AgentRunStore = {
+    async recordRun(run) {
+      records.push(run);
     },
   };
 
-  return { persistence, runs, outputs, finished };
+  return { persistence, records };
 }
 
 describe("runAgents — resilience (PRD Testing Decisions)", () => {
@@ -167,8 +164,8 @@ describe("runAgents — parallelism", () => {
 });
 
 describe("runAgents — persistence seam", () => {
-  it("writes one run row + one output row per agent, then closes the lifecycle", async () => {
-    const { persistence, runs, outputs, finished } = recordingPersistence();
+  it("records the run and outputs atomically in one step", async () => {
+    const { persistence, records } = recordingPersistence();
 
     const result = await runAgents(
       makeInput(),
@@ -176,28 +173,18 @@ describe("runAgents — persistence seam", () => {
       { persistence, logger: silentLogger },
     );
 
-    expect(runs).toEqual([
-      {
-        runId: result.runId,
-        symbol: "AAPL",
-        timeframe: "1Day",
-        decisionTs: makeInput().decisionTs,
-      },
-    ]);
-    expect(outputs).toHaveLength(2);
-    expect(outputs.every((o) => o.runId === result.runId)).toBe(true);
-    expect(finished).toEqual([{ runId: result.runId, status: "completed" }]);
+    expect(records).toHaveLength(1);
+    expect(records[0]).toEqual({
+      runId: result.runId,
+      input: makeInput(),
+      outputs: result.outputs,
+      status: "completed",
+    });
   });
 
   it("still completes the run when persistence is broken", async () => {
-    const broken: AgentRunPersistence = {
-      async createRun() {
-        throw new Error("db down");
-      },
-      async saveOutput() {
-        throw new Error("db down");
-      },
-      async finishRun() {
+    const broken: AgentRunStore = {
+      async recordRun() {
         throw new Error("db down");
       },
     };
@@ -212,13 +199,12 @@ describe("runAgents — persistence seam", () => {
   });
 
   it("skips persistence entirely when passed null", async () => {
-    const { persistence, runs } = recordingPersistence();
-    void persistence;
+    const { persistence, records } = recordingPersistence();
     await runAgents(makeInput(), [new HealthyAgent("technical")], {
       persistence: null,
       logger: silentLogger,
     });
-    expect(runs).toHaveLength(0);
+    expect(records).toHaveLength(0);
   });
 });
 
