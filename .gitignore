@@ -25,3 +25,5 @@ pgdata/
 .DS_Store
 *.log
 coverage/
+.worktrees/
+
