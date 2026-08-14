@@ -41,5 +41,24 @@ export {
 } from "./stubs/index.js";
 
 export * from "./technical/index.js";
+export {
+  SentimentAgent,
+  SentimentTelemetry,
+  InMemoryNewsProvider,
+  FixtureNewsProvider,
+  resolveDefaultNewsProvider,
+  classifySentimentHeadlines,
+  classifyHeadlines,
+  SENTIMENT_SYSTEM_PROMPT,
+  buildSentimentUserPrompt,
+  sentimentOutputToolSchema,
+  normalizeSentimentModelOutput,
+  type SentimentAgentOptions,
+  type SentimentTelemetrySnapshot,
+  type NewsProvider,
+  type NewsQuery,
+  type SentimentClassification,
+  type SentimentPromptContext,
+} from "./sentiment/index.js";
 
 export { agentsPlugin } from "./plugin.js";

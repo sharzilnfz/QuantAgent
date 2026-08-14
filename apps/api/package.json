@@ -15,6 +15,7 @@
     "@anthropic-ai/sdk": "^0.68.0",
     "@committee/contracts": "workspace:*",
     "@committee/db": "workspace:*",
+    "@committee/fixtures": "workspace:*",
     "@fastify/cookie": "^11.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",

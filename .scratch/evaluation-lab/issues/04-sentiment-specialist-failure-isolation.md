@@ -4,11 +4,11 @@
 
 **Blocked by:** 03 — Experiment Manifest Engine & Zero-Credential Offline Replay CLI
 
-**Status:** ready-for-agent
+**Status:** closed
 
-- [ ] Sentiment Specialist Agent accepts point-in-time filtered news headlines ($\text{created\_at} \le T$) and evaluates market sentiment.
-- [ ] Output is validated against Zod schema (`bias: 'bullish' | 'bearish' | 'neutral'`, `confidence: number` between 0 and 1, `rationale: string`).
-- [ ] Agent timeout, schema parse error, or network interruption gracefully degrades to `{ bias: 'neutral', confidence: 0.0, rationale: '<fallback error>' }`.
-- [ ] Fallback events are tracked in telemetry counters without halting the evaluation loop.
-- [ ] Replay mode supports pre-recorded sentiment agent responses for zero-credential benchmark runs.
-- [ ] Live mode invokes Anthropic Claude API using structured outputs when API credentials are provided.
+- [x] Sentiment Specialist Agent accepts point-in-time filtered news headlines ($\text{created\_at} \le T$) and evaluates market sentiment.
+- [x] Output is validated against Zod schema (`bias: 'bullish' | 'bearish' | 'neutral'`, `confidence: number` between 0 and 1, `rationale: string`).
+- [x] Agent timeout, schema parse error, or network interruption gracefully degrades to `{ bias: 'neutral', confidence: 0.0, rationale: '<fallback error>' }`.
+- [x] Fallback events are tracked in telemetry counters without halting the evaluation loop.
+- [x] Replay mode supports pre-recorded sentiment agent responses for zero-credential benchmark runs.
+- [x] Live mode invokes Anthropic Claude API using structured outputs when API credentials are provided.

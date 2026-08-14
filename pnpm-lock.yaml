@@ -27,6 +27,9 @@ importers:
       '@committee/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@committee/fixtures':
+        specifier: workspace:*
+        version: link:../../packages/fixtures
       '@fastify/cookie':
         specifier: ^11.0.2
         version: 11.1.2
@@ -49,9 +52,6 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
     devDependencies:
-      '@committee/fixtures':
-        specifier: workspace:*
-        version: link:../../packages/fixtures
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
