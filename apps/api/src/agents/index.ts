@@ -62,6 +62,15 @@ export {
 } from "./sentiment/index.js";
 
 export * from "./coordinator/index.js";
-export * from "./polymarket/index.js";
+export {
+  PolymarketAgent,
+  classifyMacroOdds,
+  POLYMARKET_SYSTEM_PROMPT,
+  buildPolymarketUserPrompt,
+  polymarketOutputToolSchema,
+  normalizePolymarketModelOutput,
+  type PolymarketAgentOptions,
+  type MacroOddsClassification,
+} from "./polymarket/index.js";
 
 export { agentsPlugin } from "./plugin.js";

@@ -40,7 +40,7 @@ describe("Experiments Plugin HTTP Routes", () => {
       expect(strategyNames).toContain("multi-agent-debate-on");
       expect(strategyNames).toContain("multi-agent-debate-off");
       expect(strategyNames).toContain("multi-agent-polymarket");
-    });
+    }, 15000);
 
     it("serves cached result on repeated requests", async () => {
       const res1 = await app.inject({

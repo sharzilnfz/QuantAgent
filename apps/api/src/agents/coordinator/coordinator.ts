@@ -64,7 +64,6 @@ export class MultiAgentCoordinator {
       options.synthesizer ??
       new DebateSynthesizer({
         deterministicOffline: this.deterministicOffline,
-        logger: this.logger,
       });
   }
 

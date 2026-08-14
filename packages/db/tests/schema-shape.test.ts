@@ -251,6 +251,7 @@ describe("agent_outputs — mirrors the contracts AgentOutput", () => {
       "technical",
       "sentiment",
       "fundamental",
+      "polymarket",
     ]);
     expect(c.get("direction")?.enumValues).toEqual([
       "bullish",

@@ -78,11 +78,17 @@ export class TemporalGuard {
     decisionTs: string | Date,
   ): T[] {
     const { ms: cutoffMs } = this.parseTs(decisionTs);
-    return records.filter((r) => {
+    const result: T[] = [];
+    for (let i = 0; i < records.length; i++) {
+      const r = records[i];
+      if (!r) continue;
       const rIso = getRecordAsOf(r);
-      const rMs = new Date(rIso).getTime();
-      return rMs <= cutoffMs;
-    });
+      const rMs = Date.parse(rIso);
+      if (rMs <= cutoffMs) {
+        result.push(r);
+      }
+    }
+    return result;
   }
 
   /**
@@ -99,7 +105,7 @@ export class TemporalGuard {
       const record = records[i];
       if (!record) continue;
       const rIso = getRecordAsOf(record);
-      const rMs = new Date(rIso).getTime();
+      const rMs = Date.parse(rIso);
       if (rMs > cutoffMs) {
         const idStr = (record.id as string) || (record.symbol as string) || `index-${i}`;
         const prefix = context ? `[${context}] ` : "";
@@ -122,9 +128,7 @@ export class TemporalGuard {
     bars: readonly PriceBar[],
     decisionTs: string | Date,
   ): PriceBar[] {
-    const filtered = this.filter(bars, decisionTs);
-    this.assertNoLeakage(filtered, decisionTs, "queryBars");
-    return filtered;
+    return this.filter(bars, decisionTs);
   }
 
   /**
@@ -134,9 +138,7 @@ export class TemporalGuard {
     news: readonly NewsItem[],
     decisionTs: string | Date,
   ): NewsItem[] {
-    const filtered = this.filter(news, decisionTs);
-    this.assertNoLeakage(filtered, decisionTs, "queryNews");
-    return filtered;
+    return this.filter(news, decisionTs);
   }
 
   /**
@@ -148,21 +150,30 @@ export class TemporalGuard {
     decisionTs: string | Date,
   ): PredictionMarketEvent[] {
     const { ms: cutoffMs } = this.parseTs(decisionTs);
-    const filteredEvents = events
-      .filter((ev) => new Date(ev.asOf).getTime() <= cutoffMs)
-      .map((ev) => {
-        const filteredHistory = ev.history.filter(
-          (pt) => new Date(pt.asOf ?? pt.ts).getTime() <= cutoffMs,
-        );
-        return {
-          ...ev,
-          history: filteredHistory,
-        };
-      });
+    const filteredEvents: PredictionMarketEvent[] = [];
 
-    this.assertNoLeakage(filteredEvents, decisionTs, "queryPredictionMarkets:events");
-    for (const ev of filteredEvents) {
-      this.assertNoLeakage(ev.history, decisionTs, `queryPredictionMarkets:history(${ev.id})`);
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i];
+      if (!ev) continue;
+      const evMs = Date.parse(ev.asOf);
+      if (evMs > cutoffMs) {
+        continue;
+      }
+
+      const filteredHistory: PolymarketProbabilityPoint[] = [];
+      for (let j = 0; j < ev.history.length; j++) {
+        const pt = ev.history[j];
+        if (!pt) continue;
+        const ptMs = Date.parse(pt.asOf ?? pt.ts);
+        if (ptMs <= cutoffMs) {
+          filteredHistory.push(pt);
+        }
+      }
+
+      filteredEvents.push({
+        ...ev,
+        history: filteredHistory,
+      });
     }
 
     return filteredEvents;

@@ -94,25 +94,21 @@ export class PolymarketAgent extends BaseAgent {
     // Live LLM completion pass
     const userPrompt = buildPolymarketUserPrompt(input, classification);
 
-    const response = await this.llm.createMessage({
-      model: this.model,
-      max_tokens: this.maxTokens,
-      system: POLYMARKET_SYSTEM_PROMPT,
-      messages: [{ role: "user", content: userPrompt }],
-      tools: [polymarketOutputToolSchema],
-      tool_choice: { type: "tool", name: AGENT_OUTPUT_TOOL_NAME },
-    });
-
-    const toolUse = response.content.find(
-      (block) => block.type === "tool_use" && block.name === AGENT_OUTPUT_TOOL_NAME,
-    );
-
-    let output: AgentOutput;
-    if (toolUse && toolUse.type === "tool_use") {
-      output = normalizePolymarketModelOutput(toolUse.input, classification.direction);
-    } else {
-      output = normalizePolymarketModelOutput({}, classification.direction);
+    let rawOutput: unknown;
+    try {
+      rawOutput = await this.llm.completeStructured({
+        model: this.model,
+        maxTokens: this.maxTokens,
+        system: POLYMARKET_SYSTEM_PROMPT,
+        user: userPrompt,
+        toolName: AGENT_OUTPUT_TOOL_NAME,
+        toolSchema: polymarketOutputToolSchema,
+      });
+    } catch {
+      rawOutput = {};
     }
+
+    const output = normalizePolymarketModelOutput(rawOutput, classification.direction);
 
     // Fact-locking: Force deterministic classification facts into evidence to prevent hallucination
     const lockedEvidence = {

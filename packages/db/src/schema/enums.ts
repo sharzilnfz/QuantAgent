@@ -21,6 +21,7 @@ export const agentNameEnum = pgEnum("agent_name", [
   "technical",
   "sentiment",
   "fundamental",
+  "polymarket",
 ]);
 
 // Lifecycle status of an agent run.
