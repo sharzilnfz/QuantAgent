@@ -18,7 +18,7 @@
  * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
  * spec-03 session cookie rides along.
  */
-import { AgentOutput, ExperimentSuiteResult, PortfolioState } from "@committee/contracts";
+import { AgentOutput, ExperimentSuiteResult, PortfolioState, VarianceSweepResult } from "@committee/contracts";
 
 const API_BASE = "/api";
 
@@ -242,6 +242,19 @@ export const api = {
     const path = `/experiments/suite?symbol=${encodeURIComponent(symbol)}`;
     const payload = await request(path, { signal });
     return parseContract(ExperimentSuiteResult, payload, path);
+  },
+
+  /** `GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3 -> VarianceSweepResult`. */
+  async varianceSweep(
+    symbol = "AAPL",
+    windowSize = 25,
+    runs = 3,
+    budget = 5.0,
+    signal?: AbortSignal,
+  ): Promise<VarianceSweepResult> {
+    const path = `/experiments/variance-sweep?symbol=${encodeURIComponent(symbol)}&windowSize=${windowSize}&runs=${runs}&budget=${budget}`;
+    const payload = await request(path, { signal });
+    return parseContract(VarianceSweepResult, payload, path);
   },
 };
 

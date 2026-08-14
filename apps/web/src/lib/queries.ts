@@ -15,6 +15,8 @@ export const queryKeys = {
   watchlist: ["watchlist"] as const,
   latestAgentOutput: (symbol: string) => ["agents", "latest", symbol] as const,
   experimentsSuite: (symbol: string) => ["experiments", "suite", symbol] as const,
+  varianceSweep: (symbol: string, windowSize: number, runs: number, budget: number) =>
+    ["experiments", "variance-sweep", symbol, windowSize, runs, budget] as const,
 };
 
 export function createQueryClient(): QueryClient {
@@ -117,6 +119,21 @@ export function useExperimentSuite(symbol: string = "AAPL") {
   return useQuery({
     queryKey: queryKeys.experimentsSuite(symbol),
     queryFn: ({ signal }) => api.experimentsSuite(symbol, signal),
+    retry: false,
+  });
+}
+
+export function useVarianceSweep(
+  symbol: string = "AAPL",
+  windowSize = 25,
+  runs = 3,
+  budget = 5.0,
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: queryKeys.varianceSweep(symbol, windowSize, runs, budget),
+    queryFn: ({ signal }) => api.varianceSweep(symbol, windowSize, runs, budget, signal),
+    enabled,
     retry: false,
   });
 }

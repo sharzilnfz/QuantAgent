@@ -44,6 +44,8 @@
     --series-debate-on: #2563eb;
     --series-debate-off: #7c3aed;
     --series-specialist: #059669;
+    --series-polymarket: #0d9488;
+    --variance-band: rgba(13, 148, 136, 0.16);
     --drawdown-fill: rgba(208, 59, 59, 0.12);
 
     /* meter: fill + a lighter step of the SAME ramp for the track */
@@ -89,6 +91,8 @@
     --series-debate-on: #38bdf8;
     --series-debate-off: #a78bfa;
     --series-specialist: #34d399;
+    --series-polymarket: #2dd4bf;
+    --variance-band: rgba(45, 212, 191, 0.2);
     --drawdown-fill: rgba(230, 103, 103, 0.16);
 
     --meter-fill: #3987e5;

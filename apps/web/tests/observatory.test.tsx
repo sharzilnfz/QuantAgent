@@ -206,6 +206,63 @@ const mockDebateOffManifest: ExperimentManifest = ExperimentManifest.parse({
   fallbackRate: 0,
 });
 
+const mockPolymarketManifest: ExperimentManifest = ExperimentManifest.parse({
+  id: "a2c53b10-7c18-8f9f-c15c-64cf41235f76",
+  createdAt: "2026-08-14T12:00:00.000Z",
+  gitCommit: "a1b2c3d",
+  datasetHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  symbol: "AAPL",
+  timeframe: "1Day",
+  strategy: {
+    name: "multi-agent-polymarket",
+    type: "multi-agent-macro",
+    description: "Technical + Sentiment + Polymarket Macro Odds Committee",
+    parameters: { includePolymarket: true, debateEnabled: true },
+  },
+  metrics: {
+    initialCash: 100000,
+    finalEquity: 126400,
+    totalReturn: 0.264,
+    annualizedReturn: 0.264,
+    sharpeRatio: 2.12,
+    sortinoRatio: 2.78,
+    maxDrawdown: 0.049,
+    profitFactor: 2.6,
+    winRate: 0.71,
+    totalTurnover: 890000,
+    tradeCount: 10,
+  },
+  benchmarkDelta: {
+    totalReturn: 0.11,
+    annualizedReturn: 0.11,
+    sharpeRatio: 0.87,
+    sortinoRatio: 1.16,
+    maxDrawdown: -0.063,
+    deltaTotalReturn: 0.11,
+    deltaAnnualizedReturn: 0.11,
+    deltaSharpeRatio: 0.87,
+    deltaSortinoRatio: 1.16,
+    deltaMaxDrawdown: -0.063,
+  },
+  decisionMetrics: {
+    directionalAccuracy: 0.82,
+    brierScore: 0.118,
+    abstentionQuality: 0.88,
+    activeBarCount: 190,
+    neutralBarCount: 62,
+  },
+  trades: [],
+  equityCurve: [
+    { ts: "2024-01-02T21:00:00.000Z", cash: 100000, position: 0, price: 100, equity: 100000, drawdown: 0 },
+    { ts: "2024-01-03T21:00:00.000Z", cash: 0, position: 1014, price: 102, equity: 104200, drawdown: 0 },
+    { ts: "2024-01-04T21:00:00.000Z", cash: 0, position: 1093, price: 101.5, equity: 112800, drawdown: 0 },
+    { ts: "2024-01-05T21:00:00.000Z", cash: 126400, position: 0, price: 115.4, equity: 126400, drawdown: 0 },
+  ],
+  tokenCost: 0,
+  latencyMs: 15,
+  fallbackRate: 0,
+});
+
 const mockSuiteResult: ExperimentSuiteResult = ExperimentSuiteResult.parse({
   id: "suite-01HZX",
   suiteId: "suite-01HZX",
@@ -219,6 +276,7 @@ const mockSuiteResult: ExperimentSuiteResult = ExperimentSuiteResult.parse({
     mockSmaRsiManifest,
     mockDebateOnManifest,
     mockDebateOffManifest,
+    mockPolymarketManifest,
   ],
   totalDurationMs: 142.5,
   totalCost: 0,
@@ -258,6 +316,7 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
     expect(screen.getAllByText(/SMA\(20\/50\) \+ RSI\(14\)/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Multi-Agent \(Debate ON\)/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Multi-Agent \(Debate OFF \/ Ablation\)/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Technical \+ Sentiment \+ Polymarket/i).length).toBeGreaterThan(0);
 
     // Tearsheet metrics rendering
     expect(screen.getAllByText("15.40%").length).toBeGreaterThan(0); // Benchmark Total Return / Annualized
@@ -287,35 +346,89 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
     renderApp("/observatory");
 
     await waitFor(() => {
-      expect(screen.getByText(/Active Strategy Overlay \(4\/4\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Active Strategy Overlay \(5\/5\)/i)).toBeInTheDocument();
     });
 
     // Toggle off SMA/RSI using the control overlay chip
     const smaControlChips = screen.getAllByRole("button", { name: /SMA\(20\/50\) \+ RSI\(14\)/i });
     await userEvent.click(smaControlChips[0]!);
 
-    // Count updates to 3/4
-    expect(screen.getByText(/Active Strategy Overlay \(3\/4\)/i)).toBeInTheDocument();
+    // Count updates to 4/5
+    expect(screen.getByText(/Active Strategy Overlay \(4\/5\)/i)).toBeInTheDocument();
   });
 
-  it("applies ablation quick presets (Debate vs Ablation, Baselines Only)", async () => {
+  it("applies ablation quick presets (Macro Ablation, Debate vs Ablation, Baselines Only)", async () => {
     renderApp("/observatory");
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Debate vs Ablation/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Macro Ablation/i })).toBeInTheDocument();
     });
 
-    // Click Debate vs Ablation preset
+    // Click Macro Ablation preset (B&H + Debate ON + Debate OFF + Polymarket = 4/5)
+    await userEvent.click(screen.getByRole("button", { name: /Macro Ablation/i }));
+    expect(screen.getByText(/Active Strategy Overlay \(4\/5\)/i)).toBeInTheDocument();
+
+    // Click Debate vs Ablation preset (B&H + Debate ON + Debate OFF = 3/5)
     await userEvent.click(screen.getByRole("button", { name: /Debate vs Ablation/i }));
-    expect(screen.getByText(/Active Strategy Overlay \(3\/4\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Active Strategy Overlay \(3\/5\)/i)).toBeInTheDocument();
 
-    // Click Baselines Only preset
+    // Click Baselines Only preset (B&H + SMA-RSI = 2/5)
     await userEvent.click(screen.getByRole("button", { name: /Baselines Only/i }));
-    expect(screen.getByText(/Active Strategy Overlay \(2\/4\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Active Strategy Overlay \(2\/5\)/i)).toBeInTheDocument();
 
-    // Click All Strategies preset
+    // Click All Strategies preset (5/5)
     await userEvent.click(screen.getByRole("button", { name: /All Strategies/i }));
-    expect(screen.getByText(/Active Strategy Overlay \(4\/4\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Active Strategy Overlay \(5\/5\)/i)).toBeInTheDocument();
+  });
+
+  it("toggles Live Variance Sweep harness with spend telemetry chip", async () => {
+    mockApi(
+      signedInRoutes({
+        "/experiments/suite?symbol=AAPL": {
+          status: 200,
+          body: mockSuiteResult,
+        },
+        "/experiments/variance-sweep": {
+          status: 200,
+          body: {
+            id: "b455580a-9d22-48a6-be5e-fc56efab8394",
+            symbol: "AAPL",
+            createdAt: "2026-08-14T12:00:00.000Z",
+            runsCount: 3,
+            windowSize: 25,
+            totalCost: 0.145,
+            budgetLimit: 5.0,
+            budgetExceeded: false,
+            runs: [],
+            metricStats: {
+              totalReturn: { mean: 0.12, variance: 0.0001, stdDev: 0.01, min: 0.11, max: 0.13 },
+              annualizedReturn: { mean: 0.12, variance: 0.0001, stdDev: 0.01, min: 0.11, max: 0.13 },
+              sharpeRatio: { mean: 1.5, variance: 0.01, stdDev: 0.1, min: 1.4, max: 1.6 },
+              maxDrawdown: { mean: 0.04, variance: 0.0001, stdDev: 0.01, min: 0.03, max: 0.05 },
+            },
+            equityBands: [
+              { asOf: "2024-01-02T21:00:00.000Z", meanEquity: 100000, stdDev: 0, upperBand: 100000, lowerBand: 100000, minEquity: 100000, maxEquity: 100000 },
+              { asOf: "2024-01-03T21:00:00.000Z", meanEquity: 104000, stdDev: 500, upperBand: 104500, lowerBand: 103500, minEquity: 103500, maxEquity: 104500 },
+            ],
+          },
+        },
+      }),
+    );
+
+    renderApp("/observatory");
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Live Sweep/i })).toBeInTheDocument();
+    });
+
+    const liveSweepBtn = screen.getByRole("button", { name: /Live Sweep/i });
+    await userEvent.click(liveSweepBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Live Evaluation Variance Sweep/i)).toBeInTheDocument();
+      expect(screen.getByText(/Sweep Spend:/i)).toBeInTheDocument();
+      expect(screen.getByText(/\$0.145/i)).toBeInTheDocument();
+    });
   });
 
   it("switches chart modes between Equity Curve and Drawdown profile", async () => {

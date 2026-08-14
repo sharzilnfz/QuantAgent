@@ -8,7 +8,7 @@
  */
 import { useState, useMemo, useEffect } from "react";
 import type { ExperimentManifest } from "@committee/contracts";
-import { useExperimentSuite } from "../lib/queries";
+import { useExperimentSuite, useVarianceSweep } from "../lib/queries";
 import { ObservatoryControls, type StrategyOption } from "../components/observatory/ObservatoryControls";
 import { MultiSeriesEquityChart } from "../components/observatory/MultiSeriesEquityChart";
 import { ExperimentTearsheet } from "../components/observatory/ExperimentTearsheet";
@@ -20,7 +20,16 @@ const AVAILABLE_SYMBOLS = ["AAPL", "MSFT", "NVDA"];
 
 export function ObservatoryPage() {
   const [selectedSymbol, setSelectedSymbol] = useState("AAPL");
+  const [isVarianceSweepActive, setIsVarianceSweepActive] = useState(false);
+
   const { data: suite, isLoading, error, refetch, isFetching } = useExperimentSuite(selectedSymbol);
+  const { data: varianceSweep, isFetching: isFetchingSweep } = useVarianceSweep(
+    selectedSymbol,
+    25,
+    3,
+    5.0,
+    isVarianceSweepActive,
+  );
 
   // Strategy list with distinct visual palette tokens
   const strategies: StrategyOption[] = useMemo(() => {
@@ -59,6 +68,9 @@ export function ObservatoryPage() {
       } else if (id.includes("debate-off")) {
         color = "var(--series-debate-off)";
         displayName = "Multi-Agent (Debate OFF / Ablation)";
+      } else if (id.includes("polymarket")) {
+        color = "var(--series-polymarket)";
+        displayName = "Technical + Sentiment + Polymarket";
       }
 
       list.push({
@@ -182,6 +194,9 @@ export function ObservatoryPage() {
             visibleStrategyIds={visibleStrategyIds}
             onToggleStrategy={handleToggleStrategy}
             onSetVisibleStrategies={setVisibleStrategyIds}
+            isVarianceSweepActive={isVarianceSweepActive}
+            onToggleVarianceSweep={() => setIsVarianceSweepActive((v) => !v)}
+            varianceCost={varianceSweep?.totalCost ?? 0}
           />
 
           {/* Multi-Series Equity Curves & Drawdown Chart */}
@@ -190,6 +205,8 @@ export function ObservatoryPage() {
             benchmark={suite.benchmark}
             strategies={strategies}
             visibleStrategyIds={visibleStrategyIds}
+            varianceBands={varianceSweep?.equityBands}
+            isVarianceSweepActive={isVarianceSweepActive}
             onInspectPoint={handleInspectPoint}
           />
 

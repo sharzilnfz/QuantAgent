@@ -28,6 +28,9 @@ interface ObservatoryControlsProps {
   visibleStrategyIds: Set<string>;
   onToggleStrategy: (id: string) => void;
   onSetVisibleStrategies: (ids: Set<string>) => void;
+  isVarianceSweepActive?: boolean;
+  onToggleVarianceSweep?: () => void;
+  varianceCost?: number;
 }
 
 export function ObservatoryControls({
@@ -39,9 +42,19 @@ export function ObservatoryControls({
   visibleStrategyIds,
   onToggleStrategy,
   onSetVisibleStrategies,
+  isVarianceSweepActive = false,
+  onToggleVarianceSweep,
+  varianceCost = 0,
 }: ObservatoryControlsProps) {
   const selectAll = () => {
     onSetVisibleStrategies(new Set(strategies.map((s) => s.id)));
+  };
+
+  const selectMacroAblation = () => {
+    const macroIds = strategies
+      .filter((s) => s.isBenchmark || s.id.includes("debate") || s.id.includes("polymarket"))
+      .map((s) => s.id);
+    onSetVisibleStrategies(new Set(macroIds));
   };
 
   const selectDebateAblation = () => {
@@ -94,12 +107,31 @@ export function ObservatoryControls({
           <Button variant="ghost" onClick={selectAll} className="text-xs px-2.5 py-1">
             All Strategies
           </Button>
+          <Button variant="ghost" onClick={selectMacroAblation} className="text-xs px-2.5 py-1 text-teal-600 dark:text-teal-400">
+            Macro Ablation
+          </Button>
           <Button variant="ghost" onClick={selectDebateAblation} className="text-xs px-2.5 py-1">
             Debate vs Ablation
           </Button>
           <Button variant="ghost" onClick={selectBaselinesOnly} className="text-xs px-2.5 py-1">
             Baselines Only
           </Button>
+
+          {onToggleVarianceSweep && (
+            <button
+              type="button"
+              onClick={onToggleVarianceSweep}
+              className={cn(
+                "ml-1 flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-mono font-medium transition-all duration-150",
+                isVarianceSweepActive
+                  ? "border-teal-500 bg-teal-500/15 text-teal-700 dark:text-teal-300 shadow-xs"
+                  : "border-hairline bg-surface text-ink-2 hover:border-ink-3 hover:text-ink",
+              )}
+            >
+              <span className={cn("h-2 w-2 rounded-full", isVarianceSweepActive ? "bg-teal-500 animate-pulse" : "bg-ink-3")} />
+              Live Sweep ($N=3$, &lt;$5.00 Cap)
+            </button>
+          )}
         </div>
       </div>
 
@@ -161,6 +193,11 @@ export function ObservatoryControls({
         <span className="rounded bg-surface-well px-2 py-0.5 border border-hairline">
           Token Cost: <span className="text-ink-2 tabular-nums">${(suite.totalCost ?? 0).toFixed(2)}</span>
         </span>
+        {isVarianceSweepActive && (
+          <span className="rounded bg-teal-500/10 text-teal-700 dark:text-teal-300 px-2 py-0.5 border border-teal-500/30">
+            Sweep Spend: <span className="font-semibold tabular-nums">${varianceCost.toFixed(3)}</span> / &lt;$5.00 Cap
+          </span>
+        )}
       </div>
     </div>
   );

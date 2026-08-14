@@ -4,10 +4,10 @@
 
 **Blocked by:** 07 — Decision Lineage DAG Inspector & Telemetry HUD
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Prediction Market Agent evaluates Polymarket Gamma API historical probability curves strictly $\le T_{\text{decision}}$.
-- [ ] Ablation switch allows comparing Technical + Sentiment + Polymarket vs Technical + Sentiment alone to measure macro odds value-add.
-- [ ] Live evaluation harness executes $N=3$ runs across a budget-capped validation window (20–30 decision points) and calculates mean, standard deviation, and variance across runs.
-- [ ] Total spend is capped with hard budget limit enforcing cumulative cost $< \$5.00$ per sweep.
-- [ ] Observatory UI displays variance bands across live runs alongside deterministic baseline overlays.
+- [x] Prediction Market Agent evaluates Polymarket Gamma API historical probability curves strictly $\le T_{\text{decision}}$.
+- [x] Ablation switch allows comparing Technical + Sentiment + Polymarket vs Technical + Sentiment alone to measure macro odds value-add.
+- [x] Live evaluation harness executes $N=3$ runs across a budget-capped validation window (20–30 decision points) and calculates mean, standard deviation, and variance across runs.
+- [x] Total spend is capped with hard budget limit enforcing cumulative cost $< \$5.00$ per sweep.
+- [x] Observatory UI displays variance bands across live runs alongside deterministic baseline overlays.

@@ -13,16 +13,17 @@
  */
 import { useState, useMemo } from "react";
 import {
+  Area,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import type { ExperimentManifest } from "@committee/contracts";
+import type { ExperimentManifest, VarianceEquityPoint } from "@committee/contracts";
 import type { StrategyOption } from "./ObservatoryControls";
 import { formatDate, formatDayShort, formatMoney, formatMoneyCompact, formatSignedMoney } from "../../lib/format";
 import { cn } from "../../lib/cn";
@@ -34,11 +35,16 @@ interface MultiSeriesEquityChartProps {
   benchmark: ExperimentManifest;
   strategies: StrategyOption[];
   visibleStrategyIds: Set<string>;
+  varianceBands?: VarianceEquityPoint[];
+  isVarianceSweepActive?: boolean;
   onInspectPoint?: (ts: string) => void;
 }
 
 interface MergedPoint {
   asOf: string;
+  upperBand?: number;
+  lowerBand?: number;
+  meanEquity?: number;
   [key: string]: string | number | undefined;
 }
 
@@ -47,6 +53,8 @@ export function MultiSeriesEquityChart({
   benchmark,
   strategies,
   visibleStrategyIds,
+  varianceBands,
+  isVarianceSweepActive = false,
   onInspectPoint,
 }: MultiSeriesEquityChartProps) {
   const [chartMode, setChartMode] = useState<"equity" | "drawdown">("equity");
@@ -94,11 +102,25 @@ export function MultiSeriesEquityChart({
       }
     }
 
+    // Merge variance bands if active and in equity mode
+    if (isVarianceSweepActive && varianceBands && varianceBands.length > 0 && chartMode === "equity") {
+      for (const band of varianceBands) {
+        let entry = pointMap.get(band.asOf);
+        if (!entry) {
+          entry = { asOf: band.asOf };
+          pointMap.set(band.asOf, entry);
+        }
+        entry.meanEquity = band.meanEquity;
+        entry.upperBand = band.upperBand;
+        entry.lowerBand = band.lowerBand;
+      }
+    }
+
     // Sort chronologically
     return Array.from(pointMap.values()).sort(
       (a, b) => new Date(a.asOf).getTime() - new Date(b.asOf).getTime(),
     );
-  }, [experiments, benchmark, benchmarkId, visibleStrategyIds, chartMode]);
+  }, [experiments, benchmark, benchmarkId, visibleStrategyIds, chartMode, isVarianceSweepActive, varianceBands]);
 
   const activeStrategies = strategies.filter((s) => visibleStrategyIds.has(s.id));
 
@@ -115,11 +137,17 @@ export function MultiSeriesEquityChart({
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline pb-3">
         <div>
           <h3 className="text-sm font-semibold tracking-tight text-ink">
-            {chartMode === "equity" ? "Comparative Equity Trajectory ($ USD)" : "Underwater Drawdown Profile (%)"}
+            {chartMode === "equity"
+              ? isVarianceSweepActive
+                ? "Live Evaluation Variance Sweep ($N=3$, ±1σ Bands)"
+                : "Comparative Equity Trajectory ($ USD)"
+              : "Underwater Drawdown Profile (%)"}
           </h3>
           <p className="text-xs text-ink-3">
             {chartMode === "equity"
-              ? "Time-series growth across active LLM agent configurations vs deterministic baselines"
+              ? isVarianceSweepActive
+                ? "Distribution of live committee trajectories with shaded confidence intervals alongside deterministic baseline overlays"
+                : "Time-series growth across active LLM agent configurations vs deterministic baselines"
               : "Peak-to-trough historical drawdowns across evaluated strategies"}
           </p>
         </div>
@@ -156,7 +184,7 @@ export function MultiSeriesEquityChart({
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <ComposedChart
               data={chartData}
               margin={{ top: 12, right: 16, bottom: 0, left: 0 }}
               onClick={(state) => {
@@ -189,6 +217,7 @@ export function MultiSeriesEquityChart({
                     benchmarkId={benchmarkId}
                     strategies={strategies}
                     chartMode={chartMode}
+                    isVarianceSweepActive={isVarianceSweepActive}
                   />
                 }
                 cursor={{ stroke: "var(--axis)", strokeWidth: 1 }}
@@ -199,6 +228,38 @@ export function MultiSeriesEquityChart({
                 wrapperStyle={{ paddingBottom: 10, fontSize: 11 }}
                 iconType="plainline"
               />
+
+              {/* Shaded variance band when active */}
+              {isVarianceSweepActive && chartMode === "equity" && (
+                <Area
+                  type="monotone"
+                  dataKey="upperBand"
+                  name="Variance Band (±1σ)"
+                  stroke="none"
+                  fill="var(--variance-band)"
+                  fillOpacity={1}
+                  isAnimationActive={false}
+                />
+              )}
+
+              {/* Mean curve for variance sweep */}
+              {isVarianceSweepActive && chartMode === "equity" && (
+                <Line
+                  type="monotone"
+                  dataKey="meanEquity"
+                  name="Committee Mean (Live)"
+                  stroke="var(--series-polymarket)"
+                  strokeWidth={2.5}
+                  dot={false}
+                  activeDot={{
+                    r: 4,
+                    fill: "var(--series-polymarket)",
+                    stroke: "var(--surface-1)",
+                    strokeWidth: 2,
+                  }}
+                  isAnimationActive={false}
+                />
+              )}
 
               {activeStrategies.map((s) => (
                 <Line
@@ -219,7 +280,7 @@ export function MultiSeriesEquityChart({
                   isAnimationActive={false}
                 />
               ))}
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         )}
       </div>
@@ -299,12 +360,14 @@ function CustomTooltip({
   benchmarkId,
   strategies,
   chartMode,
+  isVarianceSweepActive,
 }: {
   active?: boolean;
   payload?: TooltipPayloadEntry[];
   benchmarkId: string;
   strategies: StrategyOption[];
   chartMode: "equity" | "drawdown";
+  isVarianceSweepActive?: boolean;
 }) {
   if (!active || !payload || payload.length === 0) return null;
 
@@ -313,10 +376,34 @@ function CustomTooltip({
 
   const dateStr = formatDate(firstEntry.asOf);
   const benchVal = typeof firstEntry[benchmarkId] === "number" ? Number(firstEntry[benchmarkId]) : undefined;
+  const upper = firstEntry.upperBand;
+  const lower = firstEntry.lowerBand;
+  const mean = firstEntry.meanEquity;
 
   return (
     <div className="min-w-56 rounded-lg border border-hairline bg-surface p-3 shadow-md">
-      <p className="border-b border-hairline pb-1.5 text-xs font-semibold text-ink">{dateStr}</p>
+      <div className="flex items-center justify-between border-b border-hairline pb-1.5">
+        <p className="text-xs font-semibold text-ink">{dateStr}</p>
+        {isVarianceSweepActive && typeof mean === "number" && (
+          <span className="rounded bg-teal-500/10 px-1.5 py-0.5 text-[10px] font-mono font-medium text-teal-600 dark:text-teal-400">
+            Live N=3 Sweep
+          </span>
+        )}
+      </div>
+
+      {isVarianceSweepActive && typeof upper === "number" && typeof lower === "number" && (
+        <div className="mt-2 rounded bg-surface-well p-1.5 font-mono text-[11px] text-ink-2 space-y-0.5">
+          <div className="flex justify-between">
+            <span>Mean (μ):</span>
+            <span className="font-semibold text-ink">{formatMoney(mean ?? 0)}</span>
+          </div>
+          <div className="flex justify-between text-[10px] text-ink-3">
+            <span>±1σ Interval:</span>
+            <span>[{formatMoney(lower)} – {formatMoney(upper)}]</span>
+          </div>
+        </div>
+      )}
+
       <div className="mt-2 space-y-1.5 font-mono text-xs">
         {payload.map((item) => {
           const key = item.dataKey as string;
