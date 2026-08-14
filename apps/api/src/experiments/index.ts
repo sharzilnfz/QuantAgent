@@ -1,3 +1,4 @@
-export * from "./hash";
-export * from "./orchestrator";
-export * from "./suite";
+export * from "./hash.js";
+export * from "./orchestrator.js";
+export * from "./suite.js";
+export * from "./plugin.js";
