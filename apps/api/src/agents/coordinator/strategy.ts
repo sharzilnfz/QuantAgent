@@ -2,6 +2,7 @@ import type {
   DecisionLineageRecord,
   IndicatorSnapshot,
   NewsItem,
+  PredictionMarketEvent,
   PriceBar,
   SignalType,
   Strategy,
@@ -17,11 +18,12 @@ import { DecisionLineageRecorder } from "./lineage.js";
 export interface MultiAgentCoordinatorStrategyOptions extends CoordinatorOptions {
   name?: string;
   news?: NewsItem[];
+  predictionMarkets?: PredictionMarketEvent[];
 }
 
 /**
  * MultiAgentCoordinatorStrategy implements the Strategy interface for backtest simulations.
- * Reconciles Technical and Sentiment specialist signals at each point-in-time decision step,
+ * Reconciles Technical, Sentiment, and Polymarket specialist signals at each point-in-time decision step,
  * recording lineage and tracking probabilistic decisions.
  */
 export class MultiAgentCoordinatorStrategy implements Strategy {
@@ -29,6 +31,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
   public readonly coordinator: MultiAgentCoordinator;
   public readonly lineageRecorder: DecisionLineageRecorder;
   private readonly news?: NewsItem[];
+  private readonly predictionMarkets?: PredictionMarketEvent[];
   private readonly decisionSignals: DecisionSignal[] = [];
 
   constructor(options: MultiAgentCoordinatorStrategyOptions = {}) {
@@ -42,6 +45,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
       lineageRecorder: this.lineageRecorder,
     });
     this.news = options.news;
+    this.predictionMarkets = options.predictionMarkets;
   }
 
   /**
@@ -74,18 +78,16 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
       const decisionTs = currentBar.asOf;
       const pointInTimeBars = bars.slice(0, t + 1);
       const snapshot = snapshotMap.get(decisionTs) ?? null;
-      const pointInTimeNews = this.news
-        ? this.news.filter((n) => (n.publishedAt ?? n.asOf) <= decisionTs)
-        : undefined;
 
-      // Coordinate decision at bar T
+      // Coordinate decision at bar T (point-in-time filtering handled by TemporalGuard inside agents)
       const consensus = await this.coordinator.coordinate({
         symbol: currentBar.symbol,
         timeframe: currentBar.timeframe,
         decisionTs,
         bars: pointInTimeBars,
         indicators: snapshot,
-        news: pointInTimeNews,
+        news: this.news,
+        predictionMarkets: this.predictionMarkets,
       });
 
       // Map final directional bias to portfolio weight signal:

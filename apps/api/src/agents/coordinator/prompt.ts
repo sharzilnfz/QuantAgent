@@ -26,12 +26,17 @@ export interface DebatePromptContext {
   currentBar?: PriceBar;
   technical: AgentOutput;
   sentiment: AgentOutput;
+  polymarket?: AgentOutput;
 }
 
 export function buildDebateUserPrompt(ctx: DebatePromptContext): string {
   const priceInfo = ctx.currentBar
     ? `Current Price: $${ctx.currentBar.close.toFixed(2)} (Open: $${ctx.currentBar.open.toFixed(2)}, High: $${ctx.currentBar.high.toFixed(2)}, Low: $${ctx.currentBar.low.toFixed(2)}, Volume: ${ctx.currentBar.volume.toLocaleString()})`
     : `Price Action: Available in technical evidence.`;
+
+  const polymarketSection = ctx.polymarket
+    ? `\n## 3. Macro Prediction Market Specialist (Polymarket)\n- Directional Stance: ${ctx.polymarket.direction.toUpperCase()}\n- Stated Confidence: ${ctx.polymarket.confidence.toFixed(2)}\n- Rationale: ${ctx.polymarket.rationale}\n- Crowdsourced Odds Evidence: ${JSON.stringify(ctx.polymarket.evidence, null, 2)}\n`
+    : "";
 
   return `# Market State Snapshot
 - Symbol: ${ctx.symbol}
@@ -51,9 +56,9 @@ export function buildDebateUserPrompt(ctx: DebatePromptContext): string {
 - Stated Confidence: ${ctx.sentiment.confidence.toFixed(2)}
 - Rationale: ${ctx.sentiment.rationale}
 - Point-in-Time Evidence: ${JSON.stringify(ctx.sentiment.evidence, null, 2)}
-
+${polymarketSection}
 # Synthesis Task
-Reconcile this disagreement. Select a reconciled bias ('bullish', 'bearish', or 'neutral'), assign a calibrated confidence [0, 1], state your synthesis rationale, identify the primary driver ('technical', 'sentiment', or 'compromise'), and articulate the dissenting view.`;
+Reconcile this disagreement. Select a reconciled bias ('bullish', 'bearish', or 'neutral'), assign a calibrated confidence [0, 1], state your synthesis rationale, identify the primary driver ('technical', 'sentiment', 'macro', or 'compromise'), and articulate the dissenting view.`;
 }
 
 export function debateOutputToolSchema(): Record<string, unknown> {

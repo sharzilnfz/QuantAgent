@@ -93,7 +93,7 @@ export class DebateSynthesizer {
    * Deterministic debate reconciliation rule for offline evaluation and fallback.
    */
   public synthesizeDeterministic(context: DebatePromptContext): DebateSynthesis {
-    const { technical, sentiment } = context;
+    const { technical, sentiment, polymarket } = context;
 
     // Case 1: Direct opposing conflict (bullish vs bearish)
     const isDirectConflict =
@@ -101,6 +101,29 @@ export class DebateSynthesizer {
       (technical.direction === "bearish" && sentiment.direction === "bullish");
 
     if (isDirectConflict) {
+      // If Polymarket specialist is present and takes a non-neutral stance, use macro odds as tiebreaker
+      if (polymarket && polymarket.direction !== "neutral" && polymarket.confidence >= 0.2) {
+        if (polymarket.direction === technical.direction) {
+          return {
+            direction: technical.direction,
+            confidence: Math.round(Math.max(technical.confidence, polymarket.confidence) * 0.85 * 1000) / 1000,
+            rationale: `Macro prediction market odds (${polymarket.direction}, ${polymarket.confidence.toFixed(2)}) break tie in favor of Technical conviction (${technical.confidence.toFixed(2)}).`,
+            dissentingView: `Sentiment specialist dissents on headline flow (${sentiment.rationale}).`,
+            primaryDriver: "macro",
+            tokenCost: 0,
+          };
+        } else if (polymarket.direction === sentiment.direction) {
+          return {
+            direction: sentiment.direction,
+            confidence: Math.round(Math.max(sentiment.confidence, polymarket.confidence) * 0.85 * 1000) / 1000,
+            rationale: `Macro prediction market odds (${polymarket.direction}, ${polymarket.confidence.toFixed(2)}) confirm Sentiment conviction (${sentiment.confidence.toFixed(2)}) over Technical signal.`,
+            dissentingView: `Technical specialist dissents (${technical.rationale}).`,
+            primaryDriver: "macro",
+            tokenCost: 0,
+          };
+        }
+      }
+
       const confDiff = technical.confidence - sentiment.confidence;
 
       // Substantial confidence edge (>= 0.25)
@@ -137,10 +160,11 @@ export class DebateSynthesizer {
 
     // Case 2: One specialist is directional and the other is neutral
     if (technical.direction !== "neutral" && sentiment.direction === "neutral") {
+      const boost = polymarket && polymarket.direction === technical.direction ? 1.0 : 0.85;
       return {
         direction: technical.direction,
-        confidence: Math.round(technical.confidence * 0.85 * 1000) / 1000,
-        rationale: `Technical specialist provides actionable signal (${technical.direction}, ${technical.confidence.toFixed(2)}) in the absence of conflicting sentiment.`,
+        confidence: Math.round(technical.confidence * boost * 1000) / 1000,
+        rationale: `Technical specialist provides actionable signal (${technical.direction}, ${technical.confidence.toFixed(2)}) in the absence of conflicting sentiment${polymarket?.direction === technical.direction ? " (reinforced by macro prediction market odds)" : ""}.`,
         dissentingView: `Sentiment specialist is neutral (${sentiment.rationale}).`,
         primaryDriver: "technical",
         tokenCost: 0,
@@ -148,12 +172,25 @@ export class DebateSynthesizer {
     }
 
     if (sentiment.direction !== "neutral" && technical.direction === "neutral") {
+      const boost = polymarket && polymarket.direction === sentiment.direction ? 1.0 : 0.85;
       return {
         direction: sentiment.direction,
-        confidence: Math.round(sentiment.confidence * 0.85 * 1000) / 1000,
-        rationale: `Sentiment specialist provides actionable news-driven signal (${sentiment.direction}, ${sentiment.confidence.toFixed(2)}) while technical indicators remain neutral.`,
+        confidence: Math.round(sentiment.confidence * boost * 1000) / 1000,
+        rationale: `Sentiment specialist provides actionable news-driven signal (${sentiment.direction}, ${sentiment.confidence.toFixed(2)}) while technical indicators remain neutral${polymarket?.direction === sentiment.direction ? " (reinforced by macro odds)" : ""}.`,
         dissentingView: `Technical specialist is neutral (${technical.rationale}).`,
         primaryDriver: "sentiment",
+        tokenCost: 0,
+      };
+    }
+
+    // Case 3: Both technical and sentiment are neutral, but Polymarket has strong macro conviction
+    if (polymarket && polymarket.direction !== "neutral" && polymarket.confidence >= 0.4) {
+      return {
+        direction: polymarket.direction,
+        confidence: Math.round(polymarket.confidence * 0.7 * 1000) / 1000,
+        rationale: `Macro prediction market specialist leads directional posture (${polymarket.direction}, ${polymarket.confidence.toFixed(2)}) while single-stock technical and sentiment indicators remain neutral.`,
+        dissentingView: undefined,
+        primaryDriver: "macro",
         tokenCost: 0,
       };
     }
@@ -162,7 +199,7 @@ export class DebateSynthesizer {
     return {
       direction: "neutral",
       confidence: 0.0,
-      rationale: "Both specialists neutral or uninformative.",
+      rationale: "Specialists neutral or uninformative.",
       dissentingView: undefined,
       primaryDriver: "compromise",
       tokenCost: 0,

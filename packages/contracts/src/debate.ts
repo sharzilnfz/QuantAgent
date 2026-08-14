@@ -25,7 +25,7 @@ export const DebateSynthesis = z.object({
   confidence: z.number().min(0).max(1),
   rationale: z.string().min(1).max(2000),
   dissentingView: z.string().min(1).max(2000).optional(),
-  primaryDriver: z.enum(["technical", "sentiment", "compromise"]).default("compromise"),
+  primaryDriver: z.enum(["technical", "sentiment", "macro", "compromise"]).default("compromise"),
   tokenCost: z.number().min(0).default(0).optional(),
   latencyMs: z.number().min(0).default(0).optional(),
 });

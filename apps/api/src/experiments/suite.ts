@@ -51,79 +51,115 @@ export async function runBenchmarkSuite(
     },
   });
 
-  // 2. Run SMA(20/50) + RSI(14) Baseline Strategy
-  const smaRsiStrategy = new SmaRsiStrategy();
-  const smaRsiManifest = await runExperiment(smaRsiStrategy, fixture, {
-    options: options?.backtestOptions,
-    benchmarkResult: benchmarkBacktestResult,
-    strategyConfig: {
-      name: smaRsiStrategy.name,
-      type: "baseline",
-      description: "Deterministic SMA(20/50) trend filter + Wilder RSI(14) oversold/overbought baseline",
-      parameters: {},
-    },
-  });
+  // Run all evaluated strategies concurrently
+  const [smaRsiManifest, debateOnManifest, debateOffManifest, polymarketManifest, ...customManifests] =
+    await Promise.all([
+      // 2. SMA(20/50) + RSI(14) Baseline Strategy
+      (async () => {
+        const smaRsiStrategy = new SmaRsiStrategy();
+        return runExperiment(smaRsiStrategy, fixture, {
+          options: options?.backtestOptions,
+          benchmarkResult: benchmarkBacktestResult,
+          strategyConfig: {
+            name: smaRsiStrategy.name,
+            type: "baseline",
+            description:
+              "Deterministic SMA(20/50) trend filter + Wilder RSI(14) oversold/overbought baseline",
+            parameters: {},
+          },
+        });
+      })(),
 
-  // 3. Run Multi-Agent Debate ON Strategy
-  const debateOnStrategy = new MultiAgentCoordinatorStrategy({
-    name: "multi-agent-debate-on",
-    debateEnabled: true,
-    deterministicOffline: true,
-    news: fixture.news,
-    logger: () => {},
-  });
-  const debateOnManifest = await runExperiment(debateOnStrategy, fixture, {
-    options: options?.backtestOptions,
-    benchmarkResult: benchmarkBacktestResult,
-    strategyConfig: {
-      name: debateOnStrategy.name,
-      type: "multi-agent",
-      description: "Multi-agent committee with conditional debate synthesis on specialist disagreement",
-      parameters: { debateEnabled: true },
-    },
-  });
+      // 3. Multi-Agent Debate ON Strategy
+      (async () => {
+        const debateOnStrategy = new MultiAgentCoordinatorStrategy({
+          name: "multi-agent-debate-on",
+          debateEnabled: true,
+          deterministicOffline: true,
+          news: fixture.news,
+          logger: () => {},
+        });
+        return runExperiment(debateOnStrategy, fixture, {
+          options: options?.backtestOptions,
+          benchmarkResult: benchmarkBacktestResult,
+          strategyConfig: {
+            name: debateOnStrategy.name,
+            type: "multi-agent",
+            description:
+              "Multi-agent committee with conditional debate synthesis on specialist disagreement",
+            parameters: { debateEnabled: true },
+          },
+        });
+      })(),
 
-  // 4. Run Multi-Agent Debate OFF (Ablation) Strategy
-  const debateOffStrategy = new MultiAgentCoordinatorStrategy({
-    name: "multi-agent-debate-off",
-    debateEnabled: false,
-    deterministicOffline: true,
-    news: fixture.news,
-    logger: () => {},
-  });
-  const debateOffManifest = await runExperiment(debateOffStrategy, fixture, {
-    options: options?.backtestOptions,
-    benchmarkResult: benchmarkBacktestResult,
-    strategyConfig: {
-      name: debateOffStrategy.name,
-      type: "multi-agent-ablation",
-      description: "Multi-agent committee with neutral ablation fallback on specialist disagreement",
-      parameters: { debateEnabled: false },
-    },
-  });
+      // 4. Multi-Agent Debate OFF (Ablation) Strategy
+      (async () => {
+        const debateOffStrategy = new MultiAgentCoordinatorStrategy({
+          name: "multi-agent-debate-off",
+          debateEnabled: false,
+          deterministicOffline: true,
+          news: fixture.news,
+          logger: () => {},
+        });
+        return runExperiment(debateOffStrategy, fixture, {
+          options: options?.backtestOptions,
+          benchmarkResult: benchmarkBacktestResult,
+          strategyConfig: {
+            name: debateOffStrategy.name,
+            type: "multi-agent-ablation",
+            description:
+              "Multi-agent committee with neutral ablation fallback on specialist disagreement",
+            parameters: { debateEnabled: false },
+          },
+        });
+      })(),
+
+      // 5. Multi-Agent + Polymarket Macro Specialist Strategy
+      (async () => {
+        const polymarketStrategy = new MultiAgentCoordinatorStrategy({
+          name: "multi-agent-polymarket",
+          debateEnabled: true,
+          deterministicOffline: true,
+          includePolymarket: true,
+          news: fixture.news,
+          predictionMarkets: fixture.predictionMarkets,
+          logger: () => {},
+        });
+        return runExperiment(polymarketStrategy, fixture, {
+          options: options?.backtestOptions,
+          benchmarkResult: benchmarkBacktestResult,
+          strategyConfig: {
+            name: polymarketStrategy.name,
+            type: "multi-agent-macro",
+            description:
+              "Multi-agent committee with Polymarket crowdsourced macro prediction probability curves",
+            parameters: { includePolymarket: true, debateEnabled: true },
+          },
+        });
+      })(),
+
+      // Custom strategies
+      ...(options?.customStrategies ?? []).map(async (customStrategy) =>
+        runExperiment(customStrategy, fixture, {
+          options: options?.backtestOptions,
+          benchmarkResult: benchmarkBacktestResult,
+          strategyConfig: {
+            name: customStrategy.name,
+            type: "custom",
+            parameters: {},
+          },
+        }),
+      ),
+    ]);
 
   const experimentManifests: ExperimentManifest[] = [
     benchmarkManifest,
-    smaRsiManifest,
-    debateOnManifest,
-    debateOffManifest,
+    smaRsiManifest!,
+    debateOnManifest!,
+    debateOffManifest!,
+    polymarketManifest!,
+    ...customManifests,
   ];
-
-  // 3. Run any additional custom strategies
-  if (options?.customStrategies && options.customStrategies.length > 0) {
-    for (const customStrategy of options.customStrategies) {
-      const manifest = await runExperiment(customStrategy, fixture, {
-        options: options?.backtestOptions,
-        benchmarkResult: benchmarkBacktestResult,
-        strategyConfig: {
-          name: customStrategy.name,
-          type: "custom",
-          parameters: {},
-        },
-      });
-      experimentManifests.push(manifest);
-    }
-  }
 
   const elapsedMs = performance.now() - startTime;
   const totalCost = experimentManifests.reduce((acc, exp) => acc + (exp.tokenCost ?? 0), 0);

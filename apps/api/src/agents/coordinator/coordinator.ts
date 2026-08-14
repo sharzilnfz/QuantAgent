@@ -8,6 +8,7 @@ import {
 
 import { defaultAgentLogger, type Agent, type StructuredLogger } from "../base.js";
 import { runAgents } from "../runner.js";
+import { PolymarketAgent } from "../polymarket/agent.js";
 import { SentimentAgent } from "../sentiment/agent.js";
 import { TechnicalAgent } from "../technical/agent.js";
 import { evaluateConsensus } from "./consensus.js";
@@ -17,6 +18,7 @@ import { DecisionLineageRecorder } from "./lineage.js";
 export interface CoordinatorOptions {
   debateEnabled?: boolean;
   deterministicOffline?: boolean;
+  includePolymarket?: boolean;
   specialists?: Agent[];
   synthesizer?: DebateSynthesizer;
   lineageRecorder?: DecisionLineageRecorder;
@@ -37,15 +39,26 @@ export class MultiAgentCoordinator {
     this.lineageRecorder = options.lineageRecorder;
     this.logger = options.logger ?? defaultAgentLogger;
 
-    this.specialists =
-      options.specialists ??
-      [
+    if (options.specialists) {
+      this.specialists = options.specialists;
+    } else {
+      const baseList: Agent[] = [
         new TechnicalAgent({ logger: this.logger }),
         new SentimentAgent({
           deterministicOffline: this.deterministicOffline,
           logger: this.logger,
         }),
       ];
+      if (options.includePolymarket) {
+        baseList.push(
+          new PolymarketAgent({
+            deterministicOffline: this.deterministicOffline,
+            logger: this.logger,
+          }),
+        );
+      }
+      this.specialists = baseList;
+    }
 
     this.synthesizer =
       options.synthesizer ??
@@ -95,6 +108,8 @@ export class MultiAgentCoordinator {
       evidence: {},
     };
 
+    const polymarket = outputs.find((o) => o.agent === "polymarket");
+
     // 2. Evaluate consensus short-circuit
     const consensusCheck = evaluateConsensus(outputs);
 
@@ -120,6 +135,7 @@ export class MultiAgentCoordinator {
           currentBar,
           technical,
           sentiment,
+          polymarket,
         },
         { ...input, runId },
       );
@@ -155,14 +171,20 @@ export class MultiAgentCoordinator {
         technical: `System prompt: Technical analysis specialist.\nUser prompt: Analyze ${input.symbol} at ${input.decisionTs} with ${input.bars.length} historical bars and indicators (${input.indicators ? "available" : "none"}).`,
         sentiment: `System prompt: Sentiment analysis specialist.\nUser prompt: Evaluate news sentiment for ${input.symbol} with ${input.news?.length ?? 0} news items up to ${input.decisionTs}.`,
       };
+      if (polymarket) {
+        specialistPrompts.polymarket = `System prompt: Macro prediction market specialist.\nUser prompt: Evaluate crowdsourced macro probability distributions for ${input.symbol} up to ${input.decisionTs}.`;
+      }
       if (synthesisResult) {
-        specialistPrompts.debateSynthesizer = `System prompt: Multi-agent debate synthesizer.\nUser prompt: Reconcile specialist stance disagreement for ${input.symbol} at ${input.decisionTs} between Technical (${technical.direction}, conf ${technical.confidence}) and Sentiment (${sentiment.direction}, conf ${sentiment.confidence}).`;
+        specialistPrompts.debateSynthesizer = `System prompt: Multi-agent debate synthesizer.\nUser prompt: Reconcile specialist stance disagreement for ${input.symbol} at ${input.decisionTs} between Technical (${technical.direction}, conf ${technical.confidence}), Sentiment (${sentiment.direction}, conf ${sentiment.confidence})${polymarket ? `, and Polymarket (${polymarket.direction}, conf ${polymarket.confidence})` : ""}.`;
       }
 
       const specialistCompletions: Record<string, unknown> = {
         technical,
         sentiment,
       };
+      if (polymarket) {
+        specialistCompletions.polymarket = polymarket;
+      }
       if (synthesisResult) {
         specialistCompletions.debateSynthesizer = synthesisResult;
       }
