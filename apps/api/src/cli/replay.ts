@@ -31,6 +31,14 @@ export async function runReplayCli(): Promise<void> {
         ? `${(exp.benchmarkDelta.sharpeRatio >= 0 ? "+" : "")}${exp.benchmarkDelta.sharpeRatio.toFixed(2)}`
         : "—";
 
+    const daStr = exp.decisionMetrics
+      ? `${(exp.decisionMetrics.directionalAccuracy * 100).toFixed(1)}%`
+      : "—";
+
+    const brierStr = exp.decisionMetrics?.brierScore !== null && exp.decisionMetrics?.brierScore !== undefined
+      ? exp.decisionMetrics.brierScore.toFixed(3)
+      : "—";
+
     return {
       "Strategy Name": exp.strategy,
       "Total Return": `${(exp.metrics.totalReturn * 100 >= 0 ? "+" : "")}${(exp.metrics.totalReturn * 100).toFixed(2)}%`,
@@ -39,6 +47,8 @@ export async function runReplayCli(): Promise<void> {
       "Sortino Ratio": exp.metrics.sortinoRatio.toFixed(2),
       "Max Drawdown": `${(exp.metrics.maxDrawdown * 100).toFixed(2)}%`,
       Trades: exp.metrics.tradeCount,
+      "Dir Acc": daStr,
+      "Brier Score": brierStr,
       "Δ Return vs B&H": deltaReturnStr,
       "Δ Sharpe vs B&H": deltaSharpeStr,
     };

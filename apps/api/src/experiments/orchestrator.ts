@@ -10,10 +10,15 @@ import {
   type Strategy,
   type DatasetFixture,
   type ExperimentStrategyConfig,
+  type DecisionIntelligenceMetrics,
 } from "@committee/contracts";
 import { TemporalGuard } from "@committee/fixtures";
 import { runBacktest } from "../backtest/simulator";
-import { safeRound } from "../backtest/metrics";
+import {
+  calculateDecisionIntelligenceMetrics,
+  safeRound,
+  type DecisionSignal,
+} from "../backtest/metrics";
 import { computeDatasetHash, getGitCommitHash } from "./hash";
 
 export interface RunExperimentOptions {
@@ -33,6 +38,7 @@ export interface RunExperimentOptions {
 export function calculateBenchmarkDelta(
   strategyMetrics: FinancialMetrics,
   benchmarkMetrics: FinancialMetrics,
+  decisionMetrics?: DecisionIntelligenceMetrics,
 ): BenchmarkDelta {
   return {
     totalReturn: safeRound(strategyMetrics.totalReturn - benchmarkMetrics.totalReturn, 6),
@@ -46,6 +52,9 @@ export function calculateBenchmarkDelta(
     profitFactor: safeRound(strategyMetrics.profitFactor - benchmarkMetrics.profitFactor, 4),
     winRate: safeRound(strategyMetrics.winRate - benchmarkMetrics.winRate, 4),
     tradeCount: strategyMetrics.tradeCount - benchmarkMetrics.tradeCount,
+    brierScore: decisionMetrics?.brierScore ?? null,
+    directionalAccuracy: decisionMetrics?.directionalAccuracy,
+    abstentionQuality: decisionMetrics?.abstentionQuality,
   };
 }
 
@@ -68,12 +77,22 @@ export async function runExperiment(
 
   const backtestResult = await runBacktest(strategy, fixture.bars, options?.options);
 
+  let decisionMetrics: DecisionIntelligenceMetrics | undefined = undefined;
+  if ("getDecisions" in strategy && typeof (strategy as { getDecisions?: unknown }).getDecisions === "function") {
+    const decisions = (strategy as { getDecisions: () => (DecisionSignal)[] }).getDecisions();
+    decisionMetrics = calculateDecisionIntelligenceMetrics(fixture.bars, decisions);
+  }
+
   const datasetHash = computeDatasetHash(fixture);
   const gitCommit = getGitCommitHash();
 
   let benchmarkDelta: BenchmarkDelta | undefined = undefined;
   if (options?.benchmarkResult) {
-    benchmarkDelta = calculateBenchmarkDelta(backtestResult, options.benchmarkResult);
+    benchmarkDelta = calculateBenchmarkDelta(
+      backtestResult,
+      options.benchmarkResult,
+      decisionMetrics,
+    );
   }
 
   const manifestPayload: ExperimentManifest = {
@@ -110,6 +129,7 @@ export async function runExperiment(
       profitFactor: backtestResult.profitFactor,
     },
     benchmarkDelta,
+    decisionMetrics,
     trades: backtestResult.trades,
     equityCurve: backtestResult.equityCurve,
     tokenCost: options?.tokenCost ?? 0,

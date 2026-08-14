@@ -1,4 +1,16 @@
-import type { EquityPoint, FinancialMetrics, Trade } from "./types";
+import type {
+  EquityPoint,
+  FinancialMetrics,
+  Trade,
+  PriceBar,
+  SignalType,
+  DecisionIntelligenceMetrics,
+} from "./types";
+
+export interface DecisionSignal {
+  signal: SignalType;
+  confidence?: number | null;
+}
 
 /**
  * Safe rounding helper to eliminate floating point noise (e.g. 0.10000000000000002 -> 0.1).
@@ -202,3 +214,100 @@ export function calculateFinancialMetrics(
     profitFactor: safeRound(profitFactor, 4),
   };
 }
+
+/**
+ * Calculate decision intelligence & calibration metrics evaluating LLM reasoning quality.
+ * - Directional Accuracy: % of active trade bars where forward price moved in predicted direction.
+ * - Brier Score: Mean squared error of predicted probabilistic confidence vs binary realized outcome.
+ * - Abstention Quality: Fraction of neutral/cash bars that avoided non-positive (<= 0) forward returns.
+ * - Abstention Alpha: Spread between mean active forward return and mean neutral forward market return.
+ */
+export function calculateDecisionIntelligenceMetrics(
+  bars: PriceBar[],
+  decisions: (SignalType | DecisionSignal)[],
+): DecisionIntelligenceMetrics {
+  if (bars.length < 2 || decisions.length === 0) {
+    return {
+      directionalAccuracy: 0,
+      brierScore: null,
+      abstentionQuality: 0,
+      abstentionAlpha: 0,
+      activeBarCount: 0,
+      neutralBarCount: 0,
+    };
+  }
+
+  const N = Math.min(bars.length - 1, decisions.length);
+  let activeCount = 0;
+  let correctCount = 0;
+  let brierSum = 0;
+  let brierCount = 0;
+
+  const activeReturns: number[] = [];
+  const neutralReturns: number[] = [];
+
+  for (let t = 0; t < N; t++) {
+    const bar = bars[t];
+    const nextBar = bars[t + 1];
+    const dec = decisions[t];
+    if (!bar || !nextBar || dec === undefined) continue;
+
+    const rawSignal =
+      typeof dec === "object" && dec !== null && "signal" in dec ? dec.signal : dec;
+    const confidence =
+      typeof dec === "object" && dec !== null && "confidence" in dec ? dec.confidence : 1.0;
+
+    let targetWeight = 0;
+    if (typeof rawSignal === "number") targetWeight = rawSignal;
+    else if (rawSignal === "buy") targetWeight = 1.0;
+    else if (rawSignal === "sell") targetWeight = -1.0;
+    else targetWeight = 0.0;
+
+    const forwardReturn = bar.close > 0 ? (nextBar.close - bar.close) / bar.close : 0;
+
+    if (Math.abs(targetWeight) > 1e-6) {
+      activeCount++;
+      activeReturns.push(forwardReturn);
+
+      const isLong = targetWeight > 0;
+      const isCorrect = isLong ? forwardReturn > 0 : forwardReturn < 0;
+      if (isCorrect) correctCount++;
+
+      if (confidence !== null && confidence !== undefined && Number.isFinite(confidence)) {
+        const outcome = isCorrect ? 1.0 : 0.0;
+        brierSum += Math.pow(confidence - outcome, 2);
+        brierCount++;
+      }
+    } else {
+      neutralReturns.push(forwardReturn);
+    }
+  }
+
+  const directionalAccuracy = activeCount > 0 ? safeRound(correctCount / activeCount, 4) : 0;
+  const brierScore = brierCount > 0 ? safeRound(brierSum / brierCount, 4) : null;
+
+  // Abstention Quality: fraction of neutral periods that were <= 0 return (successfully avoided)
+  const neutralCount = neutralReturns.length;
+  const avoidedDownturns = neutralReturns.filter((r) => r <= 0).length;
+  const abstentionQuality = neutralCount > 0 ? safeRound(avoidedDownturns / neutralCount, 4) : 0;
+
+  const meanActive =
+    activeReturns.length > 0
+      ? activeReturns.reduce((a, b) => a + b, 0) / activeReturns.length
+      : 0;
+  const meanNeutral =
+    neutralReturns.length > 0
+      ? neutralReturns.reduce((a, b) => a + b, 0) / neutralReturns.length
+      : 0;
+  const abstentionAlpha = safeRound(meanActive - meanNeutral, 6);
+
+  return {
+    directionalAccuracy,
+    brierScore,
+    abstentionQuality,
+    abstentionAlpha,
+    activeBarCount: activeCount,
+    neutralBarCount: neutralCount,
+  };
+}
+

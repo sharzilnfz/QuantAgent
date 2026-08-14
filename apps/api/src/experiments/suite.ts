@@ -8,6 +8,7 @@ import {
 } from "@committee/contracts";
 import { BuyAndHoldStrategy } from "../backtest/strategies/buy-and-hold";
 import { SmaRsiStrategy } from "../backtest/strategies/sma-rsi";
+import { MultiAgentCoordinatorStrategy } from "../agents/coordinator/strategy";
 import { runBacktest } from "../backtest/simulator";
 import { safeRound } from "../backtest/metrics";
 import { computeDatasetHash, getGitCommitHash } from "./hash";
@@ -63,7 +64,50 @@ export async function runBenchmarkSuite(
     },
   });
 
-  const experimentManifests: ExperimentManifest[] = [benchmarkManifest, smaRsiManifest];
+  // 3. Run Multi-Agent Debate ON Strategy
+  const debateOnStrategy = new MultiAgentCoordinatorStrategy({
+    name: "multi-agent-debate-on",
+    debateEnabled: true,
+    deterministicOffline: true,
+    news: fixture.news,
+    logger: () => {},
+  });
+  const debateOnManifest = await runExperiment(debateOnStrategy, fixture, {
+    options: options?.backtestOptions,
+    benchmarkResult: benchmarkBacktestResult,
+    strategyConfig: {
+      name: debateOnStrategy.name,
+      type: "multi-agent",
+      description: "Multi-agent committee with conditional debate synthesis on specialist disagreement",
+      parameters: { debateEnabled: true },
+    },
+  });
+
+  // 4. Run Multi-Agent Debate OFF (Ablation) Strategy
+  const debateOffStrategy = new MultiAgentCoordinatorStrategy({
+    name: "multi-agent-debate-off",
+    debateEnabled: false,
+    deterministicOffline: true,
+    news: fixture.news,
+    logger: () => {},
+  });
+  const debateOffManifest = await runExperiment(debateOffStrategy, fixture, {
+    options: options?.backtestOptions,
+    benchmarkResult: benchmarkBacktestResult,
+    strategyConfig: {
+      name: debateOffStrategy.name,
+      type: "multi-agent-ablation",
+      description: "Multi-agent committee with neutral ablation fallback on specialist disagreement",
+      parameters: { debateEnabled: false },
+    },
+  });
+
+  const experimentManifests: ExperimentManifest[] = [
+    benchmarkManifest,
+    smaRsiManifest,
+    debateOnManifest,
+    debateOffManifest,
+  ];
 
   // 3. Run any additional custom strategies
   if (options?.customStrategies && options.customStrategies.length > 0) {

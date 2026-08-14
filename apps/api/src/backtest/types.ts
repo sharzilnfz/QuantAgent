@@ -12,6 +12,10 @@ export type {
   ExperimentStrategyConfig,
   ExperimentManifest,
   ExperimentSuiteResult,
+  DecisionIntelligenceMetrics,
+  DecisionLineageRecord,
+  ConsensusResult,
+  DebateSynthesis,
 } from "@committee/contracts";
 
 export {
@@ -25,4 +29,8 @@ export {
   ExperimentStrategyConfig as ExperimentStrategyConfigSchema,
   ExperimentManifest as ExperimentManifestSchema,
   ExperimentSuiteResult as ExperimentSuiteResultSchema,
+  DecisionIntelligenceMetrics as DecisionIntelligenceMetricsSchema,
+  DecisionLineageRecord as DecisionLineageRecordSchema,
+  ConsensusResult as ConsensusResultSchema,
+  DebateSynthesis as DebateSynthesisSchema,
 } from "@committee/contracts";
