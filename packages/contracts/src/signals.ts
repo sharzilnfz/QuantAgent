@@ -44,3 +44,30 @@ export const IndicatorSnapshot = z.object({
   asOf: z.string().datetime(),
 });
 export type IndicatorSnapshot = z.infer<typeof IndicatorSnapshot>;
+
+/**
+ * A timestamped financial news item.
+ * Point-in-time discipline: `asOf` is the moment the headline was published and knowable.
+ */
+export const NewsItem = z.object({
+  id: z.string(),
+  headline: z.string(),
+  summary: z.string().optional(),
+  source: z.string().default("benzinga"),
+  url: z.string().optional(),
+  symbols: z.array(z.string()),
+  publishedAt: z.string().datetime(),
+  asOf: z.string().datetime(),
+});
+export type NewsItem = z.infer<typeof NewsItem>;
+
+/**
+ * A complete frozen dataset fixture containing price bars and news items for a symbol.
+ */
+export const DatasetFixture = z.object({
+  symbol: z.string(),
+  bars: z.array(PriceBar),
+  news: z.array(NewsItem),
+});
+export type DatasetFixture = z.infer<typeof DatasetFixture>;
+
