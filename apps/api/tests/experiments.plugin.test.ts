@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
-import { ExperimentSuiteResult } from "@committee/contracts";
+import { ExperimentSuiteResult, VarianceSweepResult } from "@committee/contracts";
 import { buildApp } from "../src/app.js";
 
-describe("GET /experiments/suite", () => {
+describe("Experiments Plugin HTTP Routes", () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
@@ -14,55 +14,83 @@ describe("GET /experiments/suite", () => {
     await app.close();
   });
 
-  it("returns a contract-valid ExperimentSuiteResult for default symbol (AAPL)", async () => {
-    const res = await app.inject({
-      method: "GET",
-      url: "/experiments/suite",
+  describe("GET /experiments/suite", () => {
+    it("returns a contract-valid ExperimentSuiteResult for default symbol (AAPL)", async () => {
+      const res = await app.inject({
+        method: "GET",
+        url: "/experiments/suite",
+      });
+
+      expect(res.statusCode).toBe(200);
+      const json = res.json();
+
+      const parsed = ExperimentSuiteResult.safeParse(json);
+      expect(parsed.success).toBe(true);
+
+      if (!parsed.success) return;
+
+      expect(parsed.data.symbol).toBe("AAPL");
+      expect(parsed.data.datasetHash).toBeTruthy();
+      expect(parsed.data.benchmark).toBeDefined();
+      expect(parsed.data.benchmark?.strategyConfig?.name).toBe("buy-and-hold");
+
+      const strategyNames = parsed.data.experiments.map((exp) => exp.strategyConfig?.name);
+      expect(strategyNames).toContain("buy-and-hold");
+      expect(strategyNames).toContain("sma-rsi");
+      expect(strategyNames).toContain("multi-agent-debate-on");
+      expect(strategyNames).toContain("multi-agent-debate-off");
+      expect(strategyNames).toContain("multi-agent-polymarket");
     });
 
-    expect(res.statusCode).toBe(200);
-    const json = res.json();
+    it("serves cached result on repeated requests", async () => {
+      const res1 = await app.inject({
+        method: "GET",
+        url: "/experiments/suite?symbol=AAPL",
+      });
+      expect(res1.statusCode).toBe(200);
 
-    const parsed = ExperimentSuiteResult.safeParse(json);
-    expect(parsed.success).toBe(true);
+      const res2 = await app.inject({
+        method: "GET",
+        url: "/experiments/suite?symbol=AAPL",
+      });
+      expect(res2.statusCode).toBe(200);
+      expect(res2.json().datasetHash).toBe(res1.json().datasetHash);
+      expect(res2.json().id).toBe(res1.json().id);
+    });
 
-    if (!parsed.success) return;
+    it("returns 404 when fixture symbol does not exist", async () => {
+      const res = await app.inject({
+        method: "GET",
+        url: "/experiments/suite?symbol=NONEXISTENT_TICKER_123",
+      });
 
-    expect(parsed.data.symbol).toBe("AAPL");
-    expect(parsed.data.datasetHash).toBeTruthy();
-    expect(parsed.data.benchmark).toBeDefined();
-    expect(parsed.data.benchmark?.strategyConfig?.name).toBe("buy-and-hold");
-
-    const strategyNames = parsed.data.experiments.map((exp) => exp.strategyConfig?.name);
-    expect(strategyNames).toContain("buy-and-hold");
-    expect(strategyNames).toContain("sma-rsi");
-    expect(strategyNames).toContain("multi-agent-debate-on");
-    expect(strategyNames).toContain("multi-agent-debate-off");
+      expect(res.statusCode).toBe(404);
+      expect(res.json().error).toBe("fixture_not_found");
+    });
   });
 
-  it("serves cached result on repeated requests", async () => {
-    const res1 = await app.inject({
-      method: "GET",
-      url: "/experiments/suite?symbol=AAPL",
-    });
-    expect(res1.statusCode).toBe(200);
+  describe("GET /experiments/variance-sweep", () => {
+    it("returns a contract-valid VarianceSweepResult with equity variance bands", async () => {
+      const res = await app.inject({
+        method: "GET",
+        url: "/experiments/variance-sweep?symbol=AAPL&windowSize=20&runs=3",
+      });
 
-    const res2 = await app.inject({
-      method: "GET",
-      url: "/experiments/suite?symbol=AAPL",
-    });
-    expect(res2.statusCode).toBe(200);
-    expect(res2.json().datasetHash).toBe(res1.json().datasetHash);
-    expect(res2.json().id).toBe(res1.json().id);
-  });
+      expect(res.statusCode).toBe(200);
+      const json = res.json();
 
-  it("returns 404 when fixture symbol does not exist", async () => {
-    const res = await app.inject({
-      method: "GET",
-      url: "/experiments/suite?symbol=NONEXISTENT_TICKER_123",
-    });
+      const parsed = VarianceSweepResult.safeParse(json);
+      expect(parsed.success).toBe(true);
 
-    expect(res.statusCode).toBe(404);
-    expect(res.json().error).toBe("fixture_not_found");
+      if (!parsed.success) return;
+
+      expect(parsed.data.symbol).toBe("AAPL");
+      expect(parsed.data.runsCount).toBe(3);
+      expect(parsed.data.windowSize).toBe(20);
+      expect(parsed.data.runs).toHaveLength(3);
+      expect(parsed.data.equityBands.length).toBeGreaterThan(0);
+      expect(parsed.data.totalCost).toBeLessThan(5.0);
+    });
   });
 });
+
