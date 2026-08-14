@@ -10,6 +10,7 @@ export * from "./enums";
 export * from "./signals";
 export * from "./agents";
 export * from "./portfolio";
+export * from "./backtest";
 
 // ---------------------------------------------------------------------------
 // PLACEHOLDER — Sprint 2 (L3 Consensus / L4 Risk).  DO NOT implement here yet.
