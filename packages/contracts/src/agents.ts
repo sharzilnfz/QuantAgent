@@ -14,7 +14,7 @@ import { PriceBar, IndicatorSnapshot, NewsItem } from "./signals";
  * Semantic version of the agent I/O contracts. Bump on any breaking change to
  * `AgentInput` / `AgentOutput`. Consumers may assert compatibility against this.
  */
-export const CONTRACTS_VERSION = "1.1.0";
+export const CONTRACTS_VERSION = "1.2.0";
 
 /**
  * What the orchestrator hands an agent. Bounded to what is knowable at `decisionTs`:

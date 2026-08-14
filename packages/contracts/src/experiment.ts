@@ -3,6 +3,19 @@ import { Timeframe } from "./enums";
 import { FinancialMetrics, Trade, EquityPoint } from "./backtest";
 
 /**
+ * Decision intelligence & calibration metrics evaluating LLM reasoning quality.
+ */
+export const DecisionIntelligenceMetrics = z.object({
+  directionalAccuracy: z.number().min(0).max(1), // % of active trades where market moved in predicted direction
+  brierScore: z.number().min(0).nullable(), // Calibration mean squared error (MSE) across active probabilistic stances
+  abstentionQuality: z.number(), // Abstention Hit Rate: % of neutral bars avoiding <= 0 return
+  abstentionAlpha: z.number().optional(), // Comparative Return Spread: mean(R_active) - mean(R_neutral)
+  activeBarCount: z.number().int().nonnegative(),
+  neutralBarCount: z.number().int().nonnegative(),
+});
+export type DecisionIntelligenceMetrics = z.infer<typeof DecisionIntelligenceMetrics>;
+
+/**
  * Strategy configuration snapshot recorded in an experiment manifest.
  */
 export const ExperimentStrategyConfig = z.object({
@@ -27,7 +40,9 @@ export const BenchmarkDelta = z.object({
   profitFactor: z.number().optional(),
   winRate: z.number().optional(),
   tradeCount: z.number().optional(),
-  brierScore: z.number().optional(),
+  brierScore: z.number().nullable().optional(),
+  directionalAccuracy: z.number().optional(),
+  abstentionQuality: z.number().optional(),
   deltaTotalReturn: z.number().optional(),
   deltaAnnualizedReturn: z.number().optional(),
   deltaSharpeRatio: z.number().optional(),
@@ -40,7 +55,7 @@ export type BenchmarkDelta = z.infer<typeof BenchmarkDelta>;
 /**
  * Immutable ExperimentManifest schema for evaluation lab experiments.
  * Captures all execution context, parameters, point-in-time dataset hashes,
- * simulated trades, equity curve, and calculated financial metrics.
+ * simulated trades, equity curve, calculated financial metrics, and decision telemetry.
  */
 export const ExperimentManifest = z.object({
   id: z.string().uuid(),
@@ -53,6 +68,7 @@ export const ExperimentManifest = z.object({
   strategyConfig: ExperimentStrategyConfig.optional(),
   metrics: FinancialMetrics,
   benchmarkDelta: BenchmarkDelta.optional(),
+  decisionMetrics: DecisionIntelligenceMetrics.optional(),
   trades: z.array(Trade),
   equityCurve: z.array(EquityPoint),
   tokenCost: z.number().default(0).optional(),
