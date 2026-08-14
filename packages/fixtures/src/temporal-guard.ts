@@ -1,4 +1,4 @@
-import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent } from "@committee/contracts";
+import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent, PolymarketProbabilityPoint } from "@committee/contracts";
 
 /**
  * Thrown when a dataset query or evaluation step encounters data timestamped

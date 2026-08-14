@@ -5,6 +5,7 @@ import { requireAuth } from "../auth/require-auth.js";
 import { config } from "../config.js";
 import { runAgents } from "./runner.js";
 import { TechnicalAgent } from "./technical/agent.js";
+import { isLlmConfigured } from "./technical/llm-client.js";
 
 /**
  * OWNER: M1 (specs 06/07) — Agent framework HTTP surface.
@@ -79,7 +80,7 @@ export async function agentsPlugin(app: FastifyInstance): Promise<void> {
       return reply.code(400).send({ error: "invalid_body", issues: body.error.issues });
     }
 
-    if (!config.ANTHROPIC_API_KEY) {
+    if (!isLlmConfigured()) {
       return reply.code(503).send({ error: "llm_not_configured" });
     }
 

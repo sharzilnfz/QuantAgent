@@ -6,7 +6,7 @@ import {
 } from "@committee/contracts";
 
 import { config } from "../../config.js";
-import { createLlmClient, type LlmClient } from "../technical/llm-client.js";
+import { createLlmClient, isLlmConfigured, type LlmClient } from "../technical/llm-client.js";
 import {
   DEBATE_SYSTEM_PROMPT,
   DEBATE_TOOL_NAME,
@@ -36,7 +36,7 @@ export class DebateSynthesizer {
 
     if (options.llm) {
       this.llm = options.llm;
-    } else if (!this.deterministicOffline && config.ANTHROPIC_API_KEY) {
+    } else if (!this.deterministicOffline && isLlmConfigured()) {
       this.llm = createLlmClient();
     } else {
       this.llm = undefined;

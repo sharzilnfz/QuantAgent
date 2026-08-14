@@ -33,9 +33,8 @@ export interface BudgetSnapshot {
 
 // Token pricing rate cards ($ per 1M tokens)
 const MODEL_RATES: Record<string, { promptPerM: number; completionPerM: number }> = {
-  "claude-3-5-haiku-20241022": { promptPerM: 0.8, completionPerM: 4.0 },
-  "claude-3-7-sonnet-20250219": { promptPerM: 3.0, completionPerM: 15.0 },
-  default: { promptPerM: 1.0, completionPerM: 5.0 },
+  free: { promptPerM: 0.0, completionPerM: 0.0 },
+  default: { promptPerM: 0.5, completionPerM: 2.0 },
 };
 
 export class BudgetGuard {
@@ -56,6 +55,9 @@ export class BudgetGuard {
    * Calculate cost in USD from input/output tokens for a model.
    */
   public calculateCost(promptTokens: number, completionTokens: number, model: string = "default"): number {
+    if (model.includes(":free")) {
+      return 0;
+    }
     const rate = MODEL_RATES[model] ?? MODEL_RATES.default!;
     const promptCost = (promptTokens / 1_000_000) * rate.promptPerM;
     const completionCost = (completionTokens / 1_000_000) * rate.completionPerM;

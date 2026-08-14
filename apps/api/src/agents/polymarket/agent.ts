@@ -8,7 +8,7 @@ import { TemporalGuard } from "@committee/fixtures";
 
 import { config } from "../../config.js";
 import { BaseAgent, NO_OPINION, type BaseAgentOptions } from "../base.js";
-import { createLlmClient, type LlmClient } from "../technical/llm-client.js";
+import { createLlmClient, isLlmConfigured, type LlmClient } from "../technical/llm-client.js";
 import { classifyMacroOdds, type MacroOddsClassification } from "./classify.js";
 import {
   AGENT_OUTPUT_TOOL_NAME,
@@ -43,7 +43,7 @@ export class PolymarketAgent extends BaseAgent {
 
     if (options.llm) {
       this.llm = options.llm;
-    } else if (!this.deterministicOffline && config.ANTHROPIC_API_KEY) {
+    } else if (!this.deterministicOffline && isLlmConfigured()) {
       this.llm = createLlmClient();
     } else {
       this.llm = undefined;

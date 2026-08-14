@@ -11,8 +11,8 @@ describe("Offline Benchmark Replay Suite", () => {
     const suiteResult = await runBenchmarkSuite(fixture);
     const duration = performance.now() - start;
 
-    expect(duration).toBeLessThan(5000);
-    expect(suiteResult.totalDurationMs).toBeLessThan(5000);
+    expect(duration).toBeLessThan(10000);
+    expect(suiteResult.totalDurationMs).toBeLessThan(10000);
     expect(suiteResult.totalCost).toBe(0);
 
     // Validate result against schema

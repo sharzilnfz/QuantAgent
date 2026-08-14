@@ -41,13 +41,17 @@ describe("BudgetGuard & Hard Cumulative Cost Enforcement", () => {
   it("calculates cost accurately from token pricing rate cards", () => {
     const guard = new BudgetGuard({ maxBudgetUsd: 5.0 });
 
-    // 100k input tokens + 20k output tokens with Claude 3.5 Haiku ($0.80 / $4.00 per MTok)
-    const cost = guard.calculateCost(100_000, 20_000, "claude-3-5-haiku-20241022");
-    // (100k / 1M * 0.8) + (20k / 1M * 4.0) = 0.08 + 0.08 = 0.16
-    expect(cost).toBeCloseTo(0.16, 4);
+    // 100k input tokens + 20k output tokens with default rate ($0.50 / $2.00 per MTok)
+    const cost = guard.calculateCost(100_000, 20_000, "default");
+    // (100k / 1M * 0.5) + (20k / 1M * 2.0) = 0.05 + 0.04 = 0.09
+    expect(cost).toBeCloseTo(0.09, 4);
 
-    const snapshot = guard.recordTokens(100_000, 20_000, "claude-3-5-haiku-20241022");
-    expect(snapshot.cumulativeCostUsd).toBeCloseTo(0.16, 4);
+    // Free model always costs $0.00
+    const freeCost = guard.calculateCost(100_000, 20_000, "meta-llama/llama-3.3-70b-instruct:free");
+    expect(freeCost).toBe(0.0);
+
+    const snapshot = guard.recordTokens(100_000, 20_000, "default");
+    expect(snapshot.cumulativeCostUsd).toBeCloseTo(0.09, 4);
     expect(snapshot.inputTokens).toBe(100_000);
     expect(snapshot.outputTokens).toBe(20_000);
   });

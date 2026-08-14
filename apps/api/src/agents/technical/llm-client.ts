@@ -90,28 +90,51 @@ export class AnthropicLlmClient implements LlmClient {
 }
 
 /**
- * Native OpenRouter LLM client (calls OpenRouter Chat Completions endpoint).
+ * Standard OpenAI-compatible LLM client (supporting OpenAI, OpenRouter, DeepSeek, Groq, Ollama, Together, etc.).
+ * Uses OpenAI-standard function calling (`tools` array with JSON schema) for structured outputs.
  */
-export class OpenRouterLlmClient implements LlmClient {
+export class OpenAiCompatibleLlmClient implements LlmClient {
   private readonly apiKey: string;
   private readonly baseUrl: string;
+  private readonly isRawOpenRouter: boolean;
 
   constructor(options: { apiKey?: string; baseUrl?: string } = {}) {
-    this.apiKey = options.apiKey ?? config.ANTHROPIC_API_KEY;
-    this.baseUrl = options.baseUrl || config.ANTHROPIC_BASE_URL || "https://openrouter.ai/api/v1";
+    const rawKey =
+      options.apiKey ??
+      config.OPENAI_API_KEY ??
+      config.OPENROUTER_API_KEY ??
+      config.ANTHROPIC_API_KEY;
+    this.apiKey = rawKey;
+
+    const rawUrl =
+      options.baseUrl ||
+      config.OPENAI_BASE_URL ||
+      config.ANTHROPIC_BASE_URL ||
+      (rawKey.startsWith("sk-or-v1-") || Boolean(config.OPENROUTER_API_KEY)
+        ? "https://openrouter.ai/api/v1"
+        : "https://api.openai.com/v1");
+
+    this.baseUrl = rawUrl.replace(/\/+$/, "");
+    this.isRawOpenRouter = this.baseUrl.includes("openrouter.ai") || rawKey.startsWith("sk-or-v1-");
   }
 
   async completeStructured(request: LlmStructuredRequest): Promise<unknown> {
-    const model = request.model.includes("/")
-      ? request.model
-      : `anthropic/${request.model.replace("claude-haiku-4-5", "claude-3-haiku")}`;
+    const model = request.model || config.LLM_CHEAP_MODEL;
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (this.apiKey) {
+      headers["Authorization"] = `Bearer ${this.apiKey}`;
+    }
+    if (this.isRawOpenRouter) {
+      headers["HTTP-Referer"] = "https://github.com/sharzilnfz/QuantAgent";
+      headers["X-Title"] = "QuantAgent Observatory";
+    }
 
     const res = await fetch(`${this.baseUrl}/chat/completions`, {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${this.apiKey}`,
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({
         model,
         messages: [
@@ -134,7 +157,7 @@ export class OpenRouterLlmClient implements LlmClient {
 
     if (!res.ok) {
       const errText = await res.text();
-      throw new Error(`OpenRouter API error (${res.status}): ${errText}`);
+      throw new Error(`OpenAI API standard error (${res.status}): ${errText}`);
     }
 
     const data = (await res.json()) as any;
@@ -144,19 +167,63 @@ export class OpenRouterLlmClient implements LlmClient {
       return typeof raw === "string" ? JSON.parse(raw) : raw;
     }
 
-    throw new Error("OpenRouter returned no tool call response");
+    throw new Error("OpenAI API endpoint returned no structured tool call response");
   }
+}
+
+/** Backward-compatibility alias for OpenRouter */
+export class OpenRouterLlmClient extends OpenAiCompatibleLlmClient {}
+
+/**
+ * Check whether any LLM provider key or compatible base URL is configured.
+ */
+export function isLlmConfigured(): boolean {
+  return Boolean(
+    config.OPENAI_API_KEY ||
+    config.OPENROUTER_API_KEY ||
+    config.ANTHROPIC_API_KEY ||
+    config.OPENAI_BASE_URL
+  );
 }
 
 /**
  * Factory function to create the appropriate LLM client based on configuration.
  */
 export function createLlmClient(options: AnthropicLlmClientOptions = {}): LlmClient {
-  const key = options.apiKey ?? config.ANTHROPIC_API_KEY;
-  const baseUrl = config.ANTHROPIC_BASE_URL;
-  if (key.startsWith("sk-or-v1-") || baseUrl.includes("openrouter.ai")) {
-    return new OpenRouterLlmClient({ apiKey: key, baseUrl: baseUrl || undefined });
+  const provider = config.LLM_PROVIDER;
+  const anthropicKey = options.apiKey ?? config.ANTHROPIC_API_KEY;
+  const openaiKey = config.OPENAI_API_KEY;
+  const openrouterKey = config.OPENROUTER_API_KEY;
+  const openaiBaseUrl = config.OPENAI_BASE_URL;
+  const anthropicBaseUrl = config.ANTHROPIC_BASE_URL;
+
+  // If OpenRouter key or provider is set, strictly use OpenRouter API (/chat/completions)
+  if (
+    provider === "openrouter" ||
+    Boolean(openrouterKey) ||
+    anthropicKey.startsWith("sk-or-") ||
+    openaiKey.startsWith("sk-or-") ||
+    anthropicBaseUrl.includes("openrouter.ai") ||
+    openaiBaseUrl.includes("openrouter.ai")
+  ) {
+    return new OpenAiCompatibleLlmClient({
+      apiKey: openrouterKey || (anthropicKey.startsWith("sk-or-") ? anthropicKey : "") || openaiKey,
+      baseUrl: openaiBaseUrl || (anthropicBaseUrl.includes("openrouter.ai") ? anthropicBaseUrl : "") || "https://openrouter.ai/api/v1",
+    });
   }
+
+  if (
+    provider === "openai" ||
+    Boolean(openaiKey) ||
+    Boolean(openaiBaseUrl) ||
+    (anthropicKey.startsWith("sk-") && !anthropicKey.startsWith("sk-ant-"))
+  ) {
+    return new OpenAiCompatibleLlmClient({
+      apiKey: openaiKey || anthropicKey,
+      baseUrl: openaiBaseUrl || "https://api.openai.com/v1",
+    });
+  }
+
   return new AnthropicLlmClient(options);
 }
 
