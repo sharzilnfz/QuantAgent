@@ -16,7 +16,8 @@
     "db:seed": "pnpm --filter @committee/db seed",
     "seed:data": "pnpm --filter @committee/fixtures seed",
     "dev:api": "pnpm --filter @committee/api dev",
-    "dev:web": "pnpm --filter @committee/web dev"
+    "dev:web": "pnpm --filter @committee/web dev",
+    "demo:replay": "pnpm --filter @committee/api demo:replay"
   },
   "devDependencies": {
     "turbo": "^2.10.9"

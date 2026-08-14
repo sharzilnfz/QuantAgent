@@ -4,11 +4,11 @@
 
 **Blocked by:** 02 — Pure TypeScript Indicator Engine & Deterministic Baselines
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `runExperiment` orchestrator takes a strategy configuration and frozen dataset fixture and coordinates the backtest run.
-- [ ] Immutable `ExperimentManifest` JSON is generated and persisted, capturing `id`, `createdAt`, `gitCommit`, `datasetHash`, strategy parameters, returns, Sharpe, Sortino, MaxDD, and trade counts.
-- [ ] Replay CLI command `pnpm demo:replay` executes the benchmark run for AAPL (2023–2024) and outputs summary performance tables in terminal stdout.
-- [ ] Replay run completes in $< 3.0$ seconds without external network requests or missing credential errors.
-- [ ] Manifest and evaluation schemas are defined in `packages/contracts` and exported for use in frontend and backend.
-- [ ] Replay mode accurately computes delta in Sharpe and Return between strategies and the Buy & Hold benchmark.
+- [x] `runExperiment` orchestrator takes a strategy configuration and frozen dataset fixture and coordinates the backtest run.
+- [x] Immutable `ExperimentManifest` JSON is generated and persisted, capturing `id`, `createdAt`, `gitCommit`, `datasetHash`, strategy parameters, returns, Sharpe, Sortino, MaxDD, and trade counts.
+- [x] Replay CLI command `pnpm demo:replay` executes the benchmark run for AAPL (2023–2024) and outputs summary performance tables in terminal stdout.
+- [x] Replay run completes in $< 3.0$ seconds without external network requests or missing credential errors.
+- [x] Manifest and evaluation schemas are defined in `packages/contracts` and exported for use in frontend and backend.
+- [x] Replay mode accurately computes delta in Sharpe and Return between strategies and the Buy & Hold benchmark.

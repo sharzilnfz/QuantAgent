@@ -8,6 +8,10 @@ export type {
   BacktestResult,
   BacktestOptions,
   Strategy,
+  BenchmarkDelta,
+  ExperimentStrategyConfig,
+  ExperimentManifest,
+  ExperimentSuiteResult,
 } from "@committee/contracts";
 
 export {
@@ -17,4 +21,8 @@ export {
   FinancialMetrics as FinancialMetricsSchema,
   BacktestResult as BacktestResultSchema,
   BacktestOptions as BacktestOptionsSchema,
+  BenchmarkDelta as BenchmarkDeltaSchema,
+  ExperimentStrategyConfig as ExperimentStrategyConfigSchema,
+  ExperimentManifest as ExperimentManifestSchema,
+  ExperimentSuiteResult as ExperimentSuiteResultSchema,
 } from "@committee/contracts";
