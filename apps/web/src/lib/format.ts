@@ -85,3 +85,31 @@ export function formatDate(iso: string): string {
     year: "numeric",
   });
 }
+
+/** `0.1542` → `15.42%`. */
+export function formatPercent(value: number, decimals = 2): string {
+  return `${(value * 100).toFixed(decimals)}%`;
+}
+
+/** `0.0421` → `+4.21%` / `-1.20%`. Explicit sign is a non-color direction channel. */
+export function formatSignedPercent(value: number, decimals = 2): string {
+  const sign = value > 0 ? "+" : value < 0 ? "-" : "";
+  return `${sign}${(Math.abs(value) * 100).toFixed(decimals)}%`;
+}
+
+/** `1.842` → `1.84`. */
+export function formatRatio(value: number, decimals = 2): string {
+  return value.toFixed(decimals);
+}
+
+/** `0.35` → `+0.35` / `-0.20`. */
+export function formatSignedRatio(value: number, decimals = 2): string {
+  const sign = value > 0 ? "+" : value < 0 ? "-" : "";
+  return `${sign}${Math.abs(value).toFixed(decimals)}`;
+}
+
+/** `0.123` → `0.123` or `—` when null/undefined. */
+export function formatBrier(value: number | null | undefined): string {
+  if (value === null || value === undefined || Number.isNaN(value)) return "—";
+  return value.toFixed(3);
+}

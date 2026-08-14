@@ -38,6 +38,14 @@
     --series-1: #2a78d6;
     /* slot 2, reserved: #eb6834 (validated alongside slot 1, both modes) */
 
+    /* multi-series categorical tokens for evaluation observatory */
+    --series-bench: #71717a;
+    --series-baseline: #d97706;
+    --series-debate-on: #2563eb;
+    --series-debate-off: #7c3aed;
+    --series-specialist: #059669;
+    --drawdown-fill: rgba(208, 59, 59, 0.12);
+
     /* meter: fill + a lighter step of the SAME ramp for the track */
     --meter-fill: #2a78d6;
     --meter-track: #cde2fb;
@@ -74,6 +82,14 @@
     --hairline: rgba(255, 255, 255, 0.1);
 
     --series-1: #3987e5;
+
+    /* multi-series categorical tokens for evaluation observatory */
+    --series-bench: #a1a1aa;
+    --series-baseline: #fbbf24;
+    --series-debate-on: #38bdf8;
+    --series-debate-off: #a78bfa;
+    --series-specialist: #34d399;
+    --drawdown-fill: rgba(230, 103, 103, 0.16);
 
     --meter-fill: #3987e5;
     --meter-track: #184f95;

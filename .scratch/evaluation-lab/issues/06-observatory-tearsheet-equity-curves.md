@@ -10,12 +10,12 @@
 
 **Blocked by:** 05 — Consensus Short-Circuit & Conditional Debate vs. Neutral Ablation Harness
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Run `/impeccable` setup and align visual tokens and layout hierarchy before writing UI code.
-- [ ] Experiment Tearsheet view renders side-by-side comparison table across all evaluated strategy variants and deterministic baselines.
-- [ ] Displays computed deltas for Total Return, Sharpe Ratio, Sortino Ratio, Max Drawdown, and Brier Score relative to Buy & Hold.
-- [ ] Multi-series time-series equity curve chart (Recharts) renders strategy growth vs. Buy & Hold and SMA/RSI baselines with drawdown visualization.
-- [ ] Strategy selector allows toggling between different evaluation runs or ablation experiments (e.g. Debate ON vs Debate OFF).
-- [ ] UI components consume live/replayed API manifest JSON data without hardcoded static mocks.
-- [ ] Responsive layout adapts cleanly with accessible color contrast, clear visual hierarchy, and high data density.
+- [x] Run `/impeccable` setup and align visual tokens and layout hierarchy before writing UI code.
+- [x] Experiment Tearsheet view renders side-by-side comparison table across all evaluated strategy variants and deterministic baselines.
+- [x] Displays computed deltas for Total Return, Sharpe Ratio, Sortino Ratio, Max Drawdown, and Brier Score relative to Buy & Hold.
+- [x] Multi-series time-series equity curve chart (Recharts) renders strategy growth vs. Buy & Hold and SMA/RSI baselines with drawdown visualization.
+- [x] Strategy selector allows toggling between different evaluation runs or ablation experiments (e.g. Debate ON vs Debate OFF).
+- [x] UI components consume live/replayed API manifest JSON data without hardcoded static mocks.
+- [x] Responsive layout adapts cleanly with accessible color contrast, clear visual hierarchy, and high data density.

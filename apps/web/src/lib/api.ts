@@ -18,7 +18,7 @@
  * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
  * spec-03 session cookie rides along.
  */
-import { AgentOutput, PortfolioState } from "@committee/contracts";
+import { AgentOutput, ExperimentSuiteResult, PortfolioState } from "@committee/contracts";
 
 const API_BASE = "/api";
 
@@ -235,6 +235,13 @@ export const api = {
   /** `GET /watchlist -> { symbol }[]` (seeded; management UI is Sprint 2). */
   async watchlist(signal?: AbortSignal): Promise<WatchlistEntry[]> {
     return parseWatchlist(await request("/watchlist", { signal }), "/watchlist");
+  },
+
+  /** `GET /experiments/suite?symbol=AAPL -> ExperimentSuiteResult`. */
+  async experimentsSuite(symbol = "AAPL", signal?: AbortSignal): Promise<ExperimentSuiteResult> {
+    const path = `/experiments/suite?symbol=${encodeURIComponent(symbol)}`;
+    const payload = await request(path, { signal });
+    return parseContract(ExperimentSuiteResult, payload, path);
   },
 };
 

@@ -24,6 +24,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/", label: "Portfolio", icon: <PortfolioIcon />, enabled: true },
+  { to: "/observatory", label: "Observatory", icon: <ObservatoryIcon />, enabled: true },
   { to: "/signals", label: "Signals", icon: <SignalsIcon />, enabled: false },
   { to: "/debate", label: "Debate", icon: <DebateIcon />, enabled: false },
 ];
@@ -161,6 +162,21 @@ function PortfolioIcon() {
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ObservatoryIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="m12 7 2.5 5 5 2.5-5 2.5L12 17l-2.5-5L4.5 9.5 9.5 7 12 7Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

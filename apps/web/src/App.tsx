@@ -5,6 +5,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./routes/LoginPage";
 import { PortfolioPage } from "./routes/PortfolioPage";
+import { ObservatoryPage } from "./routes/ObservatoryPage";
 import { RequireAuth } from "./routes/RequireAuth";
 
 export function AppRoutes() {
@@ -13,6 +14,7 @@ export function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route element={<RequireAuth />}>
         <Route path="/" element={<PortfolioPage />} />
+        <Route path="/observatory" element={<ObservatoryPage />} />
       </Route>
       {/* Unknown paths land on the dashboard, which re-guards them. */}
       <Route path="*" element={<Navigate to="/" replace />} />

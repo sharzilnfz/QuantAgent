@@ -14,6 +14,7 @@ export const queryKeys = {
   portfolioHistory: ["portfolio", "history"] as const,
   watchlist: ["watchlist"] as const,
   latestAgentOutput: (symbol: string) => ["agents", "latest", symbol] as const,
+  experimentsSuite: (symbol: string) => ["experiments", "suite", symbol] as const,
 };
 
 export function createQueryClient(): QueryClient {
@@ -109,5 +110,13 @@ export function useLatestAgentOutput(symbol: string | undefined) {
     queryKey: queryKeys.latestAgentOutput(symbol ?? ""),
     queryFn: ({ signal }) => api.latestAgentOutput(symbol as string, signal),
     enabled: Boolean(symbol),
+  });
+}
+
+export function useExperimentSuite(symbol: string = "AAPL") {
+  return useQuery({
+    queryKey: queryKeys.experimentsSuite(symbol),
+    queryFn: ({ signal }) => api.experimentsSuite(symbol, signal),
+    retry: false,
   });
 }
