@@ -70,9 +70,7 @@ For Sprint 1, all work happens in one IDE with one coding agent. But the git his
 | **M1** — Agent Architecture Lead | @sharzilnfz | sharzilrs@gmail.com | `"sharzilnfz <sharzilrs@gmail.com>"` |
 | **M2** — Data, Quant & Evaluation | @afnan-mojumder | afnan.mojumder@gmail.com | `"afnan-mojumder <afnan.mojumder@gmail.com>"` |
 | **M3** — Frontend & Visualization | @capitalD10 | unjurndaniel05@gmail.com | `"capitalD10 <unjurndaniel05@gmail.com>"` |
-| **M4** — Platform, Risk & Execution | @ironhead2002 | **TODO** — update when known | `"ironhead2002 <TODO@email.com>"` |
-
-> ⚠️ **M4's email is a placeholder.** Once you have ironhead2002's email, find-and-replace `TODO@email.com` in this file. Until then, commits will still show the right username on GitHub if you use their GitHub no-reply address: `ironhead2002@users.noreply.github.com`.
+| **M4** — Platform, Risk & Execution | @ironhead2002 | nnr.rudra123@gmail.com | `"ironhead2002 <nnr.rudra123@gmail.com>"` |
 
 ### How to commit as a specific member
 
@@ -84,7 +82,7 @@ git commit -m "feat(m1): agent framework base interface + stub agents"
 git commit --author="sharzilnfz <sharzilrs@gmail.com>" -m "feat(m1): agent framework base interface + stub agents"
 git commit --author="afnan-mojumder <afnan.mojumder@gmail.com>" -m "feat(m2): market data ingestion service"
 git commit --author="capitalD10 <unjurndaniel05@gmail.com>" -m "feat(m3): dashboard shell + portfolio view"
-git commit --author="ironhead2002 <ironhead2002@users.noreply.github.com>" -m "feat(m4): database schema + auth session"
+git commit --author="ironhead2002 <nnr.rudra123@gmail.com>" -m "feat(m4): database schema + auth session"
 ```
 
 The `--author` flag sets the **author** (who wrote the code). The **committer** (who ran `git commit`) stays as you — this is normal and expected in open-source workflows where a maintainer lands someone else's patch.
@@ -105,7 +103,7 @@ git checkout -b sprint1/foundation main
 
 # Step 1: Commit M4's work (database + auth — these are root dependencies)
 git add src/db/ src/auth/ drizzle/ src/middleware/auth*
-git commit --author="ironhead2002 <ironhead2002@users.noreply.github.com>" \
+git commit --author="ironhead2002 <nnr.rudra123@gmail.com>" \
   -m "feat(m4): database schema with point-in-time fields + auth system"
 
 # Step 2: Commit M2's work (data ingestion + indicators + backtest scaffold)
@@ -147,11 +145,11 @@ Instead of one commit per member, you can do multiple commits per member to show
 ```bash
 # M4 does schema first, then auth separately
 git add src/db/ drizzle/
-git commit --author="ironhead2002 <ironhead2002@users.noreply.github.com>" \
+git commit --author="ironhead2002 <nnr.rudra123@gmail.com>" \
   -m "feat(m4): database schema with point-in-time as_of fields"
 
 git add src/auth/ src/middleware/auth*
-git commit --author="ironhead2002 <ironhead2002@users.noreply.github.com>" \
+git commit --author="ironhead2002 <nnr.rudra123@gmail.com>" \
   -m "feat(m4): user auth + session management with JWT"
 
 # M2 does ingestion first, then indicators

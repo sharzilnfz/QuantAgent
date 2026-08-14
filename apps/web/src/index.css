@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Theme tokens — spec 08 (M3).
+ *
+ * Values come verbatim from the `dataviz` skill's reference palette instance
+ * (`references/palette.md`): chart surfaces, ink, chrome, the categorical slot-1
+ * hue for the single-series value chart, and the fixed status palette.
+ * Both modes are *selected* (dark is its own set of steps, not an inverted light).
+ * Validated with `scripts/validate_palette.js` in both modes — all six checks PASS.
+ *
+ * `darkMode: "class"` is configured, so the dark set hangs off `.dark` on <html>.
+ * `data-theme` is stamped alongside it for CSS that keys off the attribute.
+ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* surfaces */
+    --surface-page: #f9f9f7;
+    --surface-1: #fcfcfb;
+    --surface-2: #f2f1ed; /* recessed wells: table head, meter track bed, inputs */
+
+    /* ink */
+    --ink-1: #0b0b0b;
+    --ink-2: #52514e;
+    --ink-3: #898781;
+
+    /* chart chrome */
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --hairline: rgba(11, 11, 11, 0.1);
+
+    /* categorical slot 1 — the only series in Sprint 1 */
+    --series-1: #2a78d6;
+    /* slot 2, reserved: #eb6834 (validated alongside slot 1, both modes) */
+
+    /* meter: fill + a lighter step of the SAME ramp for the track */
+    --meter-fill: #2a78d6;
+    --meter-track: #cde2fb;
+
+    /* delta text tokens (never the raw series color) */
+    --delta-pos: #006300;
+    --delta-neg: #d03b3b;
+
+    /* status palette — fixed, never themed. Always shipped with icon + label. */
+    --status-good: #0ca30c;
+    --status-critical: #d03b3b;
+    --status-neutral: #898781;
+
+    --focus-ring: #2a78d6;
+
+    /* motion (emil-design-eng: built-in easings are too weak) */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --surface-page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --surface-2: #232321;
+
+    --ink-1: #ffffff;
+    --ink-2: #c3c2b7;
+    --ink-3: #898781;
+
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --hairline: rgba(255, 255, 255, 0.1);
+
+    --series-1: #3987e5;
+
+    --meter-fill: #3987e5;
+    --meter-track: #184f95;
+
+    --delta-pos: #0ca30c;
+    --delta-neg: #e66767;
+
+    --status-good: #0ca30c;
+    --status-critical: #d03b3b;
+    --status-neutral: #898781;
+
+    --focus-ring: #3987e5;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--surface-page);
+    color: var(--ink-1);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* One visible focus treatment for every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* The default disclosure marker is inconsistent across engines; we draw our own. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary {
+    list-style: none;
+  }
+}
+
+@layer components {
+  /*
+   * Entrance for content that has just resolved. 200ms, ease-out, opacity +
+   * an 8px lift — under the 300ms UI ceiling, and it only ever plays once per
+   * mount (never on refetch: refetch holds the previous render at reduced
+   * opacity instead, so there is no skeleton flash and no layout jump).
+   */
+  .enter {
+    animation: enter 200ms var(--ease-out) both;
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/*
+ * Reduced motion means fewer and gentler animations, not zero: the opacity
+ * fade stays (it aids comprehension), the movement goes.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    animation: fade-only 150ms var(--ease-out) both;
+  }
+  @keyframes fade-only {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

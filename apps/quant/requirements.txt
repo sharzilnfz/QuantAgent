@@ -1,0 +1,17 @@
+# Core service (Python 3.12/3.13 compatible wheels)
+fastapi>=0.115,<0.116
+uvicorn[standard]>=0.34,<0.35
+pydantic>=2.10,<3
+httpx>=0.28,<0.29
+numpy>=2.1,<3
+pandas>=2.2,<3
+psycopg[binary]>=3.2,<4
+python-dotenv>=1.0,<2
+
+# Testing
+pytest>=8.3,<9
+
+# Optional (research-grade backtesting/indicators). May lack wheels on some
+# Python versions; the service degrades gracefully if these are absent.
+# pandas-ta>=0.3.14b0
+# vectorbt>=0.26

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    // "node" is deliberately absent: @types/node is not installed for this
+    // package. src/vite-env.d.ts carries the one Node global the program needs.
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "noEmit": true
+  },
+  "include": ["src", "tests", "vite.config.ts"]
+}

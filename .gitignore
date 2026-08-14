@@ -1,1 +1,27 @@
-node_modules
+node_modules/
+dist/
+build/
+.turbo/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# db / local dumps
+*.sqlite
+*.db
+pgdata/
+
+# misc
+.DS_Store
+*.log
+coverage/
