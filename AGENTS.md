@@ -30,3 +30,27 @@ Before reading files, running `grep_search`, or writing any code:
   - Offline evaluation runs (`pnpm demo:replay`) must operate at $0.00 cost using frozen fixtures without requiring external API keys.
 - **Surgical Changes:**
   - Touch only what is required for the task. Preserve existing working code, interfaces, and comments.
+
+---
+
+## Git Workflow & Team Attribution Practices
+
+### 1. Branching & Worktrees
+- **Feature Branches:** Develop all new features/issues on dedicated branches (`feat/<slug>` or `sprint<N>/<owner>-<slug>`), never uncommitted on baseline branches.
+- **Milestone Tags:** Tag clean milestone baselines (e.g., `v0.1-sprint1-foundation`) before kicking off new sprints.
+- **Worktrees:** Use `.worktrees/<feature-name>` for parallel multi-agent workflows or isolated branch reviews without switching primary directories.
+
+### 2. Multi-Author Commit Attribution Matrix
+When staging commits, attribute code to the matching PRD role using `git commit --author="..."`:
+
+| Role | Member | GitHub | Email | `--author` String | Domain Ownership |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **M1** | Lead / Architecture | `@sharzilnfz` | `sharzilrs@gmail.com` | `"sharzilnfz <sharzilrs@gmail.com>"` | Agent framework, debate synthesis, specs, orchestration |
+| **M2** | Quant / Data Lead | `@afnan-mojumder` | `afnan.mojumder@gmail.com` | `"afnan-mojumder <afnan.mojumder@gmail.com>"` | Indicators, backtest engine, frozen fixtures, anti-leakage |
+| **M3** | Frontend / UI Lead | `@capitalD10` | `unjurndaniel05@gmail.com` | `"capitalD10 <unjurndaniel05@gmail.com>"` | Observatory UI, lineage inspector, tearsheet charts |
+| **M4** | Platform / Risk Lead | `@ironhead2002` | `nnr.rudra123@gmail.com` | `"ironhead2002 <nnr.rudra123@gmail.com>"` | DB schema/migrations, auth, Turborepo tooling, Docker |
+
+### 3. Commit Discipline
+- **Atomic Commits:** Separate platform tooling, specs, data layers, and UI into distinct commits by owner.
+- **Conventional Messages:** Follow `feat(m<N>): ...`, `fix(m<N>): ...`, `chore(platform): ...`, `docs(eval-lab): ...`.
+
