@@ -34,6 +34,7 @@ interface MultiSeriesEquityChartProps {
   benchmark: ExperimentManifest;
   strategies: StrategyOption[];
   visibleStrategyIds: Set<string>;
+  onInspectPoint?: (ts: string) => void;
 }
 
 interface MergedPoint {
@@ -46,6 +47,7 @@ export function MultiSeriesEquityChart({
   benchmark,
   strategies,
   visibleStrategyIds,
+  onInspectPoint,
 }: MultiSeriesEquityChartProps) {
   const [chartMode, setChartMode] = useState<"equity" | "drawdown">("equity");
 
@@ -154,7 +156,15 @@ export function MultiSeriesEquityChart({
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 12, right: 16, bottom: 0, left: 0 }}>
+            <LineChart
+              data={chartData}
+              margin={{ top: 12, right: 16, bottom: 0, left: 0 }}
+              onClick={(state) => {
+                if (state?.activeLabel && onInspectPoint) {
+                  onInspectPoint(String(state.activeLabel));
+                }
+              }}
+            >
               <CartesianGrid stroke="var(--grid)" strokeWidth={1} vertical={false} />
               <XAxis
                 dataKey="asOf"
@@ -235,6 +245,9 @@ export function MultiSeriesEquityChart({
                     {s.name} {chartMode === "equity" ? "($)" : "(%)"}
                   </th>
                 ))}
+                <th scope="col" className="px-3 py-2 text-center font-medium">
+                  Audit
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -253,6 +266,15 @@ export function MultiSeriesEquityChart({
                       </td>
                     );
                   })}
+                  <td className="px-3 py-1.5 text-center">
+                    <button
+                      type="button"
+                      onClick={() => onInspectPoint?.(pt.asOf)}
+                      className="rounded border border-hairline bg-surface px-1.5 py-0.5 text-[10px] font-sans font-medium text-ink-2 hover:text-ink transition-colors"
+                    >
+                      Inspect
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -24,6 +24,7 @@ interface ExperimentTearsheetProps {
   strategies: StrategyOption[];
   visibleStrategyIds: Set<string>;
   onToggleStrategy: (id: string) => void;
+  onInspectManifest?: (manifest: ExperimentManifest) => void;
 }
 
 export function ExperimentTearsheet({
@@ -31,6 +32,7 @@ export function ExperimentTearsheet({
   strategies,
   visibleStrategyIds,
   onToggleStrategy,
+  onInspectManifest,
 }: ExperimentTearsheetProps) {
   const benchmarkId =
     typeof suite.benchmark.strategy === "string"
@@ -95,6 +97,9 @@ export function ExperimentTearsheet({
               </th>
               <th scope="col" className="px-3 py-2.5 text-right font-medium min-w-24">
                 Cost & Latency
+              </th>
+              <th scope="col" className="px-3 py-2.5 text-center font-medium min-w-24">
+                Lineage
               </th>
             </tr>
           </thead>
@@ -281,6 +286,17 @@ export function ExperimentTearsheet({
                       {exp.latencyMs ?? 0}ms
                       {exp.fallbackRate ? ` (${(exp.fallbackRate * 100).toFixed(0)}% fb)` : ""}
                     </span>
+                  </td>
+
+                  {/* Audit Lineage */}
+                  <td className="px-3 py-3 text-center">
+                    <button
+                      type="button"
+                      onClick={() => onInspectManifest?.(exp)}
+                      className="rounded border border-hairline bg-surface-well px-2 py-1 text-[11px] font-sans font-medium text-ink-2 hover:bg-surface hover:text-ink transition-colors shadow-xs"
+                    >
+                      Audit Lineage
+                    </button>
                   </td>
                 </tr>
               );

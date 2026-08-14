@@ -7,10 +7,12 @@
  *  - Responsive layout adapting cleanly across desktop and tablet
  */
 import { useState, useMemo, useEffect } from "react";
+import type { ExperimentManifest } from "@committee/contracts";
 import { useExperimentSuite } from "../lib/queries";
 import { ObservatoryControls, type StrategyOption } from "../components/observatory/ObservatoryControls";
 import { MultiSeriesEquityChart } from "../components/observatory/MultiSeriesEquityChart";
 import { ExperimentTearsheet } from "../components/observatory/ExperimentTearsheet";
+import { DecisionInspector } from "../components/lineage/DecisionInspector";
 import { Spinner } from "../components/ui/States";
 import { Button } from "../components/ui/Button";
 
@@ -96,6 +98,29 @@ export function ObservatoryPage() {
     });
   };
 
+  // State for Decision Lineage Inspector modal/drawer
+  const [inspectorManifest, setInspectorManifest] = useState<ExperimentManifest | null>(null);
+  const [inspectorTs, setInspectorTs] = useState<string | undefined>(undefined);
+
+  const handleInspectManifest = (manifest: ExperimentManifest) => {
+    setInspectorManifest(manifest);
+    setInspectorTs(undefined);
+  };
+
+  const handleInspectPoint = (ts: string) => {
+    if (!suite) return;
+    // Find active multi-agent debate strategy first or fallback to benchmark
+    const activeMultiAgent = suite.experiments.find(
+      (e) => {
+        const id = typeof e.strategy === "string" ? e.strategy : e.strategy.name;
+        return visibleStrategyIds.has(id) && id.includes("debate-on");
+      },
+    );
+    const targetManifest = activeMultiAgent ?? suite.experiments[0] ?? suite.benchmark;
+    setInspectorManifest(targetManifest);
+    setInspectorTs(ts);
+  };
+
   return (
     <div className="space-y-6 pb-12 enter">
       {/* Page Header */}
@@ -165,6 +190,7 @@ export function ObservatoryPage() {
             benchmark={suite.benchmark}
             strategies={strategies}
             visibleStrategyIds={visibleStrategyIds}
+            onInspectPoint={handleInspectPoint}
           />
 
           {/* Strategy Comparison Matrix Tearsheet */}
@@ -173,7 +199,18 @@ export function ObservatoryPage() {
             strategies={strategies}
             visibleStrategyIds={visibleStrategyIds}
             onToggleStrategy={handleToggleStrategy}
+            onInspectManifest={handleInspectManifest}
           />
+
+          {/* Decision Lineage Inspector Slide-Over Drawer */}
+          {inspectorManifest ? (
+            <DecisionInspector
+              isOpen={Boolean(inspectorManifest)}
+              onClose={() => setInspectorManifest(null)}
+              manifest={inspectorManifest}
+              initialDecisionTs={inspectorTs}
+            />
+          ) : null}
         </div>
       ) : null}
     </div>

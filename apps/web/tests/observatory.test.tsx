@@ -333,6 +333,22 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
     expect(screen.getByText(/Peak-to-trough historical drawdowns/i)).toBeInTheDocument();
   });
 
+  it("opens Decision Lineage Inspector upon clicking Audit Lineage in tearsheet", async () => {
+    renderApp("/observatory");
+
+    await waitFor(() => {
+      expect(screen.getAllByRole("button", { name: /Audit Lineage/i }).length).toBeGreaterThan(0);
+    });
+
+    const auditButtons = screen.getAllByRole("button", { name: /Audit Lineage/i });
+    await userEvent.click(auditButtons[0]!);
+
+    // Decision Lineage drawer is visible
+    expect(screen.getByRole("heading", { name: /Decision Provenance Inspector/i })).toBeInTheDocument();
+    expect(screen.getByText(/Cost \/ 100 Decisions/i)).toBeInTheDocument();
+    expect(screen.getByText(/OHLCV Bar Window/i)).toBeInTheDocument();
+  });
+
   it("handles API errors gracefully and offers retry affordance", async () => {
     mockApi(
       signedInRoutes({
