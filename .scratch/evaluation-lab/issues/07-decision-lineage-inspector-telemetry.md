@@ -2,10 +2,17 @@
 
 **What to build:** Interactive Decision Lineage Inspector and Telemetry HUD in `apps/web`. Allows users to audit any discrete decision point in an experiment by clicking a point on the chart/timeline to inspect the exact input bar window, computed indicator values, news headlines, rendered prompt text, raw LLM completion, Zod parse result, and resulting execution order. Displays operational telemetry cards for Cost per 100 Decisions ($ USD), Median Decision Latency (ms), and Schema Fallback/Error Rate.
 
+**Mandatory Pre-Design Gate:**
+- **MUST** invoke and follow the `/impeccable` skill before authoring UI components.
+- Run `node .agents/skills/impeccable/scripts/context.mjs --target apps/web/src/components/lineage/DecisionInspector.tsx`.
+- Use **`Operate` mode** (optimized for deep inspection drawers, monospaced prompt/completion readability, token telemetry HUD clarity, and smooth micro-interactions).
+- Adhere strictly to the craft floor: clean spatial layout, purposeful transitions, crisp borders, and accessible dark/light theming.
+
 **Blocked by:** 06 — Observatory Comparison Tearsheet & Equity Curves
 
 **Status:** ready-for-agent
 
+- [ ] Run `/impeccable` setup to establish component hierarchy and inspection UX before building UI.
 - [ ] Decision Lineage Inspector modal/drawer opens upon clicking any historical trade or decision point in the timeline.
 - [ ] Displays exact historical inputs: OHLCV bar window, point-in-time indicators (RSI, SMA, MACD), and Benzinga news headlines filtered to $\le T$.
 - [ ] Displays exact LLM prompt rendered for the decision, raw model completion string, and parsed Zod signal contract.
