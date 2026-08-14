@@ -40,13 +40,19 @@ export class MultiAgentCoordinator {
     this.specialists =
       options.specialists ??
       [
-        new TechnicalAgent(),
-        new SentimentAgent({ deterministicOffline: this.deterministicOffline }),
+        new TechnicalAgent({ logger: this.logger }),
+        new SentimentAgent({
+          deterministicOffline: this.deterministicOffline,
+          logger: this.logger,
+        }),
       ];
 
     this.synthesizer =
       options.synthesizer ??
-      new DebateSynthesizer({ deterministicOffline: this.deterministicOffline });
+      new DebateSynthesizer({
+        deterministicOffline: this.deterministicOffline,
+        logger: this.logger,
+      });
   }
 
   /**
@@ -145,6 +151,22 @@ export class MultiAgentCoordinator {
 
     // 3. Record lineage if recorder is present
     if (this.lineageRecorder) {
+      const specialistPrompts: Record<string, string> = {
+        technical: `System prompt: Technical analysis specialist.\nUser prompt: Analyze ${input.symbol} at ${input.decisionTs} with ${input.bars.length} historical bars and indicators (${input.indicators ? "available" : "none"}).`,
+        sentiment: `System prompt: Sentiment analysis specialist.\nUser prompt: Evaluate news sentiment for ${input.symbol} with ${input.news?.length ?? 0} news items up to ${input.decisionTs}.`,
+      };
+      if (synthesisResult) {
+        specialistPrompts.debateSynthesizer = `System prompt: Multi-agent debate synthesizer.\nUser prompt: Reconcile specialist stance disagreement for ${input.symbol} at ${input.decisionTs} between Technical (${technical.direction}, conf ${technical.confidence}) and Sentiment (${sentiment.direction}, conf ${sentiment.confidence}).`;
+      }
+
+      const specialistCompletions: Record<string, unknown> = {
+        technical,
+        sentiment,
+      };
+      if (synthesisResult) {
+        specialistCompletions.debateSynthesizer = synthesisResult;
+      }
+
       this.lineageRecorder.record({
         id: lineageId,
         decisionTs: input.decisionTs,
@@ -152,6 +174,8 @@ export class MultiAgentCoordinator {
         inputBars: input.bars,
         indicators: input.indicators,
         news: input.news,
+        specialistPrompts,
+        specialistCompletions,
         consensusResult,
         tokenCost: synthesisResult?.tokenCost ?? 0,
         latencyMs: Date.now() - startedAt,

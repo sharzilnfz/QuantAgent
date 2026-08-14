@@ -35,7 +35,7 @@ export class DecisionLineageRecorder {
    * Record a discrete decision lineage point.
    */
   record(params: RecordDecisionParams): DecisionLineageRecord {
-    const rawRecord = {
+    const record: DecisionLineageRecord = {
       id: params.id ?? randomUUID(),
       decisionTs: params.decisionTs,
       symbol: params.symbol,
@@ -50,9 +50,8 @@ export class DecisionLineageRecorder {
       latencyMs: params.latencyMs ?? 0,
     };
 
-    const validated = DecisionLineageRecord.parse(rawRecord);
-    this.records.push(validated);
-    return validated;
+    this.records.push(record);
+    return record;
   }
 
   /**

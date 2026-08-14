@@ -11,6 +11,7 @@ import {
   type DatasetFixture,
   type ExperimentStrategyConfig,
   type DecisionIntelligenceMetrics,
+  type DecisionLineageRecord,
 } from "@committee/contracts";
 import { TemporalGuard } from "@committee/fixtures";
 import { runBacktest } from "../backtest/simulator";
@@ -83,6 +84,20 @@ export async function runExperiment(
     decisionMetrics = calculateDecisionIntelligenceMetrics(fixture.bars, decisions);
   }
 
+  let lineageRecords: DecisionLineageRecord[] = [];
+  if ("getLineageRecords" in strategy && typeof (strategy as { getLineageRecords?: unknown }).getLineageRecords === "function") {
+    lineageRecords = (strategy as { getLineageRecords: () => DecisionLineageRecord[] }).getLineageRecords();
+  }
+
+  // Attach matching simulated execution trade fill if trade occurred at decision timestamp
+  if (lineageRecords.length > 0 && backtestResult.trades.length > 0) {
+    const tradeMap = new Map(backtestResult.trades.map((t) => [t.ts, t]));
+    lineageRecords = lineageRecords.map((rec) => {
+      const fill = tradeMap.get(rec.decisionTs);
+      return fill ? { ...rec, executionFill: fill } : rec;
+    });
+  }
+
   const datasetHash = computeDatasetHash(fixture);
   const gitCommit = getGitCommitHash();
 
@@ -132,6 +147,7 @@ export async function runExperiment(
     decisionMetrics,
     trades: backtestResult.trades,
     equityCurve: backtestResult.equityCurve,
+    lineageRecords,
     tokenCost: options?.tokenCost ?? 0,
     latencyMs: options?.latencyMs ?? 0,
     fallbackRate: options?.fallbackRate ?? 0,

@@ -1,4 +1,5 @@
 import type {
+  DecisionLineageRecord,
   IndicatorSnapshot,
   NewsItem,
   PriceBar,
@@ -11,6 +12,7 @@ import {
   MultiAgentCoordinator,
   type CoordinatorOptions,
 } from "./coordinator.js";
+import { DecisionLineageRecorder } from "./lineage.js";
 
 export interface MultiAgentCoordinatorStrategyOptions extends CoordinatorOptions {
   name?: string;
@@ -25,6 +27,7 @@ export interface MultiAgentCoordinatorStrategyOptions extends CoordinatorOptions
 export class MultiAgentCoordinatorStrategy implements Strategy {
   readonly name: string;
   public readonly coordinator: MultiAgentCoordinator;
+  public readonly lineageRecorder: DecisionLineageRecorder;
   private readonly news?: NewsItem[];
   private readonly decisionSignals: DecisionSignal[] = [];
 
@@ -33,7 +36,11 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
     this.name =
       options.name ??
       `multi-agent-coordinator-${debateMode ? "debate-on" : "debate-off"}`;
-    this.coordinator = new MultiAgentCoordinator(options);
+    this.lineageRecorder = options.lineageRecorder ?? new DecisionLineageRecorder();
+    this.coordinator = new MultiAgentCoordinator({
+      ...options,
+      lineageRecorder: this.lineageRecorder,
+    });
     this.news = options.news;
   }
 
@@ -42,6 +49,13 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
    */
   getDecisions(): DecisionSignal[] {
     return [...this.decisionSignals];
+  }
+
+  /**
+   * Return recorded point-in-time decision lineage provenance audit records.
+   */
+  getLineageRecords(): DecisionLineageRecord[] {
+    return this.lineageRecorder.getAll();
   }
 
   async generateSignals(
@@ -60,6 +74,9 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
       const decisionTs = currentBar.asOf;
       const pointInTimeBars = bars.slice(0, t + 1);
       const snapshot = snapshotMap.get(decisionTs) ?? null;
+      const pointInTimeNews = this.news
+        ? this.news.filter((n) => (n.publishedAt ?? n.asOf) <= decisionTs)
+        : undefined;
 
       // Coordinate decision at bar T
       const consensus = await this.coordinator.coordinate({
@@ -68,7 +85,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
         decisionTs,
         bars: pointInTimeBars,
         indicators: snapshot,
-        news: this.news,
+        news: pointInTimeNews,
       });
 
       // Map final directional bias to portfolio weight signal:

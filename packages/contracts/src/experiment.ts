@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Timeframe } from "./enums";
 import { FinancialMetrics, Trade, EquityPoint } from "./backtest";
+import { DecisionLineageRecord } from "./lineage";
 
 /**
  * Decision intelligence & calibration metrics evaluating LLM reasoning quality.
@@ -71,6 +72,7 @@ export const ExperimentManifest = z.object({
   decisionMetrics: DecisionIntelligenceMetrics.optional(),
   trades: z.array(Trade),
   equityCurve: z.array(EquityPoint),
+  lineageRecords: z.array(DecisionLineageRecord).default([]).optional(),
   tokenCost: z.number().default(0).optional(),
   latencyMs: z.number().default(0).optional(),
   fallbackRate: z.number().default(0).optional(),
