@@ -8,13 +8,17 @@
     "node": ">=20"
   },
   "scripts": {
-    "typecheck": "pnpm -r --if-present typecheck",
-    "test": "pnpm -r --if-present test",
-    "build": "pnpm -r --if-present build",
-    "lint": "pnpm -r --if-present lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
     "db:migrate": "pnpm --filter @committee/db migrate",
     "db:seed": "pnpm --filter @committee/db seed",
+    "seed:data": "pnpm --filter @committee/fixtures seed",
     "dev:api": "pnpm --filter @committee/api dev",
     "dev:web": "pnpm --filter @committee/web dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.10.9"
   }
 }

@@ -1,78 +1,32 @@
+# Agent Guidelines — QuantAgent
 
-# CLAUDE.md
+## MANDATORY PRE-FLIGHT GATE (Zero-Skip Policy)
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+Before reading files, running `grep_search`, or writing any code:
 
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+1. **Step 1: Codebase Memory Discovery**
+   - **MUST** query `codebase-memory-mcp` first for all symbol discovery, dependency tracing, and architecture lookups (`search_code`, `search_graph`, `query_graph`, `get_code_snippet`, `get_architecture`).
+   - Do **NOT** default to raw filesystem greps or directory listings when graph queries can answer the question.
 
-## 1. Think Before Coding
+2. **Step 2: Multi-Agent Delegation**
+   - For tasks with non-trivial complexity (multi-file changes, implementing issues from `.scratch/evaluation-lab/issues/`, cross-system impact, or debugging root causes), **MUST** invoke specialized subagents via `invoke_subagent` to parallelize research, test authoring, and implementation.
+   - Decompose work into discrete subagent tasks rather than executing multi-file workflows sequentially in the main thread.
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
-
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
-
-## 2. Simplicity First
-
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-## 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
+3. **Step 3: Verification & Execution**
+   - Run tests (`pnpm test`) and typechecks (`pnpm typecheck`) to verify criteria before declaring tasks complete.
+   - `pnpm test` and `pnpm typecheck` are accelerated by Turborepo — unchanged packages are instant cache hits (~20ms), making repeated verification safe and zero-cost.
 
 ---
 
-## 5. Codebase Knowledge Graph (codebase-memory-mcp)
+## Core Engineering Principles
 
-This project maintains a graph index via `codebase-memory-mcp`.
-**ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.**
-
-### Query Priority
-1. `search_graph` — Find functions, classes, routes, or variables by pattern
-2. `trace_path` — Trace incoming/outgoing function calls and dependencies
-3. `get_code_snippet` — Read precise function/class source code
-4. `query_graph` — Run Cypher queries for complex graph patterns
-5. `get_architecture` — High-level architecture summary & hotspots
-
+- **Package Management:**
+  - TypeScript / JavaScript: Use `pnpm`.
+  - Python: Use `uv`.
+- **Temporal Correctness & Point-in-Time Discipline:**
+  - Every historical dataset query, market bar, and indicator snapshot **must** filter on `as_of <= T_decision`.
+  - Violations must throw `TemporalIntegrityViolation` via `@committee/fixtures` (`TemporalGuard`).
+- **Deterministic Baselines & Offline Replay:**
+  - Offline evaluation runs (`pnpm demo:replay`) must operate at $0.00 cost using frozen fixtures without requiring external API keys.
+- **Surgical Changes:**
+  - Touch only what is required for the task. Preserve existing working code, interfaces, and comments.
