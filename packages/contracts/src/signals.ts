@@ -61,13 +61,16 @@ export const NewsItem = z.object({
 });
 export type NewsItem = z.infer<typeof NewsItem>;
 
+import { PredictionMarketEvent } from "./polymarket";
+
 /**
- * A complete frozen dataset fixture containing price bars and news items for a symbol.
+ * A complete frozen dataset fixture containing price bars, news items, and prediction markets for a symbol.
  */
 export const DatasetFixture = z.object({
   symbol: z.string(),
   bars: z.array(PriceBar),
   news: z.array(NewsItem),
+  predictionMarkets: z.array(PredictionMarketEvent).optional(),
 });
 export type DatasetFixture = z.infer<typeof DatasetFixture>;
 

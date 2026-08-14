@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { DatasetFixture, type PriceBar, type NewsItem } from "@committee/contracts";
+import { DatasetFixture, type PriceBar, type NewsItem, type PredictionMarketEvent } from "@committee/contracts";
 import type { FixtureLoaderOptions } from "./types.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,6 +48,14 @@ export function loadPriceBars(symbol: string, options?: FixtureLoaderOptions): P
 export function loadNews(symbol: string, options?: FixtureLoaderOptions): NewsItem[] {
   const fixture = loadFixture(symbol, options);
   return fixture.news;
+}
+
+/**
+ * Load timestamped prediction market events for a symbol from the frozen dataset fixture.
+ */
+export function loadPredictionMarkets(symbol: string, options?: FixtureLoaderOptions): PredictionMarketEvent[] {
+  const fixture = loadFixture(symbol, options);
+  return fixture.predictionMarkets ?? [];
 }
 
 /**

@@ -162,7 +162,48 @@ describe("Anti-Leakage CI Gate & TemporalGuard", () => {
         for (const item of fixture.news) {
           expect(new Date(item.asOf).getTime()).toBe(new Date(item.publishedAt).getTime());
         }
+
+        // Check prediction markets
+        expect(fixture.predictionMarkets).toBeDefined();
+        expect(fixture.predictionMarkets!.length).toBeGreaterThan(0);
+        for (const ev of fixture.predictionMarkets!) {
+          expect(new Date(ev.asOf).getTime()).toBeDefined();
+          expect(ev.history.length).toBeGreaterThan(0);
+          for (const pt of ev.history) {
+            expect(new Date(pt.asOf).getTime()).toBeGreaterThanOrEqual(new Date(pt.ts).getTime());
+          }
+        }
       });
     }
+  });
+
+  describe("TemporalGuard.queryPredictionMarkets", () => {
+    it("strictly isolates historical probability curves to asOf <= T_decision", () => {
+      const fixture = loadFixture("AAPL");
+      const decisionTs = "2024-03-20T21:00:00.000Z";
+
+      const visibleEvents = TemporalGuard.queryPredictionMarkets(fixture.predictionMarkets ?? [], decisionTs);
+      expect(visibleEvents.length).toBeGreaterThan(0);
+
+      for (const ev of visibleEvents) {
+        expect(new Date(ev.asOf).getTime()).toBeLessThanOrEqual(new Date(decisionTs).getTime());
+        for (const pt of ev.history) {
+          expect(new Date(pt.asOf).getTime()).toBeLessThanOrEqual(new Date(decisionTs).getTime());
+        }
+        // Assert that points from late 2024 (e.g. Sept/Nov/Dec 2024) are filtered out
+        const hasLate2024 = ev.history.some((pt) => pt.asOf.startsWith("2024-09") || pt.asOf.startsWith("2024-11"));
+        expect(hasLate2024).toBe(false);
+      }
+    });
+
+    it("throws TemporalIntegrityViolation if future probability points leak into assertNoLeakage", () => {
+      const fixture = loadFixture("SPY");
+      const decisionTs = "2023-06-01T00:00:00.000Z";
+      const unfilteredEvents = fixture.predictionMarkets ?? [];
+
+      expect(() => {
+        TemporalGuard.assertNoLeakage(unfilteredEvents[0]!.history, decisionTs, "polymarket-test");
+      }).toThrow(TemporalIntegrityViolation);
+    });
   });
 });

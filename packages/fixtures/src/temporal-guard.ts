@@ -1,4 +1,4 @@
-import type { PriceBar, NewsItem, DatasetFixture } from "@committee/contracts";
+import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent } from "@committee/contracts";
 
 /**
  * Thrown when a dataset query or evaluation step encounters data timestamped
@@ -140,6 +140,35 @@ export class TemporalGuard {
   }
 
   /**
+   * Query prediction market events point-in-time up to decisionTs.
+   * Filters events by asOf <= decisionTs and filters historical probability points strictly <= decisionTs.
+   */
+  public static queryPredictionMarkets(
+    events: readonly PredictionMarketEvent[],
+    decisionTs: string | Date,
+  ): PredictionMarketEvent[] {
+    const { ms: cutoffMs } = this.parseTs(decisionTs);
+    const filteredEvents = events
+      .filter((ev) => new Date(ev.asOf).getTime() <= cutoffMs)
+      .map((ev) => {
+        const filteredHistory = ev.history.filter(
+          (pt) => new Date(pt.asOf ?? pt.ts).getTime() <= cutoffMs,
+        );
+        return {
+          ...ev,
+          history: filteredHistory,
+        };
+      });
+
+    this.assertNoLeakage(filteredEvents, decisionTs, "queryPredictionMarkets:events");
+    for (const ev of filteredEvents) {
+      this.assertNoLeakage(ev.history, decisionTs, `queryPredictionMarkets:history(${ev.id})`);
+    }
+
+    return filteredEvents;
+  }
+
+  /**
    * Wrap and query a complete dataset fixture up to decisionTs.
    */
   public static queryDataset(
@@ -150,6 +179,9 @@ export class TemporalGuard {
       symbol: dataset.symbol,
       bars: this.queryBars(dataset.bars, decisionTs),
       news: this.queryNews(dataset.news, decisionTs),
+      predictionMarkets: dataset.predictionMarkets
+        ? this.queryPredictionMarkets(dataset.predictionMarkets, decisionTs)
+        : undefined,
     };
   }
 

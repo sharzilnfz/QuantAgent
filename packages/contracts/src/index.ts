@@ -15,3 +15,5 @@ export * from "./experiment";
 
 export * from "./debate";
 export * from "./lineage";
+export * from "./polymarket";
+export * from "./variance";

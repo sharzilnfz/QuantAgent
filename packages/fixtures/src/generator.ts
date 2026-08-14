@@ -1,4 +1,4 @@
-import { PriceBar, NewsItem, DatasetFixture, Timeframe } from "@committee/contracts";
+import { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent, PolymarketProbabilityPoint, Timeframe } from "@committee/contracts";
 import { computeDailyBarAsOf, computeNewsAsOf } from "./as-of.js";
 
 interface YahooChartResponse {
@@ -361,6 +361,85 @@ export function getCuratedNews(ticker: string, startYear: number = 2023, endYear
 }
 
 /**
+ * Generate curated historical Polymarket probability curves for macroeconomic events.
+ */
+export function getCuratedPredictionMarkets(
+  _ticker?: string,
+  startYear: number = 2023,
+  endYear: number = 2024,
+): PredictionMarketEvent[] {
+  const events: PredictionMarketEvent[] = [
+    {
+      id: "pm-fed-rate-cut-2024",
+      marketSlug: "fed-funds-rate-cut-2024",
+      question: "Will the Federal Reserve cut interest rates in 2024?",
+      category: "fed_rate",
+      outcomes: ["Yes", "No"],
+      asOf: "2023-01-03T00:00:00.000Z",
+      history: [
+        { ts: "2023-01-03T16:00:00.000Z", asOf: "2023-01-03T21:00:00.000Z", probability: 0.32, volume24h: 45000 },
+        { ts: "2023-03-15T16:00:00.000Z", asOf: "2023-03-15T21:00:00.000Z", probability: 0.58, volume24h: 120000 }, // SVB banking crisis flight
+        { ts: "2023-06-14T16:00:00.000Z", asOf: "2023-06-14T21:00:00.000Z", probability: 0.42, volume24h: 65000 },
+        { ts: "2023-09-20T16:00:00.000Z", asOf: "2023-09-20T21:00:00.000Z", probability: 0.38, volume24h: 80000 }, // Hawkish pause / higher for longer
+        { ts: "2023-11-01T16:00:00.000Z", asOf: "2023-11-01T21:00:00.000Z", probability: 0.55, volume24h: 110000 },
+        { ts: "2023-12-13T16:00:00.000Z", asOf: "2023-12-13T21:00:00.000Z", probability: 0.78, volume24h: 240000 }, // Powell pivot
+        { ts: "2024-01-31T16:00:00.000Z", asOf: "2024-01-31T21:00:00.000Z", probability: 0.72, volume24h: 180000 },
+        { ts: "2024-03-20T16:00:00.000Z", asOf: "2024-03-20T21:00:00.000Z", probability: 0.68, volume24h: 150000 },
+        { ts: "2024-05-01T16:00:00.000Z", asOf: "2024-05-01T21:00:00.000Z", probability: 0.62, volume24h: 140000 },
+        { ts: "2024-07-31T16:00:00.000Z", asOf: "2024-07-31T21:00:00.000Z", probability: 0.88, volume24h: 310000 }, // Jackson Hole / July cooling
+        { ts: "2024-09-18T16:00:00.000Z", asOf: "2024-09-18T21:00:00.000Z", probability: 0.99, volume24h: 890000 }, // 50bps jumbo rate cut
+        { ts: "2024-11-07T16:00:00.000Z", asOf: "2024-11-07T21:00:00.000Z", probability: 0.99, volume24h: 420000 }, // Follow-up 25bps cut
+        { ts: "2024-12-18T16:00:00.000Z", asOf: "2024-12-18T21:00:00.000Z", probability: 0.99, volume24h: 350000 },
+      ],
+    },
+    {
+      id: "pm-cpi-inflation-above-3pct",
+      marketSlug: "cpi-inflation-above-3pct-2024",
+      question: "Will US headline CPI YoY exceed 3.0% in December 2024?",
+      category: "cpi_inflation",
+      outcomes: ["Yes", "No"],
+      asOf: "2023-01-03T00:00:00.000Z",
+      history: [
+        { ts: "2023-01-03T16:00:00.000Z", asOf: "2023-01-03T21:00:00.000Z", probability: 0.65, volume24h: 22000 },
+        { ts: "2023-06-13T16:00:00.000Z", asOf: "2023-06-13T21:00:00.000Z", probability: 0.54, volume24h: 38000 },
+        { ts: "2023-11-14T16:00:00.000Z", asOf: "2023-11-14T21:00:00.000Z", probability: 0.48, volume24h: 45000 },
+        { ts: "2024-01-11T16:00:00.000Z", asOf: "2024-01-11T21:00:00.000Z", probability: 0.44, volume24h: 52000 },
+        { ts: "2024-04-10T16:00:00.000Z", asOf: "2024-04-10T21:00:00.000Z", probability: 0.52, volume24h: 68000 }, // Q1 inflation bump
+        { ts: "2024-06-12T16:00:00.000Z", asOf: "2024-06-12T21:00:00.000Z", probability: 0.38, volume24h: 75000 },
+        { ts: "2024-08-14T16:00:00.000Z", asOf: "2024-08-14T21:00:00.000Z", probability: 0.28, volume24h: 82000 },
+        { ts: "2024-10-10T16:00:00.000Z", asOf: "2024-10-10T21:00:00.000Z", probability: 0.22, volume24h: 91000 },
+        { ts: "2024-12-11T16:00:00.000Z", asOf: "2024-12-11T21:00:00.000Z", probability: 0.18, volume24h: 110000 },
+      ],
+    },
+    {
+      id: "pm-us-recession-2023-2024",
+      marketSlug: "us-recession-declared-2023-2024",
+      question: "Will NBER declare a US Recession in 2023 or 2024?",
+      category: "recession",
+      outcomes: ["Yes", "No"],
+      asOf: "2023-01-03T00:00:00.000Z",
+      history: [
+        { ts: "2023-01-03T16:00:00.000Z", asOf: "2023-01-03T21:00:00.000Z", probability: 0.44, volume24h: 30000 },
+        { ts: "2023-03-20T16:00:00.000Z", asOf: "2023-03-20T21:00:00.000Z", probability: 0.52, volume24h: 95000 },
+        { ts: "2023-08-15T16:00:00.000Z", asOf: "2023-08-15T21:00:00.000Z", probability: 0.32, volume24h: 40000 },
+        { ts: "2023-12-01T16:00:00.000Z", asOf: "2023-12-01T21:00:00.000Z", probability: 0.24, volume24h: 50000 },
+        { ts: "2024-03-01T16:00:00.000Z", asOf: "2024-03-01T21:00:00.000Z", probability: 0.18, volume24h: 45000 },
+        { ts: "2024-08-05T16:00:00.000Z", asOf: "2024-08-05T21:00:00.000Z", probability: 0.28, volume24h: 160000 }, // Yen carry unwind scare
+        { ts: "2024-10-01T16:00:00.000Z", asOf: "2024-10-01T21:00:00.000Z", probability: 0.12, volume24h: 70000 },
+        { ts: "2024-12-01T16:00:00.000Z", asOf: "2024-12-01T21:00:00.000Z", probability: 0.08, volume24h: 60000 },
+      ],
+    },
+  ];
+
+  return events.map((ev) =>
+    PredictionMarketEvent.parse({
+      ...ev,
+      history: ev.history.map((pt) => PolymarketProbabilityPoint.parse(pt)),
+    }),
+  );
+}
+
+/**
  * Generate a complete DatasetFixture for a symbol.
  */
 export async function generateDatasetFixture(
@@ -370,10 +449,12 @@ export async function generateDatasetFixture(
 ): Promise<DatasetFixture> {
   const bars = await fetchPublicDailyBars(ticker, startYear, endYear);
   const news = getCuratedNews(ticker, startYear, endYear);
+  const predictionMarkets = getCuratedPredictionMarkets(ticker, startYear, endYear);
 
   return DatasetFixture.parse({
     symbol: ticker.toUpperCase(),
     bars,
     news,
+    predictionMarkets,
   });
 }
