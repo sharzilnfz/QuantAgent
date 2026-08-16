@@ -24,11 +24,15 @@ export async function seed(db: SeedDb): Promise<{ userId: string }> {
   // A real bcrypt hash so the demo user can actually log in (spec 03 comparison).
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
 
-  // Upsert the demo user by unique email.
+  // Upsert the demo user by unique email. The hash is updated on conflict so
+  // re-seeding also repairs databases seeded with the old placeholder hash.
   const inserted = await db
     .insert(users)
     .values({ email: DEMO_EMAIL, passwordHash })
-    .onConflictDoNothing({ target: users.email })
+    .onConflictDoUpdate({
+      target: users.email,
+      set: { passwordHash },
+    })
     .returning();
 
   const demoUser =

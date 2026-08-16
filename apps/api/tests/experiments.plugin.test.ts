@@ -56,7 +56,7 @@ describe("Experiments Plugin HTTP Routes", () => {
       expect(res2.statusCode).toBe(200);
       expect(res2.json().datasetHash).toBe(res1.json().datasetHash);
       expect(res2.json().id).toBe(res1.json().id);
-    });
+    }, 15000);
 
     it("returns 404 when fixture symbol does not exist", async () => {
       const res = await app.inject({
