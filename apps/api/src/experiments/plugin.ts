@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { loadFixture } from "@committee/fixtures";
 import { ExperimentSuiteResult, VarianceSweepResult } from "@committee/contracts";
+import { isLlmConfigured } from "../agents/technical/llm-client.js";
 import { runBenchmarkSuite } from "./suite.js";
 import { runVarianceSweep } from "./variance-sweep.js";
 import { computeDatasetHash } from "./hash.js";
@@ -10,10 +11,12 @@ import { computeDatasetHash } from "./hash.js";
  * OWNER: M4 (Evaluation Lab Experiments HTTP Surface).
  *
  *   GET /experiments/suite?symbol=AAPL
- *   GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3
+ *   GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3[&live=1]
  *
  * Serves deterministic offline evaluation benchmark suites on frozen fixtures
- * and bounded variance sweeps over validation windows.
+ * and bounded variance sweeps over validation windows. `live=1` opts a sweep
+ * into real LLM runs (budget-capped); it requires configured credentials and
+ * is never cached, since its whole point is measuring nondeterminism.
  */
 
 const SuiteQuery = z.object({
@@ -25,6 +28,7 @@ const VarianceSweepQuery = z.object({
   windowSize: z.coerce.number().min(10).max(100).default(25),
   runs: z.coerce.number().min(2).max(10).default(3),
   budget: z.coerce.number().positive().default(5.0),
+  live: z.coerce.boolean().default(false),
 });
 
 // In-memory cache keyed by symbol and datasetHash for fast repeated evaluation reads
@@ -75,7 +79,7 @@ export async function experimentsPlugin(app: FastifyInstance): Promise<void> {
       });
     }
 
-    const { symbol, windowSize, runs, budget } = queryResult.data;
+    const { symbol, windowSize, runs, budget, live } = queryResult.data;
 
     let fixture;
     try {
@@ -86,6 +90,27 @@ export async function experimentsPlugin(app: FastifyInstance): Promise<void> {
         error: "fixture_not_found",
         message: `Fixture for symbol "${symbol.toUpperCase()}" not found.`,
       });
+    }
+
+    // Live LLM sweeps need credentials; without them the request degrades to the
+    // deterministic offline mode rather than failing (zero-credential principle).
+    const goLive = live && isLlmConfigured();
+    if (live && !goLive) {
+      request.log.warn(
+        { symbol },
+        "live variance sweep requested but no LLM credentials configured; falling back to deterministic offline mode",
+      );
+    }
+
+    // Live sweeps are never cached — measuring nondeterminism requires fresh runs.
+    if (goLive) {
+      const sweep = await runVarianceSweep(fixture, {
+        windowSize,
+        runsCount: runs,
+        budgetLimit: budget,
+        deterministicOffline: false,
+      });
+      return reply.code(200).send(sweep);
     }
 
     const datasetHash = computeDatasetHash(fixture);

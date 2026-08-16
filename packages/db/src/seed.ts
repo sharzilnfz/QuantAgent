@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -12,19 +13,21 @@ import { users, watchlistItems } from "./schema";
  */
 
 export const DEMO_EMAIL = "demo@committee.local";
-// Not a real credential — a placeholder hash. Spec 03 owns auth/crypto.
-export const DEMO_PASSWORD_HASH =
-  "$2b$10$seedplaceholderhashseedplaceholderhashse";
+/** Documented demo login (dev convenience; not a credential of any real system). */
+export const DEMO_PASSWORD = "demo-committee";
 export const DEMO_SYMBOLS = ["AAPL", "MSFT", "SPY"] as const;
 
 type SeedDb = ReturnType<typeof drizzle>;
 
 /** Idempotent. Safe to run any number of times against the same database. */
 export async function seed(db: SeedDb): Promise<{ userId: string }> {
+  // A real bcrypt hash so the demo user can actually log in (spec 03 comparison).
+  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
+
   // Upsert the demo user by unique email.
   const inserted = await db
     .insert(users)
-    .values({ email: DEMO_EMAIL, passwordHash: DEMO_PASSWORD_HASH })
+    .values({ email: DEMO_EMAIL, passwordHash })
     .onConflictDoNothing({ target: users.email })
     .returning();
 
@@ -61,7 +64,7 @@ async function main(): Promise<void> {
   try {
     await seed(drizzle(sql));
     console.log(
-      `Seed complete: ${DEMO_EMAIL} with watchlist ${DEMO_SYMBOLS.join(", ")}.`,
+      `Seed complete: ${DEMO_EMAIL} (password: ${DEMO_PASSWORD}) with watchlist ${DEMO_SYMBOLS.join(", ")}.`,
     );
   } catch (err) {
     console.error("Seed failed:", err);

@@ -51,6 +51,22 @@ export async function getPortfolioState(userId: string): Promise<PortfolioState>
   return PortfolioState.parse(emptySnapshot(new Date()));
 }
 
+/**
+ * `GET /portfolio/history` — the value-over-time series (`{ asOf, equity }[]`,
+ * oldest → newest) that spec 08 §4's chart consumes.
+ *
+ * Same Sprint-1 honesty as `getPortfolioState`: there is no snapshot store yet,
+ * so the truthful series is empty. The chart renders its explicit "not enough
+ * history to plot" state off `[]`; when Sprint 3's broker sync starts writing
+ * snapshots this function becomes a bounded read of that table.
+ */
+export async function getPortfolioHistory(
+  userId: string,
+): Promise<Pick<PortfolioState, "asOf" | "equity">[]> {
+  void userId;
+  return [];
+}
+
 export interface WatchlistEntry {
   symbol: string;
 }
