@@ -31,6 +31,8 @@ interface ObservatoryControlsProps {
   isVarianceSweepActive?: boolean;
   onToggleVarianceSweep?: () => void;
   varianceCost?: number;
+  /** True only when the sweep actually spent LLM budget (totalCost > 0). */
+  varianceSweepLive?: boolean;
 }
 
 export function ObservatoryControls({
@@ -45,6 +47,7 @@ export function ObservatoryControls({
   isVarianceSweepActive = false,
   onToggleVarianceSweep,
   varianceCost = 0,
+  varianceSweepLive = false,
 }: ObservatoryControlsProps) {
   const selectAll = () => {
     onSetVisibleStrategies(new Set(strategies.map((s) => s.id)));
@@ -128,8 +131,22 @@ export function ObservatoryControls({
                   : "border-hairline bg-surface text-ink-2 hover:border-ink-3 hover:text-ink",
               )}
             >
-              <span className={cn("h-2 w-2 rounded-full", isVarianceSweepActive ? "bg-teal-500 animate-pulse" : "bg-ink-3")} />
-              Live Sweep ($N=3$, &lt;$5.00 Cap)
+              {/* Honesty law: only paid inference (totalCost > 0) pulses and
+                  earns the "Live" label. A $0.00 sweep is a deterministic
+                  offline replay — static dot, deterministic copy. */}
+              <span
+                className={cn(
+                  "h-2 w-2 rounded-full",
+                  isVarianceSweepActive
+                    ? varianceSweepLive
+                      ? "bg-teal-500 animate-pulse"
+                      : "bg-teal-500"
+                    : "bg-ink-3",
+                )}
+              />
+              {varianceSweepLive
+                ? "Live Sweep ($N=3$, &lt;$5.00 Cap)"
+                : "Deterministic Sweep ($N=3$, Offline Replay)"}
             </button>
           )}
         </div>

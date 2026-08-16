@@ -16,7 +16,9 @@ import { DecisionInspector } from "../components/lineage/DecisionInspector";
 import { Spinner } from "../components/ui/States";
 import { Button } from "../components/ui/Button";
 
-const AVAILABLE_SYMBOLS = ["AAPL", "MSFT", "NVDA"];
+// Fixture-backed datasets only. Frozen fixtures exist for exactly these
+// symbols; offering anything else (e.g. MSFT) 404s the suite/sweep endpoints.
+const AVAILABLE_SYMBOLS = ["AAPL", "NVDA", "SPY"];
 
 export function ObservatoryPage() {
   const [selectedSymbol, setSelectedSymbol] = useState("AAPL");
@@ -30,6 +32,12 @@ export function ObservatoryPage() {
     5.0,
     isVarianceSweepActive,
   );
+
+  // Honesty law: only a sweep that actually spent LLM budget (totalCost > 0)
+  // may be labeled "Live". The API's current deterministic offline mode runs
+  // at $0.00, so UI copy must say "Deterministic / offline replay" until a
+  // paid result proves otherwise.
+  const isVarianceSweepLive = (varianceSweep?.totalCost ?? 0) > 0;
 
   // Strategy list with distinct visual palette tokens
   const strategies: StrategyOption[] = useMemo(() => {
@@ -121,7 +129,10 @@ export function ObservatoryPage() {
 
   const handleInspectPoint = (ts: string) => {
     if (!suite) return;
-    // Find active multi-agent debate strategy first or fallback to benchmark
+    // Find active multi-agent debate strategy first or fallback to benchmark.
+    // Note: `ts` is the EQUITY point timestamp, not a decisionTs — the
+    // inspector resolves the record via equityCurve↔lineageRecords index
+    // alignment (both are emitted once per bar, in order).
     const activeMultiAgent = suite.experiments.find(
       (e) => {
         const id = typeof e.strategy === "string" ? e.strategy : e.strategy.name;
@@ -197,6 +208,7 @@ export function ObservatoryPage() {
             isVarianceSweepActive={isVarianceSweepActive}
             onToggleVarianceSweep={() => setIsVarianceSweepActive((v) => !v)}
             varianceCost={varianceSweep?.totalCost ?? 0}
+            varianceSweepLive={isVarianceSweepLive}
           />
 
           {/* Multi-Series Equity Curves & Drawdown Chart */}
@@ -207,6 +219,7 @@ export function ObservatoryPage() {
             visibleStrategyIds={visibleStrategyIds}
             varianceBands={varianceSweep?.equityBands}
             isVarianceSweepActive={isVarianceSweepActive}
+            isVarianceSweepLive={isVarianceSweepLive}
             onInspectPoint={handleInspectPoint}
           />
 

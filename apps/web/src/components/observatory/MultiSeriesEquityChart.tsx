@@ -37,6 +37,12 @@ interface MultiSeriesEquityChartProps {
   visibleStrategyIds: Set<string>;
   varianceBands?: VarianceEquityPoint[];
   isVarianceSweepActive?: boolean;
+  /**
+   * Honesty law: a sweep only earns the "Live" label when it actually spent
+   * LLM budget (totalCost > 0). A $0.00 sweep is a deterministic offline
+   * replay and must be labeled as such.
+   */
+  isVarianceSweepLive?: boolean;
   onInspectPoint?: (ts: string) => void;
 }
 
@@ -55,6 +61,7 @@ export function MultiSeriesEquityChart({
   visibleStrategyIds,
   varianceBands,
   isVarianceSweepActive = false,
+  isVarianceSweepLive = false,
   onInspectPoint,
 }: MultiSeriesEquityChartProps) {
   const [chartMode, setChartMode] = useState<"equity" | "drawdown">("equity");
@@ -139,14 +146,18 @@ export function MultiSeriesEquityChart({
           <h3 className="text-sm font-semibold tracking-tight text-ink">
             {chartMode === "equity"
               ? isVarianceSweepActive
-                ? "Live Evaluation Variance Sweep ($N=3$, ±1σ Bands)"
+                ? isVarianceSweepLive
+                  ? "Live Evaluation Variance Sweep ($N=3$, ±1σ Bands)"
+                  : "Deterministic Evaluation Variance Sweep ($N=3$, ±1σ Bands)"
                 : "Comparative Equity Trajectory ($ USD)"
               : "Underwater Drawdown Profile (%)"}
           </h3>
           <p className="text-xs text-ink-3">
             {chartMode === "equity"
               ? isVarianceSweepActive
-                ? "Distribution of live committee trajectories with shaded confidence intervals alongside deterministic baseline overlays"
+                ? isVarianceSweepLive
+                  ? "Distribution of live committee trajectories with shaded confidence intervals alongside deterministic baseline overlays"
+                  : "Offline replay of committee trajectories with shaded confidence intervals alongside deterministic baseline overlays"
                 : "Time-series growth across active LLM agent configurations vs deterministic baselines"
               : "Peak-to-trough historical drawdowns across evaluated strategies"}
           </p>
@@ -218,6 +229,7 @@ export function MultiSeriesEquityChart({
                     strategies={strategies}
                     chartMode={chartMode}
                     isVarianceSweepActive={isVarianceSweepActive}
+                    isVarianceSweepLive={isVarianceSweepLive}
                   />
                 }
                 cursor={{ stroke: "var(--axis)", strokeWidth: 1 }}
@@ -229,17 +241,43 @@ export function MultiSeriesEquityChart({
                 iconType="plainline"
               />
 
-              {/* Shaded variance band when active */}
+              {/* Shaded ±1σ variance band when active.
+                  Dataviz law: a single Recharts Area fills from the axis
+                  baseline UP to its value, so drawing only upperBand shades
+                  everything below the upper bound. A true band needs two
+                  stacked slices: a transparent base of height lowerBand,
+                  then a filled slice of height (upperBand − lowerBand).
+                  Both are hidden from tooltip/legend (single-entry noise);
+                  the tooltip's ±1σ interval block carries the values. */}
               {isVarianceSweepActive && chartMode === "equity" && (
-                <Area
-                  type="monotone"
-                  dataKey="upperBand"
-                  name="Variance Band (±1σ)"
-                  stroke="none"
-                  fill="var(--variance-band)"
-                  fillOpacity={1}
-                  isAnimationActive={false}
-                />
+                <>
+                  <Area
+                    type="monotone"
+                    dataKey="lowerBand"
+                    stackId="band"
+                    stroke="none"
+                    fill="none"
+                    fillOpacity={0}
+                    legendType="none"
+                    tooltipType="none"
+                    isAnimationActive={false}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey={(pt: MergedPoint) =>
+                      typeof pt.upperBand === "number" && typeof pt.lowerBand === "number"
+                        ? pt.upperBand - pt.lowerBand
+                        : null
+                    }
+                    name="Variance Band (±1σ)"
+                    stackId="band"
+                    stroke="none"
+                    fill="var(--variance-band)"
+                    fillOpacity={1}
+                    tooltipType="none"
+                    isAnimationActive={false}
+                  />
+                </>
               )}
 
               {/* Mean curve for variance sweep */}
@@ -247,7 +285,7 @@ export function MultiSeriesEquityChart({
                 <Line
                   type="monotone"
                   dataKey="meanEquity"
-                  name="Committee Mean (Live)"
+                  name={isVarianceSweepLive ? "Committee Mean (Live)" : "Committee Mean (Offline Replay)"}
                   stroke="var(--series-polymarket)"
                   strokeWidth={2.5}
                   dot={false}
@@ -361,6 +399,7 @@ function CustomTooltip({
   strategies,
   chartMode,
   isVarianceSweepActive,
+  isVarianceSweepLive,
 }: {
   active?: boolean;
   payload?: TooltipPayloadEntry[];
@@ -368,6 +407,7 @@ function CustomTooltip({
   strategies: StrategyOption[];
   chartMode: "equity" | "drawdown";
   isVarianceSweepActive?: boolean;
+  isVarianceSweepLive?: boolean;
 }) {
   if (!active || !payload || payload.length === 0) return null;
 
@@ -386,7 +426,7 @@ function CustomTooltip({
         <p className="text-xs font-semibold text-ink">{dateStr}</p>
         {isVarianceSweepActive && typeof mean === "number" && (
           <span className="rounded bg-teal-500/10 px-1.5 py-0.5 text-[10px] font-mono font-medium text-teal-600 dark:text-teal-400">
-            Live N=3 Sweep
+            {isVarianceSweepLive ? "Live N=3 Sweep" : "Deterministic N=3 Sweep (offline replay)"}
           </span>
         )}
       </div>

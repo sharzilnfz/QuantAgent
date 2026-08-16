@@ -10,10 +10,10 @@
  */
 import { useState, useEffect, useMemo, useCallback } from "react";
 import type {
-  DecisionLineageRecord,
   ExperimentManifest,
 } from "@committee/contracts";
 import { formatDayShort, formatMoney } from "../../lib/format";
+import { EmptyState } from "../ui/States";
 import { cn } from "../../lib/cn";
 
 export interface DecisionInspectorProps {
@@ -31,66 +31,12 @@ export function DecisionInspector({
   manifest,
   initialDecisionTs,
 }: DecisionInspectorProps) {
-  // Extract lineage records or derive fallback records from equity curve/trades if none recorded
-  const lineageRecords = useMemo(() => {
-    if (manifest.lineageRecords && manifest.lineageRecords.length > 0) {
-      return manifest.lineageRecords;
-    }
-
-    // Generate fallback lineage items from equity curve / trades for baseline strategies
-    return manifest.equityCurve.map((pt, idx): DecisionLineageRecord => {
-      const trade = manifest.trades.find((t) => t.ts === pt.ts);
-      const isBullish = pt.position > 0;
-      return {
-        id: `synth-${pt.ts}-${idx}`,
-        decisionTs: pt.ts,
-        symbol: manifest.symbol ?? "AAPL",
-        inputBars: [
-          {
-            symbol: manifest.symbol ?? "AAPL",
-            timeframe: manifest.timeframe,
-            ts: pt.ts,
-            asOf: pt.ts,
-            open: pt.price,
-            high: pt.price * 1.005,
-            low: pt.price * 0.995,
-            close: pt.price,
-            volume: 1000000,
-          },
-        ],
-        indicators: null,
-        news: [],
-        specialistPrompts: {
-          baseline: `Strategy ${typeof manifest.strategy === "string" ? manifest.strategy : manifest.strategy.name} evaluated at ${pt.ts}`,
-        },
-        specialistCompletions: {
-          baseline: {
-            direction: isBullish ? "bullish" : "neutral",
-            confidence: isBullish ? 0.75 : 0.5,
-          },
-        },
-        consensusResult: {
-          lineageId: `synth-${pt.ts}`,
-          consensusReached: true,
-          mode: "consensus_short_circuit",
-          finalBias: isBullish ? "bullish" : "neutral",
-          finalConfidence: isBullish ? 0.75 : 0.5,
-          specialistVotes: {
-            baseline: {
-              agent: "technical",
-              direction: isBullish ? "bullish" : "neutral",
-              confidence: isBullish ? 0.75 : 0.5,
-              rationale: `Baseline execution signal for ${typeof manifest.strategy === "string" ? manifest.strategy : manifest.strategy.name}`,
-              evidence: {},
-            },
-          },
-        },
-        executionFill: trade,
-        tokenCost: 0,
-        latencyMs: manifest.latencyMs ?? 0,
-      };
-    });
-  }, [manifest]);
+  // Provenance law: only real server-recorded lineage is inspectable.
+  // Deterministic baselines (buy-and-hold, SMA/RSI) replay rule-based logic
+  // with zero per-bar LLM calls, so their manifests carry NO lineageRecords —
+  // the drawer must say so honestly instead of fabricating records
+  // client-side (fake OHLC wicks / volumes would poison point-in-time audits).
+  const lineageRecords = manifest.lineageRecords ?? [];
 
   // Selected index in the lineage list
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -98,20 +44,36 @@ export function DecisionInspector({
   const [activePromptAgent, setActivePromptAgent] = useState<string>("technical");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  // Sync to initial decision timestamp when modal opens
+  // Sync to the requested decision when the drawer opens
   useEffect(() => {
     if (!isOpen || lineageRecords.length === 0) return;
 
     if (initialDecisionTs) {
-      const foundIdx = lineageRecords.findIndex((r) => r.decisionTs === initialDecisionTs);
-      if (foundIdx !== -1) {
-        setSelectedIndex(foundIdx);
+      // Alignment law: equityCurve points and lineageRecords are both
+      // emitted once per bar, in order, so an equity point's INDEX selects
+      // the same-index lineage record. The two series use DIFFERENT
+      // timestamps for the same bar (bar close vs decision time), so direct
+      // ts→decisionTs equality is only a defensive fallback — never the
+      // primary lookup.
+      const equityIdx = manifest.equityCurve.findIndex(
+        (pt) => pt.ts === initialDecisionTs,
+      );
+      if (equityIdx !== -1 && equityIdx < lineageRecords.length) {
+        setSelectedIndex(equityIdx);
+        return;
+      }
+
+      const exactDecisionIdx = lineageRecords.findIndex(
+        (r) => r.decisionTs === initialDecisionTs,
+      );
+      if (exactDecisionIdx !== -1) {
+        setSelectedIndex(exactDecisionIdx);
         return;
       }
     }
-    // Default to last record
+    // Explicit fallback: open on the most recent recorded decision
     setSelectedIndex(lineageRecords.length - 1);
-  }, [isOpen, initialDecisionTs, lineageRecords]);
+  }, [isOpen, initialDecisionTs, lineageRecords, manifest.equityCurve]);
 
   // ESC key listener to close drawer
   useEffect(() => {
@@ -158,10 +120,69 @@ export function DecisionInspector({
     };
   }, [lineageRecords, manifest]);
 
-  if (!isOpen || !currentRecord) return null;
+  if (!isOpen) return null;
 
   const strategyName =
     typeof manifest.strategy === "string" ? manifest.strategy : manifest.strategy.name;
+
+  // Deterministic baselines record no per-decision LLM lineage (see law at
+  // the top of this component): say so honestly rather than rendering
+  // fabricated bars, prompts, or consensus transcripts.
+  if (lineageRecords.length === 0) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs transition-opacity duration-200"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="inspector-title"
+      >
+        {/* Click outside backdrop to close */}
+        <div className="flex-1 cursor-pointer" onClick={onClose} aria-hidden="true" />
+
+        {/* Slide-over Drawer */}
+        <div className="relative flex h-full w-full max-w-3xl flex-col border-l border-hairline bg-surface shadow-2xl overflow-hidden enter">
+          <div className="border-b border-hairline bg-surface-well px-5 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="rounded bg-series/10 px-2 py-0.5 text-xs font-mono font-semibold uppercase tracking-wide text-series">
+                  Lineage DAG
+                </span>
+                <h2 id="inspector-title" className="text-base font-bold tracking-tight text-ink">
+                  Decision Provenance Inspector
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-md p-1.5 text-ink-3 transition-colors hover:bg-surface hover:text-ink"
+                aria-label="Close Inspector (ESC)"
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-ink-2">
+              <span>Strategy: <strong className="text-ink">{strategyName}</strong></span>
+              <span>•</span>
+              <span>Symbol: <strong className="text-ink">{manifest.symbol ?? "—"}</strong></span>
+            </div>
+          </div>
+
+          <div className="flex flex-1 items-center justify-center overflow-y-auto p-5">
+            <EmptyState
+              title="No decision lineage recorded"
+              detail={`${strategyName} is a deterministic baseline: it replays rule-based logic over frozen fixtures with zero per-bar LLM calls, so there are no prompts, completions, or consensus records to inspect. Audit a multi-agent experiment row to inspect committee decision lineage.`}
+              className="max-w-md"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentRecord) return null;
 
   const consensus = currentRecord.consensusResult;
   const synthesis = consensus.synthesis;
@@ -175,9 +196,15 @@ export function DecisionInspector({
     : availablePromptAgents[0] ?? "";
 
   const renderedPrompt = promptKey ? currentRecord.specialistPrompts[promptKey] ?? "" : "";
-  const rawCompletion = promptKey
-    ? JSON.stringify(currentRecord.specialistCompletions[promptKey], null, 2)
-    : "";
+  // Honesty law: only claim schema validation for a completion that actually
+  // exists for the selected agent. Records with no completions (e.g. neutral
+  // fallback outputs or empty payloads) were never parsed from an LLM
+  // response, so they must not wear a green "validated" check.
+  const selectedCompletion = promptKey
+    ? currentRecord.specialistCompletions[promptKey]
+    : undefined;
+  const rawCompletion =
+    selectedCompletion !== undefined ? JSON.stringify(selectedCompletion, null, 2) : "";
 
   return (
     <div
@@ -689,9 +716,15 @@ export function DecisionInspector({
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-ink-2">
                     Raw LLM Completion String & Zod Parsed Schema Contract
                   </h4>
-                  <span className="rounded bg-status-good/15 text-status-good border border-status-good/30 px-1.5 py-0.5 text-[10px] font-mono font-semibold">
-                    ✓ Validated @committee/contracts
-                  </span>
+                  {selectedCompletion !== undefined ? (
+                    <span className="rounded bg-status-good/15 text-status-good border border-status-good/30 px-1.5 py-0.5 text-[10px] font-mono font-semibold">
+                      ✓ Validated @committee/contracts
+                    </span>
+                  ) : (
+                    <span className="rounded bg-surface-well text-ink-3 border border-hairline px-1.5 py-0.5 text-[10px] font-mono font-semibold">
+                      No model completions recorded
+                    </span>
+                  )}
                 </div>
                 <pre className="max-h-56 overflow-auto rounded-lg border border-hairline bg-surface-well p-3 font-mono text-xs text-ink-1 whitespace-pre leading-relaxed">
                   {rawCompletion || "// No completion payload recorded for this step."}

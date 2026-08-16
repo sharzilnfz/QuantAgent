@@ -239,8 +239,11 @@ const mockManifest: ExperimentManifest = ExperimentManifest.parse({
   trades: [
     mockLineageRecord1.executionFill!,
   ],
+  // Index-alignment law: equityCurve[i] and lineageRecords[i] describe the
+  // SAME bar (one decision + one equity snapshot per bar, in order). Their
+  // timestamps differ (decision time vs bar close), so ts→decisionTs equality
+  // must never be the primary lookup.
   equityCurve: [
-    { ts: "2024-01-02T21:00:00.000Z", cash: 100000, position: 0, price: 100, equity: 100000, drawdown: 0 },
     { ts: "2024-01-03T21:00:00.000Z", cash: 62.5, position: 975, price: 102.5, equity: 100000, drawdown: 0 },
     { ts: "2024-01-04T21:00:00.000Z", cash: 62.5, position: 975, price: 100.2, equity: 97757.5, drawdown: 0.0224 },
   ],
@@ -248,6 +251,32 @@ const mockManifest: ExperimentManifest = ExperimentManifest.parse({
   tokenCost: 0.007,
   latencyMs: 18,
   fallbackRate: 0,
+});
+
+// Deterministic baseline manifest: rule-based replay, zero per-bar LLM calls,
+// therefore NO lineageRecords. The drawer must say so honestly instead of
+// fabricating synthetic records client-side.
+const mockBaselineManifest: ExperimentManifest = ExperimentManifest.parse({
+  ...mockManifest,
+  strategy: {
+    name: "buy-and-hold",
+    type: "baseline",
+    description: "Passive 100% long buy-and-hold benchmark",
+    parameters: {},
+  },
+  lineageRecords: [],
+});
+
+// Record with prompts recorded but zero model completions (e.g. neutral
+// fallback path): the zod badge must stay neutral, not claim validation.
+const mockNoCompletionManifest: ExperimentManifest = ExperimentManifest.parse({
+  ...mockManifest,
+  lineageRecords: [
+    DecisionLineageRecord.parse({
+      ...mockLineageRecord1,
+      specialistCompletions: {},
+    }),
+  ],
 });
 
 describe("Decision Lineage DAG Inspector & Telemetry HUD", () => {
@@ -401,6 +430,43 @@ describe("Decision Lineage DAG Inspector & Telemetry HUD", () => {
     expect(screen.getByText("975.00")).toBeInTheDocument(); // Shares
     expect(screen.getByText("$99,937.50")).toBeInTheDocument(); // Total Value
     expect(screen.getByText(/Position Shift:/i)).toBeInTheDocument();
+  });
+
+  it("shows an honest empty state for baselines with no recorded lineage", () => {
+    render(
+      <DecisionInspector
+        isOpen={true}
+        onClose={vi.fn()}
+        manifest={mockBaselineManifest}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: /Decision Provenance Inspector/i })).toBeInTheDocument();
+    expect(screen.getByText(/No decision lineage recorded/i)).toBeInTheDocument();
+    expect(screen.getByText(/buy-and-hold is a deterministic baseline/i)).toBeInTheDocument();
+
+    // No fabricated inputs, telemetry, or stepper are rendered for baselines
+    expect(screen.queryByText(/OHLCV Bar Window/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Cost \/ 100 Decisions/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Bar \d+ of \d+/i)).not.toBeInTheDocument();
+  });
+
+  it("renders a neutral badge when no model completions were recorded", async () => {
+    const user = userEvent.setup();
+    render(
+      <DecisionInspector
+        isOpen={true}
+        onClose={vi.fn()}
+        manifest={mockNoCompletionManifest}
+      />,
+    );
+
+    const promptsTab = screen.getByRole("button", { name: /3\. Prompts & LLM Completions/i });
+    await user.click(promptsTab);
+
+    expect(screen.getByText(/No model completions recorded/i)).toBeInTheDocument();
+    expect(screen.queryByText(/✓ Validated @committee\/contracts/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/No completion payload recorded for this step/i)).toBeInTheDocument();
   });
 
   it("handles close via close button or Escape key", async () => {

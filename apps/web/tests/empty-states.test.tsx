@@ -39,7 +39,8 @@ describe("null agent output", () => {
         "/portfolio": { status: 200, body: mockPortfolioResponse },
         "/portfolio/history": { status: 200, body: [] },
         "/watchlist": { status: 200, body: mockWatchlist },
-        "/agents/latest": { status: 200, body: null },
+        // No-run is signalled by a 404 (no_runs_for_symbol), not 200 + null.
+        "/agents/latest": { status: 404, body: { message: "no_runs_for_symbol" } },
       }),
     );
 
@@ -64,7 +65,7 @@ describe("sparse history", () => {
           body: [{ asOf: "2026-07-21T20:00:00.000Z", equity: 138402.19 }],
         },
         "/watchlist": { status: 200, body: mockWatchlist },
-        "/agents/latest": { status: 200, body: null },
+        "/agents/latest": { status: 404, body: { message: "no_runs_for_symbol" } },
       }),
     );
 
@@ -80,7 +81,7 @@ describe("sparse history", () => {
         "/portfolio": { status: 200, body: mockPortfolioResponse },
         "/portfolio/history": { status: 404, body: { message: "Not found" } },
         "/watchlist": { status: 200, body: mockWatchlist },
-        "/agents/latest": { status: 200, body: null },
+        "/agents/latest": { status: 404, body: { message: "no_runs_for_symbol" } },
       }),
     );
 

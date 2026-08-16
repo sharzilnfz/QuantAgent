@@ -318,6 +318,10 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
     expect(screen.getAllByText(/Multi-Agent \(Debate OFF \/ Ablation\)/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Technical \+ Sentiment \+ Polymarket/i).length).toBeGreaterThan(0);
 
+    // Only fixture-backed datasets are offered; MSFT has no frozen fixture (404s)
+    expect(screen.getByRole("button", { name: "SPY" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "MSFT" })).not.toBeInTheDocument();
+
     // Tearsheet metrics rendering
     expect(screen.getAllByText("15.40%").length).toBeGreaterThan(0); // Benchmark Total Return / Annualized
     expect(screen.getAllByText("22.80%").length).toBeGreaterThan(0); // Debate ON Total Return / Annualized
@@ -381,7 +385,7 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
     expect(screen.getByText(/Active Strategy Overlay \(5\/5\)/i)).toBeInTheDocument();
   });
 
-  it("toggles Live Variance Sweep harness with spend telemetry chip", async () => {
+  it("toggles Variance Sweep harness with spend telemetry chip, labeling honestly by spend", async () => {
     mockApi(
       signedInRoutes({
         "/experiments/suite?symbol=AAPL": {
@@ -417,18 +421,66 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
 
     renderApp("/observatory");
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Live Sweep/i })).toBeInTheDocument();
-    });
+    // Honest default: with no paid sweep result loaded, the toggle reads
+    // deterministic — a $0.00 API run must never be labeled "Live"
+    const sweepBtn = await screen.findByRole("button", { name: /Deterministic Sweep/i });
+    await userEvent.click(sweepBtn);
 
-    const liveSweepBtn = screen.getByRole("button", { name: /Live Sweep/i });
-    await userEvent.click(liveSweepBtn);
-
+    // Mocked sweep spent $0.145 > 0, so labels upgrade to Live
     await waitFor(() => {
       expect(screen.getByText(/Live Evaluation Variance Sweep/i)).toBeInTheDocument();
       expect(screen.getByText(/Sweep Spend:/i)).toBeInTheDocument();
       expect(screen.getByText(/\$0.145/i)).toBeInTheDocument();
     });
+    expect(screen.getByRole("button", { name: /Live Sweep/i })).toBeInTheDocument();
+  });
+
+  it("labels the sweep deterministic with no pulse when totalCost is $0.00", async () => {
+    mockApi(
+      signedInRoutes({
+        "/experiments/suite?symbol=AAPL": {
+          status: 200,
+          body: mockSuiteResult,
+        },
+        "/experiments/variance-sweep": {
+          status: 200,
+          body: {
+            id: "c566691b-0e33-59b7-cf6f-0d67fabc94a5",
+            symbol: "AAPL",
+            createdAt: "2026-08-14T12:00:00.000Z",
+            runsCount: 3,
+            windowSize: 25,
+            totalCost: 0,
+            budgetLimit: 5.0,
+            budgetExceeded: false,
+            runs: [],
+            metricStats: {
+              totalReturn: { mean: 0.12, variance: 0.0001, stdDev: 0.01, min: 0.11, max: 0.13 },
+              annualizedReturn: { mean: 0.12, variance: 0.0001, stdDev: 0.01, min: 0.11, max: 0.13 },
+              sharpeRatio: { mean: 1.5, variance: 0.01, stdDev: 0.1, min: 1.4, max: 1.6 },
+              maxDrawdown: { mean: 0.04, variance: 0.0001, stdDev: 0.01, min: 0.03, max: 0.05 },
+            },
+            equityBands: [
+              { asOf: "2024-01-02T21:00:00.000Z", meanEquity: 100000, stdDev: 0, upperBand: 100000, lowerBand: 100000, minEquity: 100000, maxEquity: 100000 },
+            ],
+          },
+        },
+      }),
+    );
+
+    renderApp("/observatory");
+
+    const sweepBtn = await screen.findByRole("button", { name: /Deterministic Sweep/i });
+    await userEvent.click(sweepBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Deterministic Evaluation Variance Sweep/i)).toBeInTheDocument();
+      expect(screen.getByText(/Sweep Spend:/i)).toBeInTheDocument();
+      expect(screen.getByText(/\$0\.000/i)).toBeInTheDocument();
+    });
+    // Button keeps the deterministic label; no "Live" copy anywhere
+    expect(screen.getByRole("button", { name: /Deterministic Sweep/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Live Sweep/i })).not.toBeInTheDocument();
   });
 
   it("switches chart modes between Equity Curve and Drawdown profile", async () => {
@@ -453,13 +505,15 @@ describe("Observatory Tearsheet & Equity Curves View", () => {
       expect(screen.getAllByRole("button", { name: /Audit Lineage/i }).length).toBeGreaterThan(0);
     });
 
+    // First row is Buy & Hold — a deterministic baseline with no lineage
     const auditButtons = screen.getAllByRole("button", { name: /Audit Lineage/i });
     await userEvent.click(auditButtons[0]!);
 
-    // Decision Lineage drawer is visible
+    // Drawer opens with an honest empty state: baselines make no per-decision
+    // LLM calls, so no lineage is fabricated client-side
     expect(screen.getByRole("heading", { name: /Decision Provenance Inspector/i })).toBeInTheDocument();
-    expect(screen.getByText(/Cost \/ 100 Decisions/i)).toBeInTheDocument();
-    expect(screen.getByText(/OHLCV Bar Window/i)).toBeInTheDocument();
+    expect(screen.getByText(/No decision lineage recorded/i)).toBeInTheDocument();
+    expect(screen.getByText(/is a deterministic baseline/i)).toBeInTheDocument();
   });
 
   it("handles API errors gracefully and offers retry affordance", async () => {
