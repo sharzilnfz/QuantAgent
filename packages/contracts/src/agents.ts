@@ -15,7 +15,7 @@ import { PredictionMarketEvent } from "./polymarket";
  * Semantic version of the agent I/O contracts. Bump on any breaking change to
  * `AgentInput` / `AgentOutput`. Consumers may assert compatibility against this.
  */
-export const CONTRACTS_VERSION = "1.3.0";
+export const CONTRACTS_VERSION = "1.4.0";
 
 /**
  * What the orchestrator hands an agent. Bounded to what is knowable at `decisionTs`:
@@ -60,3 +60,17 @@ export type AgentOutput = z.infer<typeof AgentOutput>;
  * output and by the quant service to validate the same payload.
  */
 export const AgentOutputJsonSchema = zodToJsonSchema(AgentOutput, "AgentOutput");
+
+/**
+ * `GET /agents/latest` response: the run envelope plus its validated outputs.
+ * An absent run is signalled by a 404 (`no_runs_for_symbol`), not an empty envelope.
+ */
+export const AgentRunEnvelope = z.object({
+  runId: z.string().uuid(),
+  symbol: z.string(),
+  timeframe: Timeframe,
+  decisionTs: z.string().datetime(),
+  status: z.string(),
+  outputs: z.array(AgentOutput),
+});
+export type AgentRunEnvelope = z.infer<typeof AgentRunEnvelope>;

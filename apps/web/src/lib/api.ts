@@ -18,7 +18,7 @@
  * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
  * spec-03 session cookie rides along.
  */
-import { AgentOutput, ExperimentSuiteResult, PortfolioState, VarianceSweepResult } from "@committee/contracts";
+import { AgentRunEnvelope, ExperimentSuiteResult, PortfolioState, VarianceSweepResult } from "@committee/contracts";
 
 const API_BASE = "/api";
 
@@ -224,12 +224,25 @@ export const api = {
     return parseContract(PortfolioPointSchema.array(), payload, "/portfolio/history");
   },
 
-  /** `GET /agents/latest?symbol=AAPL -> AgentOutput | null`. */
-  async latestAgentOutput(symbol: string, signal?: AbortSignal): Promise<AgentOutput | null> {
+  /**
+   * `GET /agents/latest?symbol=AAPL -> AgentRunEnvelope` (404 when no run exists).
+   * Resolves to the first output of the latest run, or `null` when the symbol has
+   * no runs yet — the card's intentional empty state.
+   */
+  async latestAgentOutput(
+    symbol: string,
+    signal?: AbortSignal,
+  ): Promise<AgentRunEnvelope["outputs"][number] | null> {
     const path = `/agents/latest?symbol=${encodeURIComponent(symbol)}`;
-    const payload = await request(path, { signal });
-    if (payload === null || payload === undefined) return null;
-    return parseContract(AgentOutput, payload, path);
+    let payload: unknown;
+    try {
+      payload = await request(path, { signal });
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 404) return null;
+      throw error;
+    }
+    const envelope = parseContract(AgentRunEnvelope, payload, path);
+    return envelope.outputs[0] ?? null;
   },
 
   /** `GET /watchlist -> { symbol }[]` (seeded; management UI is Sprint 2). */
