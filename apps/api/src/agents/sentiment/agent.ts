@@ -105,6 +105,15 @@ export class SentimentAgent extends BaseAgent {
 
     const classification = classifySentimentHeadlines(headlines.slice(0, this.maxHeadlines));
 
+    // The exact rendered prompt, captured for lineage audits in both modes.
+    const renderedPrompt = buildSentimentUserPrompt({
+      symbol: input.symbol,
+      decisionTs: input.decisionTs,
+      headlines: headlines.slice(0, this.maxHeadlines),
+      netScore: classification.netScore,
+      mechanicalDirection: classification.direction,
+    });
+
     // Deterministic offline evaluation path ($0 cost, deterministic replay)
     if (this.deterministicOffline || !this.llm) {
       this.telemetry.recordSuccess();
@@ -114,6 +123,15 @@ export class SentimentAgent extends BaseAgent {
         confidence: classification.strength,
         rationale: `Deterministic sentiment: ${classification.bullishCount} bullish, ${classification.bearishCount} bearish, ${classification.neutralCount} neutral out of ${classification.totalHeadlines} point-in-time headlines.`,
         evidence: {
+          renderedPrompt,
+          rawCompletion: JSON.stringify({
+            agent: this.name,
+            direction: classification.direction,
+            confidence: classification.strength,
+          }),
+          completionMode: "deterministic-offline",
+          completionValidated: true,
+          deterministic: true,
           headlinesConsidered: classification.totalHeadlines,
           netSentimentScore: classification.netScore,
           bullishCount: classification.bullishCount,
@@ -121,7 +139,6 @@ export class SentimentAgent extends BaseAgent {
           neutralCount: classification.neutralCount,
           symbol: input.symbol,
           decisionTs: input.decisionTs,
-          deterministic: true,
           ...classification.evidence,
         },
       };
@@ -130,13 +147,7 @@ export class SentimentAgent extends BaseAgent {
     const request = {
       model: this.model,
       system: SENTIMENT_SYSTEM_PROMPT,
-      user: buildSentimentUserPrompt({
-        symbol: input.symbol,
-        decisionTs: input.decisionTs,
-        headlines: headlines.slice(0, this.maxHeadlines),
-        netScore: classification.netScore,
-        mechanicalDirection: classification.direction,
-      }),
+      user: renderedPrompt,
       toolName: AGENT_OUTPUT_TOOL_NAME,
       toolSchema: sentimentOutputToolSchema(),
       maxTokens: this.maxTokens,
@@ -148,20 +159,24 @@ export class SentimentAgent extends BaseAgent {
       return NO_OPINION(this.name, "error");
     }
 
-    const agree = narration.direction === classification.direction;
-    const blended = blendConfidence(classification.strength, narration.confidence, agree);
+    const agree = narration.output.direction === classification.direction;
+    const blended = blendConfidence(classification.strength, narration.output.confidence, agree);
     this.telemetry.recordSuccess();
 
     return {
       agent: this.name,
-      direction: narration.direction,
+      direction: narration.output.direction,
       confidence: blended,
-      rationale: narration.rationale,
+      rationale: narration.output.rationale,
       evidence: {
         // Model-authored keys first...
-        ...narration.evidence,
+        ...narration.output.evidence,
         // ...then the authoritative computed facts, which overwrite anything that collides:
         ...classification.evidence,
+        renderedPrompt,
+        rawCompletion: narration.rawText,
+        completionMode: "llm",
+        completionValidated: true,
         headlinesConsidered: classification.totalHeadlines,
         netSentimentScore: classification.netScore,
         bullishCount: classification.bullishCount,
@@ -169,8 +184,8 @@ export class SentimentAgent extends BaseAgent {
         neutralCount: classification.neutralCount,
         symbol: input.symbol,
         decisionTs: input.decisionTs,
-        modelDirection: narration.direction,
-        modelConfidence: narration.confidence,
+        modelDirection: narration.output.direction,
+        modelConfidence: narration.output.confidence,
         modelAgreesWithRules: agree,
         model: this.model,
       },
@@ -221,12 +236,13 @@ export class SentimentAgent extends BaseAgent {
 
   /**
    * LLM completion with at most one retry on schema failure or error.
+   * Returns the parsed output plus the raw completion text for lineage capture.
    */
   private async narrate(
     request: Parameters<LlmClient["completeStructured"]>[0],
     input: AgentInput,
     attempt: number,
-  ): Promise<AgentOutput | null> {
+  ): Promise<{ output: AgentOutput; rawText: string } | null> {
     if (!this.llm) return null;
 
     let raw: unknown;
@@ -245,11 +261,12 @@ export class SentimentAgent extends BaseAgent {
       return attempt === 0 ? this.narrate(request, input, 1) : null;
     }
 
+    const rawText = JSON.stringify(raw) ?? "";
     const normalized = normalizeSentimentModelOutput(raw);
     const parsed = AgentOutput.safeParse(normalized);
 
     if (parsed.success && parsed.data.agent === this.name) {
-      return parsed.data;
+      return { output: parsed.data, rawText };
     }
 
     this.telemetry.recordInvalid();

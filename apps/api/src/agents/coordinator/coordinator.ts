@@ -5,6 +5,7 @@ import {
   type AgentOutput,
   type Direction,
 } from "@committee/contracts";
+import { TemporalGuard } from "@committee/fixtures";
 
 import { defaultAgentLogger, type Agent, type StructuredLogger } from "../base.js";
 import { runAgents } from "../runner.js";
@@ -43,7 +44,10 @@ export class MultiAgentCoordinator {
       this.specialists = options.specialists;
     } else {
       const baseList: Agent[] = [
-        new TechnicalAgent({ logger: this.logger }),
+        new TechnicalAgent({
+          deterministicOffline: this.deterministicOffline,
+          logger: this.logger,
+        }),
         new SentimentAgent({
           deterministicOffline: this.deterministicOffline,
           logger: this.logger,
@@ -166,11 +170,23 @@ export class MultiAgentCoordinator {
 
     // 3. Record lineage if recorder is present
     if (this.lineageRecorder) {
-      const specialistPrompts: Record<string, string> = {
-        technical: `System prompt: Technical analysis specialist.\nUser prompt: Analyze ${input.symbol} at ${input.decisionTs} with ${input.bars.length} historical bars and indicators (${input.indicators ? "available" : "none"}).`,
-        sentiment: `System prompt: Sentiment analysis specialist.\nUser prompt: Evaluate news sentiment for ${input.symbol} with ${input.news?.length ?? 0} news items up to ${input.decisionTs}.`,
+      // Exact rendered prompts captured by the specialists (see their evidence);
+      // the summaries below are only a fallback for hand-rolled agents.
+      const promptFrom = (out: AgentOutput): string | undefined => {
+        const rendered = out.evidence["renderedPrompt"];
+        return typeof rendered === "string" && rendered.length > 0 ? rendered : undefined;
       };
-      if (polymarket) {
+
+      const specialistPrompts: Record<string, string> = {};
+      if (promptFrom(technical)) specialistPrompts.technical = promptFrom(technical)!;
+      else
+        specialistPrompts.technical = `System prompt: Technical analysis specialist.\nUser prompt: Analyze ${input.symbol} at ${input.decisionTs} with ${input.bars.length} historical bars and indicators (${input.indicators ? "available" : "none"}).`;
+      if (promptFrom(sentiment)) specialistPrompts.sentiment = promptFrom(sentiment)!;
+      else
+        specialistPrompts.sentiment = `System prompt: Sentiment analysis specialist.\nUser prompt: Evaluate news sentiment for ${input.symbol} with ${input.news?.length ?? 0} news items up to ${input.decisionTs}.`;
+      if (polymarket && promptFrom(polymarket)) {
+        specialistPrompts.polymarket = promptFrom(polymarket)!;
+      } else if (polymarket) {
         specialistPrompts.polymarket = `System prompt: Macro prediction market specialist.\nUser prompt: Evaluate crowdsourced macro probability distributions for ${input.symbol} up to ${input.decisionTs}.`;
       }
       if (synthesisResult) {
@@ -188,13 +204,18 @@ export class MultiAgentCoordinator {
         specialistCompletions.debateSynthesizer = synthesisResult;
       }
 
+      // The audit view must show exactly what was KNOWABLE at decisionTs —
+      // the specialists filter internally, but the recorder stores the same
+      // point-in-time slice it handed them, never the raw future-inclusive array.
+      const pointInTimeNews = TemporalGuard.filter(input.news ?? [], input.decisionTs);
+
       this.lineageRecorder.record({
         id: lineageId,
         decisionTs: input.decisionTs,
         symbol: input.symbol,
         inputBars: input.bars,
         indicators: input.indicators,
-        news: input.news,
+        news: pointInTimeNews,
         specialistPrompts,
         specialistCompletions,
         consensusResult,

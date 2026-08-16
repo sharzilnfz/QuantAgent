@@ -79,6 +79,9 @@ export class PolymarketAgent extends BaseAgent {
 
     const classification = classifyMacroOdds(pointInTimeEvents, input.decisionTs);
 
+    // The exact rendered prompt, captured for lineage audits in both modes.
+    const renderedPrompt = buildPolymarketUserPrompt(input, classification);
+
     // Fast-path: Deterministic offline evaluation ($0.00 cost)
     if (this.deterministicOffline || !this.llm) {
       const rationale = this.generateDeterministicRationale(classification);
@@ -87,12 +90,23 @@ export class PolymarketAgent extends BaseAgent {
         direction: classification.direction,
         confidence: classification.strength,
         rationale,
-        evidence: classification.evidence,
+        evidence: {
+          renderedPrompt,
+          rawCompletion: JSON.stringify({
+            agent: this.name,
+            direction: classification.direction,
+            confidence: classification.strength,
+          }),
+          completionMode: "deterministic-offline",
+          completionValidated: true,
+          deterministic: true,
+          ...classification.evidence,
+        },
       });
     }
 
     // Live LLM completion pass
-    const userPrompt = buildPolymarketUserPrompt(input, classification);
+    const userPrompt = renderedPrompt;
 
     let rawOutput: unknown;
     try {
@@ -108,11 +122,16 @@ export class PolymarketAgent extends BaseAgent {
       rawOutput = {};
     }
 
+    const rawCompletion = JSON.stringify(rawOutput) ?? "";
     const output = normalizePolymarketModelOutput(rawOutput, classification.direction);
 
     // Fact-locking: Force deterministic classification facts into evidence to prevent hallucination
     const lockedEvidence = {
       ...output.evidence,
+      renderedPrompt,
+      rawCompletion,
+      completionMode: "llm",
+      completionValidated: true,
       ...classification.evidence,
     };
 

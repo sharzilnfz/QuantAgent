@@ -89,13 +89,43 @@ export async function runExperiment(
     lineageRecords = (strategy as { getLineageRecords: () => DecisionLineageRecord[] }).getLineageRecords();
   }
 
-  // Attach matching simulated execution trade fill if trade occurred at decision timestamp
+  // Attach matching simulated execution trade fill if trade occurred at decision timestamp.
+  // Signals decided at bar T fill at bar T+1's OPEN (1-bar delay), so a Trade stamped
+  // `bars[i].ts` belongs to the decision made at `bars[i-1].asOf` — NOT to a record
+  // keyed by the same timestamp as the trade. Map fills through that offset.
   if (lineageRecords.length > 0 && backtestResult.trades.length > 0) {
-    const tradeMap = new Map(backtestResult.trades.map((t) => [t.ts, t]));
+    const decisionTsByFillTs = new Map<string, string>();
+    for (let i = 1; i < fixture.bars.length; i += 1) {
+      const fillBar = fixture.bars[i];
+      const decisionBar = fixture.bars[i - 1];
+      if (fillBar && decisionBar) {
+        decisionTsByFillTs.set(fillBar.ts, decisionBar.asOf);
+      }
+    }
+
+    const fillByDecisionTs = new Map<string, (typeof backtestResult.trades)[number]>();
+    for (const trade of backtestResult.trades) {
+      const decisionTs = decisionTsByFillTs.get(trade.ts) ?? trade.ts;
+      if (!fillByDecisionTs.has(decisionTs)) {
+        fillByDecisionTs.set(decisionTs, trade);
+      }
+    }
+
     lineageRecords = lineageRecords.map((rec) => {
-      const fill = tradeMap.get(rec.decisionTs);
+      const fill = fillByDecisionTs.get(rec.decisionTs);
       return fill ? { ...rec, executionFill: fill } : rec;
     });
+  }
+
+  // Operational telemetry: strategies that track it (e.g. the multi-agent
+  // coordinator) surface aggregate token cost / latency / fallback rate; explicit
+  // options still win so callers can override or inject values for other strategies.
+  let telemetry: { tokenCost: number; medianLatencyMs: number; fallbackRate: number } | undefined;
+  if (
+    "getTelemetry" in strategy &&
+    typeof (strategy as { getTelemetry?: unknown }).getTelemetry === "function"
+  ) {
+    telemetry = (strategy as { getTelemetry: () => NonNullable<typeof telemetry> }).getTelemetry();
   }
 
   const datasetHash = computeDatasetHash(fixture);
@@ -148,9 +178,9 @@ export async function runExperiment(
     trades: backtestResult.trades,
     equityCurve: backtestResult.equityCurve,
     lineageRecords,
-    tokenCost: options?.tokenCost ?? 0,
-    latencyMs: options?.latencyMs ?? 0,
-    fallbackRate: options?.fallbackRate ?? 0,
+    tokenCost: options?.tokenCost ?? telemetry?.tokenCost ?? 0,
+    latencyMs: options?.latencyMs ?? telemetry?.medianLatencyMs ?? 0,
+    fallbackRate: options?.fallbackRate ?? telemetry?.fallbackRate ?? 0,
     metadata: options?.metadata,
   };
 
