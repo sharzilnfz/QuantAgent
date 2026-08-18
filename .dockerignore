@@ -1,11 +1,53 @@
+# Dependencies and package managers
 node_modules
+**/node_modules
+.pnpm-store
+
+# Python environments and caches
+.venv
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache
+**/.pytest_cache
+.ruff_cache
+**/.ruff_cache
+.coverage
+**/coverage
+htmlcov
+
+# Build outputs and caches
+dist
+**/dist
+build
+**/build
+.turbo
+**/.turbo
+.next
+**/.next
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Version control and worktrees
 .git
 .worktrees
-.turbo
-.next
+.gitignore
+.gitattributes
+
+# Environment files and logs
 .env
+.env.local
+.env.*.local
 *.log
+**/*.log
+
+# OS and IDE files
 .DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Agent and temporary scratch directories
 .agents
 .claude
 .codex
@@ -13,6 +55,9 @@ node_modules
 .impeccable
 .scratch
 .cbmignore
+
+# Static repo documentation and specs not needed in runtime images
 docs
 specs
 demo
+
