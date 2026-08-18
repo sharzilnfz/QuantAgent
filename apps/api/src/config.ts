@@ -1,7 +1,15 @@
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { config as loadEnv } from "dotenv";
 import { z } from "zod";
 
 loadEnv();
+for (const rel of [".env", "../../.env", "../../../.env"]) {
+  const p = resolve(process.cwd(), rel);
+  if (existsSync(p)) {
+    loadEnv({ path: p, override: false });
+  }
+}
 
 /**
  * Typed, validated environment config. Import `config` anywhere in the API.
@@ -22,7 +30,10 @@ const EnvSchema = z.object({
   OPENAI_API_KEY: z.string().default(""),
   OPENAI_BASE_URL: z.string().default(""),
   OPENROUTER_API_KEY: z.string().default(""),
-  LLM_PROVIDER: z.enum(["anthropic", "openai", "openrouter", "auto"]).default("auto"),
+  GEMINI_API_KEY: z.string().default(""),
+  GEMINI_BASE_URL: z.string().default("https://generativelanguage.googleapis.com/v1beta/openai"),
+  GEMINI_MODEL: z.string().default("gemini-2.0-flash"),
+  LLM_PROVIDER: z.enum(["anthropic", "openai", "openrouter", "gemini", "auto"]).default("auto"),
   LLM_CHEAP_MODEL: z.string().default("meta-llama/llama-3.3-70b-instruct:free"),
   QUANT_SERVICE_URL: z.string().default("http://localhost:8000"),
   API_PORT: z.coerce.number().int().positive().default(3000),

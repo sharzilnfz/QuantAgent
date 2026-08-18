@@ -31,7 +31,7 @@ Three deliverables, mapped to specs 02, 06, 07 (all complete in Sprint 1):
 
 - `snapshots.ts` — point-in-time snapshot provider: the query applies `as_of <= decisionTs` — the PIT filter, never `>=`. Input-received snapshots whose `asOf` is after `decisionTs` are rejected (`technical.pit_violation_rejected`).
 - `classify.ts` — pure-TypeScript deterministic classifier: RSI zones, MACD cross, Bollinger, SMA20/50 rules with fixed weights; produces a `MechanicalRead` (direction, strength, score, coverage, rule) — the "facts" side of facts-vs-narration.
-- `llm-client.ts` — injectable `LlmClient` interface with three implementations: `AnthropicLlmClient` (SDK, forced tool use), `OpenRouterLlmClient` (auto-detected from `sk-or-v1-` key / base URL), and `ScriptedLlmClient` (test double for mocked-LLM CI).
+- `llm-client.ts` — injectable `LlmClient` interface with implementations: `AnthropicLlmClient` (SDK, forced tool use), `OpenAiCompatibleLlmClient` / `OpenRouterLlmClient`, `GeminiLlmClient` (Google Gemini Free API), `FallbackLlmClient` (automatic zero-cost fallback chaining), and `ScriptedLlmClient` (test double for mocked-LLM CI).
 - `prompt.ts` — system prompt enforcing "enforced by code, not trust"; unwraps `AgentOutputJsonSchema` into the tool `input_schema` (single source of truth with Zod).
 - `agent.ts` — 5-step pipeline: PIT snapshot → deterministic classify → ONE cheap-tier LLM call (`claude-haiku-4-5`) → validation with exactly one retry → output assembly. `evidence = {...model, ...computed}` — **computed facts are spread last, so a lying model can never overwrite them**. `blendConfidence()` mixes mechanical strength with narration confidence and halves conviction when the model disagrees with the rules.
 
