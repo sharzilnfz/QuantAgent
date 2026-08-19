@@ -9,7 +9,6 @@ import {
 import { BuyAndHoldStrategy } from "../backtest/strategies/buy-and-hold";
 import { SmaRsiStrategy } from "../backtest/strategies/sma-rsi";
 import { MultiAgentCoordinatorStrategy } from "../agents/coordinator/strategy";
-import { runBacktest } from "../backtest/simulator";
 import { safeRound } from "../backtest/metrics";
 import { computeDatasetHash, getGitCommitHash } from "./hash";
 import { runExperiment } from "./orchestrator";
@@ -35,12 +34,6 @@ export async function runBenchmarkSuite(
 
   // 1. Run Buy & Hold Baseline Benchmark
   const buyAndHoldStrategy = new BuyAndHoldStrategy();
-  const benchmarkBacktestResult = await runBacktest(
-    buyAndHoldStrategy,
-    fixture.bars,
-    options?.backtestOptions,
-  );
-
   const benchmarkManifest = await runExperiment(buyAndHoldStrategy, fixture, {
     options: options?.backtestOptions,
     strategyConfig: {
@@ -51,6 +44,8 @@ export async function runBenchmarkSuite(
     },
   });
 
+  const benchmarkResult = benchmarkManifest.metrics;
+
   // Run all evaluated strategies concurrently
   const [smaRsiManifest, debateOnManifest, debateOffManifest, polymarketManifest, ...customManifests] =
     await Promise.all([
@@ -59,7 +54,7 @@ export async function runBenchmarkSuite(
         const smaRsiStrategy = new SmaRsiStrategy();
         return runExperiment(smaRsiStrategy, fixture, {
           options: options?.backtestOptions,
-          benchmarkResult: benchmarkBacktestResult,
+          benchmarkResult,
           strategyConfig: {
             name: smaRsiStrategy.name,
             type: "baseline",
@@ -81,7 +76,7 @@ export async function runBenchmarkSuite(
         });
         return runExperiment(debateOnStrategy, fixture, {
           options: options?.backtestOptions,
-          benchmarkResult: benchmarkBacktestResult,
+          benchmarkResult,
           strategyConfig: {
             name: debateOnStrategy.name,
             type: "multi-agent",
@@ -103,7 +98,7 @@ export async function runBenchmarkSuite(
         });
         return runExperiment(debateOffStrategy, fixture, {
           options: options?.backtestOptions,
-          benchmarkResult: benchmarkBacktestResult,
+          benchmarkResult,
           strategyConfig: {
             name: debateOffStrategy.name,
             type: "multi-agent-ablation",
@@ -127,7 +122,7 @@ export async function runBenchmarkSuite(
         });
         return runExperiment(polymarketStrategy, fixture, {
           options: options?.backtestOptions,
-          benchmarkResult: benchmarkBacktestResult,
+          benchmarkResult,
           strategyConfig: {
             name: polymarketStrategy.name,
             type: "multi-agent-macro",
@@ -142,7 +137,7 @@ export async function runBenchmarkSuite(
       ...(options?.customStrategies ?? []).map(async (customStrategy) =>
         runExperiment(customStrategy, fixture, {
           options: options?.backtestOptions,
-          benchmarkResult: benchmarkBacktestResult,
+          benchmarkResult,
           strategyConfig: {
             name: customStrategy.name,
             type: "custom",

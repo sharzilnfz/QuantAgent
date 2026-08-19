@@ -34,7 +34,11 @@ export function classifyMacroOdds(
     };
   }
 
-  const cutoffMs = decisionTs ? new Date(decisionTs).getTime() : Date.now();
+  const cutoffMs = decisionTs
+    ? typeof decisionTs === "string"
+      ? Date.parse(decisionTs)
+      : decisionTs.getTime()
+    : Date.now();
 
   let rateCutProb: number | undefined = undefined;
   let inflationProb: number | undefined = undefined;
@@ -43,20 +47,20 @@ export function classifyMacroOdds(
   let marketsCount = 0;
 
   for (const ev of events) {
-    // Filter history strictly to cutoff
-    const validHistory = ev.history.filter((pt) => {
-      const ptMs = new Date(pt.asOf ?? pt.ts).getTime();
-      return ptMs <= cutoffMs;
-    });
+    let latestPt: (typeof ev.history)[number] | undefined = undefined;
+    let latestMs = -Infinity;
 
-    if (validHistory.length === 0) continue;
+    for (let i = 0; i < ev.history.length; i++) {
+      const pt = ev.history[i];
+      if (!pt) continue;
+      const ptMs = Date.parse(pt.asOf ?? pt.ts);
+      if (ptMs <= cutoffMs && ptMs > latestMs) {
+        latestMs = ptMs;
+        latestPt = pt;
+      }
+    }
 
-    // Pick latest point
-    const latestPt = validHistory.reduce((latest, current) => {
-      const currentMs = new Date(current.asOf ?? current.ts).getTime();
-      const latestMs = new Date(latest.asOf ?? latest.ts).getTime();
-      return currentMs > latestMs ? current : latest;
-    }, validHistory[0]!);
+    if (!latestPt) continue;
 
     marketsCount += 1;
 

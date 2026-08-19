@@ -146,22 +146,27 @@ const BEARISH_KEYWORDS = [
   "bankruptcy",
 ];
 
+const BULLISH_PATTERNS = BULLISH_KEYWORDS.map(
+  (kw) => new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i"),
+);
+
+const BEARISH_PATTERNS = BEARISH_KEYWORDS.map(
+  (kw) => new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i"),
+);
+
 function scoreHeadline(text: string): { polarity: "bullish" | "bearish" | "neutral"; posScore: number; negScore: number } {
   const lower = text.toLowerCase();
   let posScore = 0;
   let negScore = 0;
 
-  for (const kw of BULLISH_KEYWORDS) {
-    // Regex matches word boundary or phrase
-    const regex = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
-    if (regex.test(lower)) {
+  for (let i = 0; i < BULLISH_PATTERNS.length; i++) {
+    if (BULLISH_PATTERNS[i]!.test(lower)) {
       posScore += 1;
     }
   }
 
-  for (const kw of BEARISH_KEYWORDS) {
-    const regex = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
-    if (regex.test(lower)) {
+  for (let i = 0; i < BEARISH_PATTERNS.length; i++) {
+    if (BEARISH_PATTERNS[i]!.test(lower)) {
       negScore += 1;
     }
   }

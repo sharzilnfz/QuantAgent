@@ -24,7 +24,7 @@ import { computeDatasetHash, getGitCommitHash } from "./hash";
 
 export interface RunExperimentOptions {
   options?: BacktestOptions;
-  benchmarkResult?: BacktestResult;
+  benchmarkResult?: BacktestResult | FinancialMetrics;
   metadata?: Record<string, unknown>;
   strategyConfig?: ExperimentStrategyConfig;
   tokenCost?: number;
