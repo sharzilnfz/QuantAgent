@@ -4,6 +4,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { existsSync } from "node:fs";
 import { users, watchlistItems } from "./schema";
 
 /**
@@ -59,6 +60,13 @@ export async function seed(db: SeedDb): Promise<{ userId: string }> {
 }
 
 async function main(): Promise<void> {
+  if (!process.env.DATABASE_URL) {
+    const rootEnvPath = resolve(fileURLToPath(import.meta.url), "../../../../.env");
+    if (existsSync(rootEnvPath) && typeof process.loadEnvFile === "function") {
+      process.loadEnvFile(rootEnvPath);
+    }
+  }
+
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set — cannot seed.");

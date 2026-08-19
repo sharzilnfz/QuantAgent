@@ -3,19 +3,28 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { existsSync } from "node:fs";
 
 /**
  * Runs pending Drizzle migrations against DATABASE_URL, then exits.
  *   pnpm --filter @committee/db migrate
  */
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Auto-load root .env if DATABASE_URL is not already in environment
+if (!process.env.DATABASE_URL) {
+  const rootEnvPath = resolve(__dirname, "../../../.env");
+  if (existsSync(rootEnvPath) && typeof process.loadEnvFile === "function") {
+    process.loadEnvFile(rootEnvPath);
+  }
+}
+
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
   throw new Error("DATABASE_URL is not set — cannot run migrations.");
 }
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const migrationsFolder = resolve(__dirname, "../migrations");
 
 // A dedicated single-connection handle for migrations (max: 1).
