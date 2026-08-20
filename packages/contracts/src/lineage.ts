@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PriceBar, IndicatorSnapshot, NewsItem } from "./signals";
+import { FundamentalReport } from "./fundamentals";
 import { Trade } from "./backtest";
 import { ConsensusResult } from "./debate";
 
@@ -14,6 +15,7 @@ export const DecisionLineageRecord = z.object({
   inputBars: z.array(PriceBar),
   indicators: IndicatorSnapshot.nullable(),
   news: z.array(NewsItem).default([]),
+  fundamentals: z.array(FundamentalReport).default([]),
   specialistPrompts: z.record(z.string(), z.string()).default({}), // AgentName -> rendered prompt text
   specialistCompletions: z.record(z.string(), z.unknown()).default({}), // AgentName -> raw LLM completion string/object
   consensusResult: ConsensusResult,

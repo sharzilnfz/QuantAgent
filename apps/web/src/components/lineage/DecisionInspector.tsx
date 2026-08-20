@@ -546,6 +546,69 @@ export function DecisionInspector({
                   </div>
                 )}
               </div>
+
+              {/* Point-in-Time SEC EDGAR Fundamentals Disclosures (filedAt ≤ T) */}
+              <div className="rounded-xl border border-hairline bg-surface p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-ink-2">
+                    SEC EDGAR XBRL Filings (Strictly Filtered to filedAt ≤ {currentRecord.decisionTs})
+                  </h4>
+                  <span className="text-[11px] font-mono text-ink-3">
+                    Disclosures: {currentRecord.fundamentals?.length ?? 0}
+                  </span>
+                </div>
+                {currentRecord.fundamentals && currentRecord.fundamentals.length > 0 ? (
+                  (() => {
+                    const latestReport = currentRecord.fundamentals[currentRecord.fundamentals.length - 1]!;
+                    return (
+                      <div className="space-y-3">
+                        <div className="rounded-lg border border-hairline bg-surface-well/50 p-3 text-xs">
+                          <div className="flex items-center justify-between border-b border-hairline pb-2 mb-2">
+                            <span className="font-bold text-ink">
+                              SEC Form {latestReport.form} ({latestReport.fiscalYear} {latestReport.fiscalPeriod})
+                            </span>
+                            <span className="font-mono text-[11px] text-ink-3">
+                              Filed: {latestReport.filedAt.slice(0, 10)} (Period End: {latestReport.periodEndDate})
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono text-[11px]">
+                            <div>
+                              <span className="text-ink-3">Revenue:</span>{" "}
+                              <span className="font-semibold text-ink">${(latestReport.revenue / 1e9).toFixed(2)}B</span>
+                            </div>
+                            <div>
+                              <span className="text-ink-3">YoY Growth:</span>{" "}
+                              <span className={cn("font-semibold", (latestReport.revenueGrowthYoY ?? 0) >= 0 ? "text-delta-pos" : "text-delta-neg")}>
+                                {latestReport.revenueGrowthYoY != null ? `${(latestReport.revenueGrowthYoY * 100).toFixed(1)}%` : "N/A"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-ink-3">Operating Margin:</span>{" "}
+                              <span className="font-semibold text-ink">{(latestReport.operatingMargin * 100).toFixed(1)}%</span>
+                            </div>
+                            <div>
+                              <span className="text-ink-3">Free Cash Flow:</span>{" "}
+                              <span className="font-semibold text-ink">${(latestReport.freeCashFlow / 1e9).toFixed(2)}B</span>
+                            </div>
+                            <div>
+                              <span className="text-ink-3">Net Margin:</span>{" "}
+                              <span className="font-semibold text-ink">{(latestReport.netMargin * 100).toFixed(1)}%</span>
+                            </div>
+                            <div>
+                              <span className="text-ink-3">Debt/Equity:</span>{" "}
+                              <span className="font-semibold text-ink">{latestReport.debtToEquity.toFixed(2)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()
+                ) : (
+                  <div className="rounded-lg border border-hairline bg-surface-well p-4 text-xs font-mono text-ink-3">
+                    Zero SEC filings available prior to this decision timestamp ({currentRecord.decisionTs}). Anti-leakage verified.
+                  </div>
+                )}
+              </div>
             </div>
           ) : null}
 
@@ -554,45 +617,96 @@ export function DecisionInspector({
             <div className="space-y-5">
               {/* Specialist Stances Breakdown */}
               <div className="rounded-xl border border-hairline bg-surface p-4">
-                <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-2">
-                  Specialist Signal Evaluations
-                </h4>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {Object.entries(consensus.specialistVotes).map(([agentName, vote]) => (
-                    <div
-                      key={agentName}
-                      className="rounded-lg border border-hairline bg-surface-well/50 p-3.5 space-y-2"
-                    >
-                      <div className="flex items-center justify-between border-b border-hairline pb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-xs capitalize text-ink">
-                            {agentName} Specialist
-                          </span>
+                <div className="mb-3 flex items-center justify-between">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-ink-2">
+                    Specialist Signal Evaluations
+                  </h4>
+                  <span className="text-[11px] font-mono text-ink-3">
+                    Active Specialists: {Object.keys(consensus.specialistVotes).length}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {Object.entries(consensus.specialistVotes).map(([agentName, vote]) => {
+                    const displayEvidence = Object.entries(vote.evidence).filter(
+                      ([k]) =>
+                        ![
+                          "renderedPrompt",
+                          "rawCompletion",
+                          "completionMode",
+                          "completionValidated",
+                          "decisionTs",
+                          "snapshotAsOf",
+                          "snapshotTs",
+                          "deterministic",
+                        ].includes(k),
+                    );
+
+                    return (
+                      <div
+                        key={agentName}
+                        className="flex flex-col justify-between rounded-lg border border-hairline bg-surface-well/50 p-3.5 space-y-2.5 overflow-hidden"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between border-b border-hairline pb-2 mb-2">
+                            <span className="font-bold text-xs capitalize text-ink">
+                              {agentName} Specialist
+                            </span>
+                            <span
+                              className={cn(
+                                "rounded px-2 py-0.5 text-[11px] font-mono font-bold uppercase",
+                                vote.direction === "bullish"
+                                  ? "bg-delta-pos/15 text-delta-pos"
+                                  : vote.direction === "bearish"
+                                  ? "bg-delta-neg/15 text-delta-neg"
+                                  : "bg-surface-well text-ink-3 border border-hairline",
+                              )}
+                            >
+                              {vote.direction} ({(vote.confidence * 100).toFixed(0)}%)
+                            </span>
+                          </div>
+                          <p className="text-xs text-ink-2 leading-relaxed break-words">
+                            {vote.rationale}
+                          </p>
                         </div>
-                        <span
-                          className={cn(
-                            "rounded px-2 py-0.5 text-[11px] font-mono font-bold uppercase",
-                            vote.direction === "bullish"
-                              ? "bg-delta-pos/15 text-delta-pos"
-                              : vote.direction === "bearish"
-                              ? "bg-delta-neg/15 text-delta-neg"
-                              : "bg-surface-well text-ink-3 border border-hairline",
-                          )}
-                        >
-                          {vote.direction} ({(vote.confidence * 100).toFixed(0)}%)
-                        </span>
+
+                        {displayEvidence.length > 0 ? (
+                          <div className="mt-2 rounded-lg bg-surface p-2.5 font-mono text-[10px] text-ink-3 border border-hairline/60 space-y-1.5 overflow-hidden">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-ink-2 text-[10px] uppercase tracking-wider">
+                                Facts & Evidence:
+                              </span>
+                              <span className="text-[9px] text-ink-3">Ground Truth</span>
+                            </div>
+                            <div className="grid grid-cols-1 gap-1 max-h-36 overflow-y-auto pr-0.5">
+                              {displayEvidence.map(([key, val]) => {
+                                let formattedVal = String(val);
+                                if (typeof val === "number") {
+                                  formattedVal = Number.isInteger(val)
+                                    ? String(val)
+                                    : Math.abs(val) < 0.01 && val !== 0
+                                    ? val.toExponential(2)
+                                    : val.toFixed(2);
+                                }
+                                return (
+                                  <div
+                                    key={key}
+                                    className="flex items-baseline justify-between gap-1.5 rounded bg-surface-well/70 px-2 py-0.5 text-[10px] overflow-hidden"
+                                  >
+                                    <span className="text-ink-3 truncate capitalize">
+                                      {key.replace(/([A-Z])/g, " $1")}:
+                                    </span>
+                                    <span className="font-semibold text-ink shrink-0 truncate max-w-[60%]">
+                                      {formattedVal}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
-                      <p className="text-xs text-ink-2 leading-relaxed">
-                        {vote.rationale}
-                      </p>
-                      {Object.keys(vote.evidence).length > 0 ? (
-                        <div className="mt-2 rounded bg-surface p-2 font-mono text-[10px] text-ink-3 border border-hairline/60">
-                          <div className="font-semibold text-ink-2 mb-1">Evidence Payload:</div>
-                          {JSON.stringify(vote.evidence)}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 

@@ -206,4 +206,45 @@ describe("Anti-Leakage CI Gate & TemporalGuard", () => {
       }).toThrow(TemporalIntegrityViolation);
     });
   });
+
+  describe("TemporalGuard.queryFundamentals & SEC Filing Anti-Leakage", () => {
+    it("strictly isolates fundamental reports to asOf <= T_decision (filing date, NOT period end date)", () => {
+      const fixture = loadFixture("AAPL");
+      expect(fixture.fundamentals).toBeDefined();
+      expect(fixture.fundamentals!.length).toBe(8);
+
+      // Invariant: For every fundamental report, asOf >= filedAt > periodEndDate
+      for (const rep of fixture.fundamentals!) {
+        const periodEndMs = new Date(rep.periodEndDate).getTime();
+        const filedAtMs = new Date(rep.filedAt).getTime();
+        const asOfMs = new Date(rep.asOf).getTime();
+
+        expect(filedAtMs).toBeGreaterThan(periodEndMs);
+        expect(asOfMs).toBeGreaterThanOrEqual(filedAtMs);
+      }
+
+      // Test point-in-time isolation:
+      // AAPL Q3 2023 ended 2023-07-01, but was filed on 2023-08-04.
+      // On 2023-07-15 (between period end and filing date), Q3 report MUST NOT be knowable.
+      const decisionTsPreFiling = "2023-07-15T21:00:00.000Z";
+      const visibleReportsPre = TemporalGuard.queryFundamentals(fixture.fundamentals!, decisionTsPreFiling);
+
+      expect(visibleReportsPre.some((r) => r.id === "aapl-10q-2023-q3")).toBe(false);
+      expect(visibleReportsPre.some((r) => r.id === "aapl-10q-2023-q2")).toBe(true);
+
+      // On 2023-08-05 (after filing date), Q3 report IS knowable.
+      const decisionTsPostFiling = "2023-08-05T21:00:00.000Z";
+      const visibleReportsPost = TemporalGuard.queryFundamentals(fixture.fundamentals!, decisionTsPostFiling);
+      expect(visibleReportsPost.some((r) => r.id === "aapl-10q-2023-q3")).toBe(true);
+    });
+
+    it("throws TemporalIntegrityViolation if a future 10-Q/10-K report is accessed during decision cycle T", () => {
+      const fixture = loadFixture("NVDA");
+      const decisionTs = "2023-06-01T00:00:00.000Z";
+
+      expect(() => {
+        TemporalGuard.assertNoLeakage(fixture.fundamentals!, decisionTs, "fundamentals-leakage-test");
+      }).toThrow(TemporalIntegrityViolation);
+    });
+  });
 });

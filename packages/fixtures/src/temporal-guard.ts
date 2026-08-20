@@ -1,4 +1,4 @@
-import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent, PolymarketProbabilityPoint } from "@committee/contracts";
+import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent, PolymarketProbabilityPoint, FundamentalReport } from "@committee/contracts";
 
 /**
  * Thrown when a dataset query or evaluation step encounters data timestamped
@@ -180,6 +180,17 @@ export class TemporalGuard {
   }
 
   /**
+   * Query fundamental reports point-in-time up to decisionTs.
+   * Enforces that filedAt / asOf <= decisionTs (never fiscal period end date).
+   */
+  public static queryFundamentals(
+    reports: readonly FundamentalReport[],
+    decisionTs: string | Date,
+  ): FundamentalReport[] {
+    return this.filter(reports, decisionTs);
+  }
+
+  /**
    * Wrap and query a complete dataset fixture up to decisionTs.
    */
   public static queryDataset(
@@ -192,6 +203,9 @@ export class TemporalGuard {
       news: this.queryNews(dataset.news, decisionTs),
       predictionMarkets: dataset.predictionMarkets
         ? this.queryPredictionMarkets(dataset.predictionMarkets, decisionTs)
+        : undefined,
+      fundamentals: dataset.fundamentals
+        ? this.queryFundamentals(dataset.fundamentals, decisionTs)
         : undefined,
     };
   }

@@ -93,14 +93,39 @@ export class DebateSynthesizer {
    * Deterministic debate reconciliation rule for offline evaluation and fallback.
    */
   public synthesizeDeterministic(context: DebatePromptContext): DebateSynthesis {
-    const { technical, sentiment, polymarket } = context;
+    const { technical, sentiment, fundamental, polymarket } = context;
 
     // Case 1: Direct opposing conflict (bullish vs bearish)
     const isDirectConflict =
       (technical.direction === "bullish" && sentiment.direction === "bearish") ||
-      (technical.direction === "bearish" && sentiment.direction === "bullish");
+      (technical.direction === "bearish" && sentiment.direction === "bullish") ||
+      (fundamental && ((fundamental.direction === "bullish" && (technical.direction === "bearish" || sentiment.direction === "bearish")) ||
+                       (fundamental.direction === "bearish" && (technical.direction === "bullish" || sentiment.direction === "bullish"))));
 
     if (isDirectConflict) {
+      // If Fundamental specialist is present and takes a stance, use corporate financials as authoritative tiebreaker
+      if (fundamental && fundamental.direction !== "neutral" && fundamental.confidence >= 0.2) {
+        if (fundamental.direction === technical.direction) {
+          return {
+            direction: technical.direction,
+            confidence: Math.round(Math.max(technical.confidence, fundamental.confidence) * 0.9 * 1000) / 1000,
+            rationale: `SEC EDGAR fundamental metrics (${fundamental.direction}, ${fundamental.confidence.toFixed(2)}) corroborate Technical signal (${technical.confidence.toFixed(2)}) over conflicting sentiment.`,
+            dissentingView: `Sentiment specialist dissents on negative news flow (${sentiment.rationale}).`,
+            primaryDriver: "fundamental",
+            tokenCost: 0,
+          };
+        } else if (fundamental.direction === sentiment.direction) {
+          return {
+            direction: sentiment.direction,
+            confidence: Math.round(Math.max(sentiment.confidence, fundamental.confidence) * 0.9 * 1000) / 1000,
+            rationale: `SEC EDGAR fundamental metrics (${fundamental.direction}, ${fundamental.confidence.toFixed(2)}) corroborate Sentiment conviction (${sentiment.confidence.toFixed(2)}) over technical indicators.`,
+            dissentingView: `Technical specialist dissents based on price action (${technical.rationale}).`,
+            primaryDriver: "fundamental",
+            tokenCost: 0,
+          };
+        }
+      }
+
       // If Polymarket specialist is present and takes a non-neutral stance, use macro odds as tiebreaker
       if (polymarket && polymarket.direction !== "neutral" && polymarket.confidence >= 0.2) {
         if (polymarket.direction === technical.direction) {
@@ -150,8 +175,8 @@ export class DebateSynthesizer {
         return {
           direction: "neutral",
           confidence: 0.0,
-          rationale: `Direct conflict between Technical (${technical.direction}, ${technical.confidence.toFixed(2)}) and Sentiment (${sentiment.direction}, ${sentiment.confidence.toFixed(2)}) reconciled to neutral cash preservation.`,
-          dissentingView: `Technical: ${technical.direction} vs Sentiment: ${sentiment.direction}.`,
+          rationale: `Direct conflict between specialists reconciled to neutral cash preservation.`,
+          dissentingView: `Specialists in direct directional conflict.`,
           primaryDriver: "compromise",
           tokenCost: 0,
         };

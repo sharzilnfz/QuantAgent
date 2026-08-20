@@ -43,7 +43,7 @@ export function evaluateConsensus(
     };
   }
 
-  // Check if every specialist shares the same direction
+  // Check if every specialist shares the same direction (unanimous)
   const allAgree = outputs.every((o) => o.direction === first.direction);
 
   if (allAgree) {
@@ -61,10 +61,41 @@ export function evaluateConsensus(
     };
   }
 
-  // Check type of disagreement
-  const directions = new Set(outputs.map((o) => o.direction));
-  const isDirectConflict =
-    directions.has("bullish") && directions.has("bearish");
+  // Count directions
+  const bullishOutputs = outputs.filter((o) => o.direction === "bullish");
+  const bearishOutputs = outputs.filter((o) => o.direction === "bearish");
+  const isDirectConflict = bullishOutputs.length > 0 && bearishOutputs.length > 0;
+
+  // Majority rule without opposing conflict (e.g. 2 bullish + 1 neutral, or 2 bearish + 1 neutral)
+  if (!isDirectConflict) {
+    if (bullishOutputs.length >= 2) {
+      const avgConfidence =
+        bullishOutputs.reduce((sum, o) => sum + o.confidence, 0) / bullishOutputs.length;
+      const roundedConfidence = Math.round(avgConfidence * 1000) / 1000;
+      const agentsList = bullishOutputs.map((o) => `${o.agent}=${o.confidence}`).join(", ");
+      return {
+        reached: true,
+        mode: "consensus_short_circuit",
+        direction: "bullish",
+        confidence: roundedConfidence,
+        rationale: `Majority specialist consensus on bullish with no opposing dissent (${agentsList}).`,
+      };
+    }
+
+    if (bearishOutputs.length >= 2) {
+      const avgConfidence =
+        bearishOutputs.reduce((sum, o) => sum + o.confidence, 0) / bearishOutputs.length;
+      const roundedConfidence = Math.round(avgConfidence * 1000) / 1000;
+      const agentsList = bearishOutputs.map((o) => `${o.agent}=${o.confidence}`).join(", ");
+      return {
+        reached: true,
+        mode: "consensus_short_circuit",
+        direction: "bearish",
+        confidence: roundedConfidence,
+        rationale: `Majority specialist consensus on bearish with no opposing dissent (${agentsList}).`,
+      };
+    }
+  }
 
   return {
     reached: false,

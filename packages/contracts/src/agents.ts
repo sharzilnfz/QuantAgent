@@ -3,6 +3,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { AgentName, Direction, Timeframe } from "./enums";
 import { PriceBar, IndicatorSnapshot, NewsItem } from "./signals";
 import { PredictionMarketEvent } from "./polymarket";
+import { FundamentalReport } from "./fundamentals";
 
 /**
  * L2 agent I/O contracts. Raw model text is UNTRUSTED until it parses against `AgentOutput`.
@@ -15,7 +16,7 @@ import { PredictionMarketEvent } from "./polymarket";
  * Semantic version of the agent I/O contracts. Bump on any breaking change to
  * `AgentInput` / `AgentOutput`. Consumers may assert compatibility against this.
  */
-export const CONTRACTS_VERSION = "1.4.0";
+export const CONTRACTS_VERSION = "1.5.0";
 
 /**
  * What the orchestrator hands an agent. Bounded to what is knowable at `decisionTs`:
@@ -30,6 +31,7 @@ export const AgentInput = z.object({
   indicators: IndicatorSnapshot.nullable(),
   news: z.array(NewsItem).optional(), // as_of <= decisionTs, optional point-in-time news
   predictionMarkets: z.array(PredictionMarketEvent).optional(), // as_of <= decisionTs, optional prediction market events
+  fundamentals: z.array(FundamentalReport).optional(), // as_of <= decisionTs, optional point-in-time financial statements
   memory: z.unknown().optional(), // filled in Sprint 3
 });
 export type AgentInput = z.infer<typeof AgentInput>;

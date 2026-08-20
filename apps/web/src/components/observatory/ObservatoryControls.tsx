@@ -33,6 +33,7 @@ interface ObservatoryControlsProps {
   varianceCost?: number;
   /** True only when the sweep actually spent LLM budget (totalCost > 0). */
   varianceSweepLive?: boolean;
+  onOpenInspector?: () => void;
 }
 
 export function ObservatoryControls({
@@ -48,6 +49,7 @@ export function ObservatoryControls({
   onToggleVarianceSweep,
   varianceCost = 0,
   varianceSweepLive = false,
+  onOpenInspector,
 }: ObservatoryControlsProps) {
   const selectAll = () => {
     onSetVisibleStrategies(new Set(strategies.map((s) => s.id)));
@@ -104,7 +106,7 @@ export function ObservatoryControls({
           </div>
         </div>
 
-        {/* Quick ablation presets */}
+        {/* Quick ablation presets & Inspector button */}
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-xs font-medium text-ink-3">Presets:</span>
           <Button variant="ghost" onClick={selectAll} className="text-xs px-2.5 py-1">
@@ -145,8 +147,20 @@ export function ObservatoryControls({
                 )}
               />
               {varianceSweepLive
-                ? "Live Sweep ($N=3$, &lt;$5.00 Cap)"
+                ? "Live Sweep ($N=3$, <$5.00 Cap)"
                 : "Deterministic Sweep ($N=3$, Offline Replay)"}
+            </button>
+          )}
+
+          {onOpenInspector && (
+            <button
+              type="button"
+              onClick={onOpenInspector}
+              className="ml-1 flex items-center gap-1.5 rounded-md border border-series/30 bg-series/10 px-2.5 py-1 text-xs font-semibold text-series hover:bg-series/20 transition-all duration-150 shadow-xs"
+              title="Open Decision Lineage & Provenance Inspector"
+            >
+              <span>📜</span>
+              <span>Audit Lineage</span>
             </button>
           )}
         </div>

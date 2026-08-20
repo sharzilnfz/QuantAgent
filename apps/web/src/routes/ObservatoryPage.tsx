@@ -7,12 +7,12 @@
  *  - Responsive layout adapting cleanly across desktop and tablet
  */
 import { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ExperimentManifest } from "@committee/contracts";
 import { useExperimentSuite, useVarianceSweep } from "../lib/queries";
 import { ObservatoryControls, type StrategyOption } from "../components/observatory/ObservatoryControls";
 import { MultiSeriesEquityChart } from "../components/observatory/MultiSeriesEquityChart";
 import { ExperimentTearsheet } from "../components/observatory/ExperimentTearsheet";
-import { DecisionInspector } from "../components/lineage/DecisionInspector";
 import { Spinner } from "../components/ui/States";
 import { Button } from "../components/ui/Button";
 
@@ -118,30 +118,17 @@ export function ObservatoryPage() {
     });
   };
 
-  // State for Decision Lineage Inspector modal/drawer
-  const [inspectorManifest, setInspectorManifest] = useState<ExperimentManifest | null>(null);
-  const [inspectorTs, setInspectorTs] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
 
   const handleInspectManifest = (manifest: ExperimentManifest) => {
-    setInspectorManifest(manifest);
-    setInspectorTs(undefined);
+    const stratId = typeof manifest.strategy === "string" ? manifest.strategy : manifest.strategy.name;
+    navigate(`/lineage?symbol=${selectedSymbol}&strategy=${encodeURIComponent(stratId)}`);
   };
 
-  const handleInspectPoint = (ts: string) => {
-    if (!suite) return;
-    // Find active multi-agent debate strategy first or fallback to benchmark.
-    // Note: `ts` is the EQUITY point timestamp, not a decisionTs — the
-    // inspector resolves the record via equityCurve↔lineageRecords index
-    // alignment (both are emitted once per bar, in order).
-    const activeMultiAgent = suite.experiments.find(
-      (e) => {
-        const id = typeof e.strategy === "string" ? e.strategy : e.strategy.name;
-        return visibleStrategyIds.has(id) && id.includes("debate-on");
-      },
-    );
-    const targetManifest = activeMultiAgent ?? suite.experiments[0] ?? suite.benchmark;
-    setInspectorManifest(targetManifest);
-    setInspectorTs(ts);
+  const handleInspectPoint = (ts?: string) => {
+    const params = new URLSearchParams({ symbol: selectedSymbol });
+    if (ts) params.set("ts", ts);
+    navigate(`/lineage?${params.toString()}`);
   };
 
   return (
@@ -162,12 +149,26 @@ export function ObservatoryPage() {
           </p>
         </div>
 
-        {isFetching && !isLoading ? (
-          <div className="flex items-center gap-2 text-xs text-ink-3">
-            <Spinner className="h-3.5 w-3.5" />
-            <span>Updating suite replay…</span>
-          </div>
-        ) : null}
+        <div className="flex items-center gap-3">
+          {isFetching && !isLoading ? (
+            <div className="flex items-center gap-2 text-xs text-ink-3">
+              <Spinner className="h-3.5 w-3.5" />
+              <span>Updating suite replay…</span>
+            </div>
+          ) : null}
+
+          {suite && (
+            <button
+              type="button"
+              onClick={() => handleInspectPoint()}
+              className="flex items-center gap-1.5 rounded-lg border border-hairline bg-surface px-3 py-1.5 text-xs font-semibold text-ink hover:bg-surface-well transition-colors shadow-xs"
+              title="Open Decision Lineage & Provenance Inspector"
+            >
+              <span className="text-series">📜</span>
+              <span>Audit Lineage</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Loading state */}
@@ -209,6 +210,7 @@ export function ObservatoryPage() {
             onToggleVarianceSweep={() => setIsVarianceSweepActive((v) => !v)}
             varianceCost={varianceSweep?.totalCost ?? 0}
             varianceSweepLive={isVarianceSweepLive}
+            onOpenInspector={() => handleInspectPoint()}
           />
 
           {/* Multi-Series Equity Curves & Drawdown Chart */}
@@ -231,16 +233,6 @@ export function ObservatoryPage() {
             onToggleStrategy={handleToggleStrategy}
             onInspectManifest={handleInspectManifest}
           />
-
-          {/* Decision Lineage Inspector Slide-Over Drawer */}
-          {inspectorManifest ? (
-            <DecisionInspector
-              isOpen={Boolean(inspectorManifest)}
-              onClose={() => setInspectorManifest(null)}
-              manifest={inspectorManifest}
-              initialDecisionTs={inspectorTs}
-            />
-          ) : null}
         </div>
       ) : null}
     </div>

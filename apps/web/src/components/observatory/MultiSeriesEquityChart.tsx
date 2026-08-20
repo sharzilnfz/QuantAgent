@@ -43,7 +43,7 @@ interface MultiSeriesEquityChartProps {
    * replay and must be labeled as such.
    */
   isVarianceSweepLive?: boolean;
-  onInspectPoint?: (ts: string) => void;
+  onInspectPoint?: (ts?: string) => void;
 }
 
 interface MergedPoint {
@@ -98,32 +98,30 @@ export function MultiSeriesEquityChart({
           entry[id] = pt.equity;
         } else {
           // Drawdown mode: use pt.drawdown or calculate from peak
-          if (typeof pt.drawdown === "number") {
-            entry[id] = Number((-Math.abs(pt.drawdown * 100)).toFixed(2));
-          } else {
-            if (pt.equity > peak) peak = pt.equity;
-            const dd = peak > 0 ? ((pt.equity - peak) / peak) * 100 : 0;
-            entry[id] = Number((-Math.abs(dd)).toFixed(2));
-          }
+          peak = Math.max(peak, pt.equity);
+          const dd = peak === 0 ? 0 : ((pt.equity - peak) / peak) * 100;
+          entry[id] = Math.round(dd * 100) / 100;
         }
       }
     }
 
-    // Merge variance bands if active and in equity mode
-    if (isVarianceSweepActive && varianceBands && varianceBands.length > 0 && chartMode === "equity") {
+    // Include variance bands if active
+    if (isVarianceSweepActive && varianceBands) {
       for (const band of varianceBands) {
         let entry = pointMap.get(band.asOf);
         if (!entry) {
           entry = { asOf: band.asOf };
           pointMap.set(band.asOf, entry);
         }
-        entry.meanEquity = band.meanEquity;
-        entry.upperBand = band.upperBand;
-        entry.lowerBand = band.lowerBand;
+        if (chartMode === "equity") {
+          entry.upperBand = band.upperBand;
+          entry.lowerBand = band.lowerBand;
+          entry.meanEquity = band.meanEquity;
+        }
       }
     }
 
-    // Sort chronologically
+    // Convert map to sorted array
     return Array.from(pointMap.values()).sort(
       (a, b) => new Date(a.asOf).getTime() - new Date(b.asOf).getTime(),
     );
@@ -163,27 +161,41 @@ export function MultiSeriesEquityChart({
           </p>
         </div>
 
-        <div className="flex items-center rounded-lg border border-hairline bg-surface-well p-0.5 text-xs font-medium">
-          <button
-            type="button"
-            onClick={() => setChartMode("equity")}
-            className={cn(
-              "rounded-md px-3 py-1 transition-colors duration-150",
-              chartMode === "equity" ? "bg-surface text-ink shadow-xs" : "text-ink-3 hover:text-ink",
-            )}
-          >
-            Equity Curve
-          </button>
-          <button
-            type="button"
-            onClick={() => setChartMode("drawdown")}
-            className={cn(
-              "rounded-md px-3 py-1 transition-colors duration-150",
-              chartMode === "drawdown" ? "bg-surface text-ink shadow-xs" : "text-ink-3 hover:text-ink",
-            )}
-          >
-            Drawdown (%)
-          </button>
+        <div className="flex items-center gap-2">
+          {onInspectPoint && (
+            <button
+              type="button"
+              onClick={() => onInspectPoint()}
+              className="flex items-center gap-1.5 rounded-lg border border-hairline bg-surface px-2.5 py-1 text-xs font-semibold text-ink hover:bg-surface-well transition-colors shadow-xs"
+              title="Open Decision Lineage Inspector"
+            >
+              <span className="text-series">📜</span>
+              <span>Audit Lineage</span>
+            </button>
+          )}
+
+          <div className="flex items-center rounded-lg border border-hairline bg-surface-well p-0.5 text-xs font-medium">
+            <button
+              type="button"
+              onClick={() => setChartMode("equity")}
+              className={cn(
+                "rounded-md px-3 py-1 transition-colors duration-150",
+                chartMode === "equity" ? "bg-surface text-ink shadow-xs" : "text-ink-3 hover:text-ink",
+              )}
+            >
+              Equity Curve
+            </button>
+            <button
+              type="button"
+              onClick={() => setChartMode("drawdown")}
+              className={cn(
+                "rounded-md px-3 py-1 transition-colors duration-150",
+                chartMode === "drawdown" ? "bg-surface text-ink shadow-xs" : "text-ink-3 hover:text-ink",
+              )}
+            >
+              Drawdown (%)
+            </button>
+          </div>
         </div>
       </div>
 

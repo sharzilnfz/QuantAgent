@@ -78,12 +78,14 @@ export async function runVarianceSweep(
   // Filter news & prediction markets to window
   const windowNews = fixture.news.filter((n) => (n.publishedAt ?? n.asOf) >= windowStartTs);
   const windowPredictionMarkets = fixture.predictionMarkets;
+  const windowFundamentals = fixture.fundamentals;
 
   const windowFixture: DatasetFixture = {
     symbol: fixture.symbol,
     bars: windowBars,
     news: windowNews,
     predictionMarkets: windowPredictionMarkets,
+    fundamentals: windowFundamentals,
   };
 
   const runs: ExperimentManifest[] = [];
@@ -99,6 +101,7 @@ export async function runVarianceSweep(
       deterministicOffline,
       includePolymarket: true,
       news: windowFixture.news,
+      fundamentals: windowFixture.fundamentals,
       predictionMarkets: windowFixture.predictionMarkets,
       logger: () => {},
     });

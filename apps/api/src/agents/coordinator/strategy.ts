@@ -3,6 +3,7 @@ import type {
   IndicatorSnapshot,
   NewsItem,
   PredictionMarketEvent,
+  FundamentalReport,
   PriceBar,
   SignalType,
   Strategy,
@@ -20,6 +21,7 @@ export interface MultiAgentCoordinatorStrategyOptions extends CoordinatorOptions
   name?: string;
   news?: NewsItem[];
   predictionMarkets?: PredictionMarketEvent[];
+  fundamentals?: FundamentalReport[];
 }
 
 /** Aggregate run telemetry surfaced on the experiment manifest. */
@@ -36,7 +38,7 @@ const DECISION_BAR_WINDOW = 20;
 
 /**
  * MultiAgentCoordinatorStrategy implements the Strategy interface for backtest simulations.
- * Reconciles Technical, Sentiment, and Polymarket specialist signals at each point-in-time decision step,
+ * Reconciles Technical, Sentiment, Fundamental, and Polymarket specialist signals at each point-in-time decision step,
  * recording lineage and tracking probabilistic decisions.
  */
 export class MultiAgentCoordinatorStrategy implements Strategy {
@@ -45,6 +47,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
   public readonly lineageRecorder: DecisionLineageRecorder;
   private readonly news?: NewsItem[];
   private readonly predictionMarkets?: PredictionMarketEvent[];
+  private readonly fundamentals?: FundamentalReport[];
   private readonly decisionSignals: DecisionSignal[] = [];
   private readonly latenciesMs: number[] = [];
   private tokenCost = 0;
@@ -63,6 +66,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
     });
     this.news = options.news;
     this.predictionMarkets = options.predictionMarkets;
+    this.fundamentals = options.fundamentals;
   }
 
   /**
@@ -147,6 +151,7 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
         indicators: snapshot,
         news: this.news,
         predictionMarkets: this.predictionMarkets,
+        fundamentals: this.fundamentals,
       });
 
       // Map final directional bias to portfolio weight signal:

@@ -142,7 +142,7 @@ export class TechnicalAgent extends BaseAgent {
         agent: this.name,
         direction: read.direction,
         confidence: read.strength,
-        rationale: `Deterministic technical read: ${read.direction} with conviction ${(read.strength * 100).toFixed(0)}% from point-in-time indicators (RSI ${facts.rsi ?? "n/a"}, SMA20 ${facts.sma20 ?? "n/a"}, SMA50 ${facts.sma50 ?? "n/a"}).`,
+        rationale: `Deterministic technical read: ${read.direction} with conviction ${(read.strength * 100).toFixed(0)}% from point-in-time indicators (RSI ${facts.rsi !== null ? facts.rsi.toFixed(2) : "n/a"}, SMA20 ${facts.sma20 !== null ? facts.sma20.toFixed(2) : "n/a"}, SMA50 ${facts.sma50 !== null ? facts.sma50.toFixed(2) : "n/a"}).`,
         evidence: {
           renderedPrompt: request.user,
           rawCompletion: JSON.stringify({

@@ -72,6 +72,7 @@ export async function runBenchmarkSuite(
           debateEnabled: true,
           deterministicOffline: true,
           news: fixture.news,
+          fundamentals: fixture.fundamentals,
           logger: () => {},
         });
         return runExperiment(debateOnStrategy, fixture, {
@@ -94,6 +95,7 @@ export async function runBenchmarkSuite(
           debateEnabled: false,
           deterministicOffline: true,
           news: fixture.news,
+          fundamentals: fixture.fundamentals,
           logger: () => {},
         });
         return runExperiment(debateOffStrategy, fixture, {
@@ -117,6 +119,7 @@ export async function runBenchmarkSuite(
           deterministicOffline: true,
           includePolymarket: true,
           news: fixture.news,
+          fundamentals: fixture.fundamentals,
           predictionMarkets: fixture.predictionMarkets,
           logger: () => {},
         });

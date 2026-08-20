@@ -4,6 +4,7 @@ import {
   type ConsensusResult,
   type IndicatorSnapshot,
   type NewsItem,
+  type FundamentalReport,
   type PriceBar,
   type Trade,
 } from "@committee/contracts";
@@ -15,6 +16,7 @@ export interface RecordDecisionParams {
   inputBars: PriceBar[];
   indicators: IndicatorSnapshot | null;
   news?: NewsItem[];
+  fundamentals?: FundamentalReport[];
   specialistPrompts?: Record<string, string>;
   specialistCompletions?: Record<string, unknown>;
   consensusResult: ConsensusResult;
@@ -42,6 +44,7 @@ export class DecisionLineageRecorder {
       inputBars: params.inputBars,
       indicators: params.indicators,
       news: params.news ?? [],
+      fundamentals: params.fundamentals ?? [],
       specialistPrompts: params.specialistPrompts ?? {},
       specialistCompletions: params.specialistCompletions ?? {},
       consensusResult: params.consensusResult,

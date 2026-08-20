@@ -9,6 +9,7 @@ import { TemporalGuard } from "@committee/fixtures";
 
 import { defaultAgentLogger, type Agent, type StructuredLogger } from "../base.js";
 import { runAgents } from "../runner.js";
+import { FundamentalAgent } from "../fundamental/agent.js";
 import { PolymarketAgent } from "../polymarket/agent.js";
 import { SentimentAgent } from "../sentiment/agent.js";
 import { TechnicalAgent } from "../technical/agent.js";
@@ -49,6 +50,10 @@ export class MultiAgentCoordinator {
           logger: this.logger,
         }),
         new SentimentAgent({
+          deterministicOffline: this.deterministicOffline,
+          logger: this.logger,
+        }),
+        new FundamentalAgent({
           deterministicOffline: this.deterministicOffline,
           logger: this.logger,
         }),
@@ -111,6 +116,7 @@ export class MultiAgentCoordinator {
       evidence: {},
     };
 
+    const fundamental = outputs.find((o) => o.agent === "fundamental");
     const polymarket = outputs.find((o) => o.agent === "polymarket");
 
     // 2. Evaluate consensus short-circuit
@@ -138,6 +144,7 @@ export class MultiAgentCoordinator {
           currentBar,
           technical,
           sentiment,
+          fundamental,
           polymarket,
         },
         { ...input, runId },
@@ -184,19 +191,27 @@ export class MultiAgentCoordinator {
       if (promptFrom(sentiment)) specialistPrompts.sentiment = promptFrom(sentiment)!;
       else
         specialistPrompts.sentiment = `System prompt: Sentiment analysis specialist.\nUser prompt: Evaluate news sentiment for ${input.symbol} with ${input.news?.length ?? 0} news items up to ${input.decisionTs}.`;
+      if (fundamental && promptFrom(fundamental)) {
+        specialistPrompts.fundamental = promptFrom(fundamental)!;
+      } else if (fundamental) {
+        specialistPrompts.fundamental = `System prompt: Fundamental analysis specialist.\nUser prompt: Evaluate SEC EDGAR filings for ${input.symbol} up to ${input.decisionTs}.`;
+      }
       if (polymarket && promptFrom(polymarket)) {
         specialistPrompts.polymarket = promptFrom(polymarket)!;
       } else if (polymarket) {
         specialistPrompts.polymarket = `System prompt: Macro prediction market specialist.\nUser prompt: Evaluate crowdsourced macro probability distributions for ${input.symbol} up to ${input.decisionTs}.`;
       }
       if (synthesisResult) {
-        specialistPrompts.debateSynthesizer = `System prompt: Multi-agent debate synthesizer.\nUser prompt: Reconcile specialist stance disagreement for ${input.symbol} at ${input.decisionTs} between Technical (${technical.direction}, conf ${technical.confidence}), Sentiment (${sentiment.direction}, conf ${sentiment.confidence})${polymarket ? `, and Polymarket (${polymarket.direction}, conf ${polymarket.confidence})` : ""}.`;
+        specialistPrompts.debateSynthesizer = `System prompt: Multi-agent debate synthesizer.\nUser prompt: Reconcile specialist stance disagreement for ${input.symbol} at ${input.decisionTs} between Technical (${technical.direction}, conf ${technical.confidence}), Sentiment (${sentiment.direction}, conf ${sentiment.confidence})${fundamental ? `, Fundamental (${fundamental.direction}, conf ${fundamental.confidence})` : ""}${polymarket ? `, and Polymarket (${polymarket.direction}, conf ${polymarket.confidence})` : ""}.`;
       }
 
       const specialistCompletions: Record<string, unknown> = {
         technical,
         sentiment,
       };
+      if (fundamental) {
+        specialistCompletions.fundamental = fundamental;
+      }
       if (polymarket) {
         specialistCompletions.polymarket = polymarket;
       }
@@ -208,6 +223,7 @@ export class MultiAgentCoordinator {
       // the specialists filter internally, but the recorder stores the same
       // point-in-time slice it handed them, never the raw future-inclusive array.
       const pointInTimeNews = TemporalGuard.filter(input.news ?? [], input.decisionTs);
+      const pointInTimeFundamentals = TemporalGuard.filter(input.fundamentals ?? [], input.decisionTs);
 
       this.lineageRecorder.record({
         id: lineageId,
@@ -216,6 +232,7 @@ export class MultiAgentCoordinator {
         inputBars: input.bars,
         indicators: input.indicators,
         news: pointInTimeNews,
+        fundamentals: pointInTimeFundamentals,
         specialistPrompts,
         specialistCompletions,
         consensusResult,

@@ -25,8 +25,8 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/", label: "Portfolio", icon: <PortfolioIcon />, enabled: true },
   { to: "/observatory", label: "Observatory", icon: <ObservatoryIcon />, enabled: true },
+  { to: "/lineage", label: "Lineage", icon: <DebateIcon />, enabled: true },
   { to: "/signals", label: "Signals", icon: <SignalsIcon />, enabled: false },
-  { to: "/debate", label: "Debate", icon: <DebateIcon />, enabled: false },
 ];
 
 export function AppLayout({ user }: { user: AuthUser }) {

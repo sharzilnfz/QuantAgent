@@ -63,6 +63,16 @@ export {
 
 export * from "./coordinator/index.js";
 export {
+  FundamentalAgent,
+  classifyFundamentals,
+  FUNDAMENTAL_SYSTEM_PROMPT,
+  buildFundamentalUserPrompt,
+  fundamentalOutputToolSchema,
+  type FundamentalAgentOptions,
+  type FundamentalClassification,
+  type FundamentalPromptContext,
+} from "./fundamental/index.js";
+export {
   PolymarketAgent,
   classifyMacroOdds,
   POLYMARKET_SYSTEM_PROMPT,

@@ -219,6 +219,68 @@ describe("L3 Multi-Agent Coordinator & Consensus Short-Circuit", () => {
     });
   });
 
+  describe("3-Specialist Committee Consensus (Technical + Sentiment + Fundamental)", () => {
+    it("fast-passes majority 2-of-3 non-conflicting consensus (e.g. 2 bullish + 1 neutral)", () => {
+      const evalResult = evaluateConsensus([
+        {
+          agent: "technical",
+          direction: "bullish",
+          confidence: 0.8,
+          rationale: "Trend bullish",
+          evidence: {},
+        },
+        {
+          agent: "fundamental",
+          direction: "bullish",
+          confidence: 0.9,
+          rationale: "Strong earnings and margin expansion",
+          evidence: {},
+        },
+        {
+          agent: "sentiment",
+          direction: "neutral",
+          confidence: 0.0,
+          rationale: "No recent news",
+          evidence: {},
+        },
+      ]);
+
+      expect(evalResult.reached).toBe(true);
+      expect(evalResult.direction).toBe("bullish");
+      expect(evalResult.confidence).toBe(0.85);
+      expect(evalResult.rationale).toContain("Majority specialist consensus");
+    });
+
+    it("triggers debate synthesis when direct conflict exists (e.g. Bullish vs Bearish)", () => {
+      const evalResult = evaluateConsensus([
+        {
+          agent: "technical",
+          direction: "bullish",
+          confidence: 0.85,
+          rationale: "Breakout",
+          evidence: {},
+        },
+        {
+          agent: "fundamental",
+          direction: "bullish",
+          confidence: 0.8,
+          rationale: "Good margins",
+          evidence: {},
+        },
+        {
+          agent: "sentiment",
+          direction: "bearish",
+          confidence: 0.75,
+          rationale: "Negative headlines",
+          evidence: {},
+        },
+      ]);
+
+      expect(evalResult.reached).toBe(false);
+      expect(evalResult.reason).toBe("directional_conflict");
+    });
+  });
+
   describe("Prompt Construction", () => {
     it("renders specialist arguments, evidence, and price action in synthesis prompt", () => {
       const userPrompt = buildDebateUserPrompt({
