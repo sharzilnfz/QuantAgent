@@ -12,6 +12,8 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { LiveSignalRadarItem } from "@committee/contracts";
 import { useSignalsRadar, useEvaluateSignalMutation } from "../lib/queries";
+import { useMarketStream } from "../lib/useMarketStream";
+import { DaemonControlCard } from "../components/daemon/DaemonControlCard";
 import { Card, CardHeader, CardBody } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
 import { Spinner, ErrorState } from "../components/ui/States";
@@ -26,6 +28,7 @@ export function SignalsPage() {
 
   const { data: radarData, isLoading, error, refetch, isFetching } = useSignalsRadar(AVAILABLE_SYMBOLS);
   const evaluateMutation = useEvaluateSignalMutation();
+  const stream = useMarketStream({ symbols: AVAILABLE_SYMBOLS, enabled: true });
 
   const currentItem: LiveSignalRadarItem | undefined = useMemo(() => {
     if (!radarData?.items) return undefined;
@@ -100,6 +103,13 @@ export function SignalsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          {stream.connected && (
+            <div className="flex items-center gap-1.5 rounded-full bg-delta-pos/10 border border-delta-pos/30 px-2.5 py-1 text-xs font-mono text-delta-pos">
+              <span className="h-1.5 w-1.5 rounded-full bg-delta-pos animate-pulse" />
+              <span>WebSocket Stream Active</span>
+            </div>
+          )}
+
           {isFetching && !isLoading && (
             <div className="flex items-center gap-1.5 text-xs text-ink-3">
               <Spinner className="h-3.5 w-3.5" />
@@ -139,6 +149,9 @@ export function SignalsPage() {
           </Link>
         </div>
       </div>
+
+      {/* Autonomous Background Trading Daemon HUD */}
+      <DaemonControlCard />
 
       {/* Asset Selector Strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-hairline bg-surface p-3">

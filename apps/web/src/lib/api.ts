@@ -21,6 +21,9 @@
 import {
   AgentRunEnvelope,
   CommitteeSystemConfig,
+  DaemonConfig,
+  DaemonCycleResult,
+  DaemonStatus,
   ExperimentSuiteResult,
   LiveSignalRadarResponse,
   MultiAssetSuiteResult,
@@ -337,6 +340,44 @@ export const api = {
       body,
     });
     return payload as Record<string, unknown>;
+  },
+
+  /** `GET /daemon/status -> DaemonStatus`. */
+  async getDaemonStatus(signal?: AbortSignal): Promise<DaemonStatus> {
+    const path = "/daemon/status";
+    const payload = await request(path, { signal });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/start -> DaemonStatus`. */
+  async startDaemon(): Promise<DaemonStatus> {
+    const path = "/daemon/start";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/stop -> DaemonStatus`. */
+  async stopDaemon(): Promise<DaemonStatus> {
+    const path = "/daemon/stop";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/run-cycle -> DaemonCycleResult`. */
+  async runDaemonCycle(): Promise<DaemonCycleResult> {
+    const path = "/daemon/run-cycle";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonCycleResult, payload, path);
+  },
+
+  /** `POST /daemon/config -> DaemonConfig`. */
+  async updateDaemonConfig(config: Partial<DaemonConfig>): Promise<DaemonConfig> {
+    const path = "/daemon/config";
+    const payload = await request(path, {
+      method: "POST",
+      body: config,
+    });
+    return parseContract(DaemonConfig, payload, path);
   },
 };
 
