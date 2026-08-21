@@ -58,7 +58,7 @@ const mockDaemonStatus: DaemonStatus = {
 };
 
 const mockRadarResponse: LiveSignalRadarResponse = {
-  asOf: "2026-08-22T02:00:00.000Z",
+  asOf: "2026-08-14T20:00:00.000Z",
   items: [
     {
       symbol: "AAPL",
@@ -73,7 +73,19 @@ const mockRadarResponse: LiveSignalRadarResponse = {
         volume: 48500000,
         asOf: "2024-06-28T20:00:00.000Z",
       },
-      recentBars: [],
+      recentBars: [
+        {
+          symbol: "AAPL",
+          timeframe: "1Day",
+          ts: "2024-06-28T20:00:00.000Z",
+          open: 210.5,
+          high: 212.8,
+          low: 209.2,
+          close: 210.62,
+          volume: 48500000,
+          asOf: "2024-06-28T20:00:00.000Z",
+        },
+      ],
       indicators: {
         symbol: "AAPL",
         timeframe: "1Day",
@@ -90,14 +102,27 @@ const mockRadarResponse: LiveSignalRadarResponse = {
       rsiZone: "neutral",
       macdCross: "bullish",
       trend: "bullish",
-      specialistVotes: {},
+      specialistVotes: {
+        technical: {
+          agent: "technical",
+          direction: "bullish",
+          confidence: 0.75,
+          rationale: "RSI 62.4 in bullish territory and positive MACD expansion above SMA20.",
+          evidence: { rsi: 62.4, sma20: 205.1 },
+        },
+      },
       consensus: {
-        lineageId: "l1",
+        lineageId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
         consensusReached: true,
         mode: "consensus_short_circuit",
         finalBias: "bullish",
-        finalConfidence: 0.8,
+        finalConfidence: 0.75,
         specialistVotes: {},
+        metadata: {
+          runId: "run-001",
+          durationMs: 42,
+          tokenCost: 0,
+        },
       },
       asOf: "2024-06-28T20:00:00.000Z",
     },
@@ -132,9 +157,13 @@ describe("Autonomous Trading Daemon UI & Controls", () => {
   it("renders Autonomous Trading Daemon card and status indicators", async () => {
     renderApp("/signals");
 
-    await waitFor(() => {
-      expect(screen.getByText("Autonomous Trading Daemon (L4/L6)")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Live Signals & Indicator Radar")).toBeInTheDocument();
+        expect(screen.getByText("Autonomous Trading Daemon (L4/L6)")).toBeInTheDocument();
+      },
+      { timeout: 10000 },
+    );
 
     expect(screen.getByText(/idle/i)).toBeInTheDocument();
     expect(screen.getByText(/Dry-Run Simulation/i)).toBeInTheDocument();
@@ -146,9 +175,13 @@ describe("Autonomous Trading Daemon UI & Controls", () => {
     const user = userEvent.setup();
     renderApp("/signals");
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Start Daemon/i })).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Live Signals & Indicator Radar")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Start Daemon/i })).toBeInTheDocument();
+      },
+      { timeout: 10000 },
+    );
 
     const startBtn = screen.getByRole("button", { name: /Start Daemon/i });
     await user.click(startBtn);
@@ -162,9 +195,13 @@ describe("Autonomous Trading Daemon UI & Controls", () => {
     const user = userEvent.setup();
     renderApp("/signals");
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Run Cycle Now/i })).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Live Signals & Indicator Radar")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Run Cycle Now/i })).toBeInTheDocument();
+      },
+      { timeout: 10000 },
+    );
 
     const runBtn = screen.getByRole("button", { name: /Run Cycle Now/i });
     await user.click(runBtn);
