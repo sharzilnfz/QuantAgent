@@ -30,6 +30,9 @@ Before reading files, running `grep_search`, or writing any code:
   - Offline evaluation runs (`pnpm demo:replay`) must operate at $0.00 cost using frozen fixtures without requiring external API keys.
 - **Surgical Changes:**
   - Touch only what is required for the task. Preserve existing working code, interfaces, and comments.
+- **Source of Truth Policy (Code over Historical Docs):**
+  - The live source code under `apps/` and `packages/` is the **sole authoritative ground truth** for implemented features, endpoints, and contracts.
+  - Documents under `specs/sprint-1/`, `docs/reports/`, and early sprint notes are historical milestone archives. Never report a feature as "unimplemented" or "in the pipeline" based solely on early sprint docs without verifying the actual source tree (`apps/api/src/`, `apps/web/src/`, `packages/contracts/src/`) and test suite.
 
 ---
 
