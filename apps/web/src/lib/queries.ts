@@ -19,6 +19,7 @@ export const queryKeys = {
   varianceSweep: (symbol: string, windowSize: number, runs: number, budget: number) =>
     ["experiments", "variance-sweep", symbol, windowSize, runs, budget] as const,
   agentConfig: ["agents", "config"] as const,
+  signalsRadar: (symbols?: string[]) => ["signals", "radar", symbols?.join(",") ?? "default"] as const,
 };
 
 export function createQueryClient(): QueryClient {
@@ -171,8 +172,27 @@ export function useResetAgentConfig() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => api.resetAgentConfig(),
-    onSuccess: (reset) => {
-      queryClient.setQueryData(queryKeys.agentConfig, reset);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.agentConfig });
+    },
+  });
+}
+
+export function useSignalsRadar(symbols?: string[]) {
+  return useQuery({
+    queryKey: queryKeys.signalsRadar(symbols),
+    queryFn: ({ signal }) => api.getSignalsRadar(symbols, signal),
+    refetchInterval: 15_000,
+  });
+}
+
+export function useEvaluateSignalMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: { symbol: string; decisionTs?: string; debateEnabled?: boolean }) =>
+      api.evaluateSignal(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["signals", "radar"] });
     },
   });
 }

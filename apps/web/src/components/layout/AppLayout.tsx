@@ -27,7 +27,7 @@ const NAV: NavItem[] = [
   { to: "/observatory", label: "Observatory", icon: <ObservatoryIcon />, enabled: true },
   { to: "/lineage", label: "Lineage", icon: <DebateIcon />, enabled: true },
   { to: "/config", label: "Agent Config", icon: <ConfigIcon />, enabled: true },
-  { to: "/signals", label: "Signals", icon: <SignalsIcon />, enabled: false },
+  { to: "/signals", label: "Signals", icon: <SignalsIcon />, enabled: true },
 ];
 
 export function AppLayout({ user }: { user: AuthUser }) {

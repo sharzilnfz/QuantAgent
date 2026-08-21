@@ -171,11 +171,10 @@ export async function getWatchlist(userId: string): Promise<WatchlistEntry[]> {
       .where(eq(watchlistItems.userId, userId))
       .orderBy(asc(watchlistItems.symbol));
 
-    if (rows.length > 0) return rows;
+    return rows;
   } catch {
     // DB offline fallback
+    return [{ symbol: "AAPL" }, { symbol: "MSFT" }, { symbol: "SPY" }];
   }
-
-  return [{ symbol: "AAPL" }, { symbol: "MSFT" }, { symbol: "SPY" }];
 }
 

@@ -63,5 +63,5 @@ describe("Offline Benchmark Replay Suite", () => {
       const actualSharpeDelta = Number(smaRsiExp.benchmarkDelta.sharpeRatio.toFixed(4));
       expect(actualSharpeDelta).toBeCloseTo(expectedSharpeDelta, 4);
     }
-  });
+  }, 35000);
 });

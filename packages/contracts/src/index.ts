@@ -25,3 +25,4 @@ export * from "./execution";
 export * from "./telegram";
 export * from "./config";
 export * from "./reports";
+export * from "./signals-radar";

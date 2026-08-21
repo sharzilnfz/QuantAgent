@@ -157,7 +157,7 @@ describe("Telegram Bot Service & Command Handlers", () => {
       client: mockClient,
     });
 
-    expect(response).toContain("WATCHLIST");
+    expect(response).toMatch(/WATCHLIST|Watchlist is currently empty/i);
     expect(mockClient.getDispatchedMessages().length).toBe(1);
   });
 

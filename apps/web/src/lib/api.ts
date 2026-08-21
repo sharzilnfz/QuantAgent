@@ -22,6 +22,7 @@ import {
   AgentRunEnvelope,
   CommitteeSystemConfig,
   ExperimentSuiteResult,
+  LiveSignalRadarResponse,
   MultiAssetSuiteResult,
   PortfolioState,
   VarianceSweepResult,
@@ -311,6 +312,31 @@ export const api = {
       method: "POST",
     });
     return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `GET /signals/radar?symbols=AAPL,NVDA,SPY -> LiveSignalRadarResponse`. */
+  async getSignalsRadar(
+    symbols?: string[],
+    signal?: AbortSignal,
+  ): Promise<LiveSignalRadarResponse> {
+    const query = symbols ? `?symbols=${encodeURIComponent(symbols.join(","))}` : "";
+    const path = `/signals/radar${query}`;
+    const payload = await request(path, { signal });
+    return parseContract(LiveSignalRadarResponse, payload, path);
+  },
+
+  /** `POST /signals/evaluate -> evaluation result payload`. */
+  async evaluateSignal(body: {
+    symbol: string;
+    decisionTs?: string;
+    debateEnabled?: boolean;
+  }): Promise<Record<string, unknown>> {
+    const path = "/signals/evaluate";
+    const payload = await request(path, {
+      method: "POST",
+      body,
+    });
+    return payload as Record<string, unknown>;
   },
 };
 
