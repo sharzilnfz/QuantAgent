@@ -1,4 +1,13 @@
-import type { PriceBar, NewsItem, DatasetFixture, PredictionMarketEvent, PolymarketProbabilityPoint, FundamentalReport } from "@committee/contracts";
+import type {
+  PriceBar,
+  NewsItem,
+  DatasetFixture,
+  PredictionMarketEvent,
+  PolymarketProbabilityPoint,
+  FundamentalReport,
+  LongTermMemoryItem,
+  EpisodicReflection,
+} from "@committee/contracts";
 
 /**
  * Thrown when a dataset query or evaluation step encounters data timestamped
@@ -189,6 +198,27 @@ export class TemporalGuard {
   ): FundamentalReport[] {
     return this.filter(reports, decisionTs);
   }
+
+  /**
+   * Query long-term memory items point-in-time up to decisionTs.
+   */
+  public static queryLongTermMemory(
+    items: readonly LongTermMemoryItem[],
+    decisionTs: string | Date,
+  ): LongTermMemoryItem[] {
+    return this.filter(items, decisionTs);
+  }
+
+  /**
+   * Query episodic reflections point-in-time up to decisionTs.
+   */
+  public static queryReflections(
+    reflections: readonly EpisodicReflection[],
+    decisionTs: string | Date,
+  ): EpisodicReflection[] {
+    return this.filter(reflections, decisionTs);
+  }
+
 
   /**
    * Wrap and query a complete dataset fixture up to decisionTs.

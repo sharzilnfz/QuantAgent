@@ -3,6 +3,7 @@ import {
   type AgentOutput,
   type Direction,
   type PriceBar,
+  type MemoryContext,
 } from "@committee/contracts";
 
 export const DEBATE_TOOL_NAME = "emit_debate_synthesis";
@@ -28,6 +29,7 @@ export interface DebatePromptContext {
   sentiment: AgentOutput;
   fundamental?: AgentOutput;
   polymarket?: AgentOutput;
+  memory?: MemoryContext;
 }
 
 export function buildDebateUserPrompt(ctx: DebatePromptContext): string {
@@ -42,6 +44,23 @@ export function buildDebateUserPrompt(ctx: DebatePromptContext): string {
   const polymarketSection = ctx.polymarket
     ? `\n## ${ctx.fundamental ? "4" : "3"}. Macro Prediction Market Specialist (Polymarket)\n- Directional Stance: ${ctx.polymarket.direction.toUpperCase()}\n- Stated Confidence: ${ctx.polymarket.confidence.toFixed(2)}\n- Rationale: ${ctx.polymarket.rationale}\n- Crowdsourced Odds Evidence: ${JSON.stringify(ctx.polymarket.evidence, null, 2)}\n`
     : "";
+
+  let memorySection = "";
+  if (ctx.memory) {
+    const memoryParts: string[] = [];
+    if (ctx.memory.shortTerm?.recentDecisions.length) {
+      memoryParts.push(`- Recent Decisions (Short-Term): ${ctx.memory.shortTerm.recentDecisions.map((d) => `[${d.decisionTs.slice(0, 10)}: ${d.direction.toUpperCase()} (conf ${d.confidence.toFixed(2)}) - ${d.rationale}]`).join("; ")}`);
+    }
+    if (ctx.memory.longTerm.length) {
+      memoryParts.push(`- Long-Term Rules & Corporate Memory: ${ctx.memory.longTerm.map((l) => `[${l.title}: ${l.content}]`).join("; ")}`);
+    }
+    if (ctx.memory.reflections.length) {
+      memoryParts.push(`- Past Trade Reflections & Lessons Learned: ${ctx.memory.reflections.map((r) => `[${r.symbol} ${r.initialDirection} (outcome: ${(r.outcomeReturnPct * 100).toFixed(1)}%): ${r.lessonLearned}]`).join("; ")}`);
+    }
+    if (memoryParts.length > 0) {
+      memorySection = `\n# Prior Memory & Post-Trade Lessons (as_of <= T)\n${memoryParts.join("\n")}\n`;
+    }
+  }
 
   return `# Market State Snapshot
 - Symbol: ${ctx.symbol}
@@ -61,10 +80,11 @@ export function buildDebateUserPrompt(ctx: DebatePromptContext): string {
 - Stated Confidence: ${ctx.sentiment.confidence.toFixed(2)}
 - Rationale: ${ctx.sentiment.rationale}
 - Point-in-Time Evidence: ${JSON.stringify(ctx.sentiment.evidence, null, 2)}
-${fundamentalSection}${polymarketSection}
+${fundamentalSection}${polymarketSection}${memorySection}
 # Synthesis Task
 Reconcile this disagreement. Select a reconciled bias ('bullish', 'bearish', or 'neutral'), assign a calibrated confidence [0, 1], state your synthesis rationale, identify the primary driver ('technical', 'sentiment', 'fundamental', 'macro', or 'compromise'), and articulate the dissenting view.`;
 }
+
 
 export function debateOutputToolSchema(): Record<string, unknown> {
   return {

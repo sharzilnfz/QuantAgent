@@ -10,6 +10,9 @@ import {
   indicatorSnapshots,
   agentRuns,
   agentOutputs,
+  memoryShortTerm,
+  memoryLongTerm,
+  episodicReflections,
 } from "../src/schema";
 
 /**
@@ -280,3 +283,19 @@ describe("timeframe enum", () => {
     }
   });
 });
+
+describe("memory tables (Sprint 3)", () => {
+  it("all memory tables have as_of timestamp with time zone", () => {
+    const memoryTables = [
+      memoryShortTerm,
+      memoryLongTerm,
+      episodicReflections,
+    ];
+    for (const table of memoryTables) {
+      const c = cols(table);
+      expect(c.has("as_of"), `${getTableConfig(table).name} missing as_of`).toBe(true);
+      expect(c.get("as_of")?.getSQLType()).toBe(TIMESTAMPTZ);
+    }
+  });
+});
+

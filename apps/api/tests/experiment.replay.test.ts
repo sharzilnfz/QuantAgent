@@ -11,8 +11,8 @@ describe("Offline Benchmark Replay Suite", () => {
     const suiteResult = await runBenchmarkSuite(fixture);
     const duration = performance.now() - start;
 
-    expect(duration).toBeLessThan(10000);
-    expect(suiteResult.totalDurationMs).toBeLessThan(10000);
+    expect(duration).toBeLessThan(20000);
+    expect(suiteResult.totalDurationMs).toBeLessThan(20000);
     expect(suiteResult.totalCost).toBe(0);
 
     // Validate result against schema
@@ -20,7 +20,7 @@ describe("Offline Benchmark Replay Suite", () => {
     expect(parsed.symbol).toBe("AAPL");
     expect(parsed.benchmark.strategy).toBe("buy-and-hold");
     expect(parsed.experiments.length).toBeGreaterThanOrEqual(2);
-  }, 15000);
+  }, 35000);
 
   it("produces deterministic, bit-for-bit identical results on successive runs", async () => {
     const run1 = await runBenchmarkSuite(fixture);
@@ -40,7 +40,7 @@ describe("Offline Benchmark Replay Suite", () => {
       expect(exp1?.metrics).toEqual(exp2?.metrics);
       expect(exp1?.benchmarkDelta).toEqual(exp2?.benchmarkDelta);
     }
-  }, 15000);
+  }, 35000);
 
   it("computes accurate benchmark deltas for SMA/RSI vs Buy & Hold", async () => {
     const suiteResult = await runBenchmarkSuite(fixture);

@@ -18,7 +18,14 @@
  * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
  * spec-03 session cookie rides along.
  */
-import { AgentRunEnvelope, ExperimentSuiteResult, PortfolioState, VarianceSweepResult } from "@committee/contracts";
+import {
+  AgentRunEnvelope,
+  CommitteeSystemConfig,
+  ExperimentSuiteResult,
+  MultiAssetSuiteResult,
+  PortfolioState,
+  VarianceSweepResult,
+} from "@committee/contracts";
 
 const API_BASE = "/api";
 
@@ -257,6 +264,16 @@ export const api = {
     return parseContract(ExperimentSuiteResult, payload, path);
   },
 
+  /** `GET /experiments/multi-asset/suite?universe=AAPL,NVDA,SPY -> MultiAssetSuiteResult`. */
+  async multiAssetExperimentsSuite(
+    universe = ["AAPL", "NVDA", "SPY"],
+    signal?: AbortSignal,
+  ): Promise<MultiAssetSuiteResult> {
+    const path = `/experiments/multi-asset/suite?universe=${encodeURIComponent(universe.join(","))}`;
+    const payload = await request(path, { signal });
+    return parseContract(MultiAssetSuiteResult, payload, path);
+  },
+
   /** `GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3 -> VarianceSweepResult`. */
   async varianceSweep(
     symbol = "AAPL",
@@ -268,6 +285,32 @@ export const api = {
     const path = `/experiments/variance-sweep?symbol=${encodeURIComponent(symbol)}&windowSize=${windowSize}&runs=${runs}&budget=${budget}`;
     const payload = await request(path, { signal });
     return parseContract(VarianceSweepResult, payload, path);
+  },
+
+  /** `GET /agents/config -> CommitteeSystemConfig`. */
+  async getAgentConfig(signal?: AbortSignal): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config";
+    const payload = await request(path, { signal });
+    return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `PUT /agents/config -> CommitteeSystemConfig`. */
+  async updateAgentConfig(config: Partial<CommitteeSystemConfig>): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config";
+    const payload = await request(path, {
+      method: "PUT",
+      body: config,
+    });
+    return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `POST /agents/config/reset -> CommitteeSystemConfig`. */
+  async resetAgentConfig(): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config/reset";
+    const payload = await request(path, {
+      method: "POST",
+    });
+    return parseContract(CommitteeSystemConfig, payload, path);
   },
 };
 

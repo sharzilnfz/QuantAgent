@@ -7,6 +7,11 @@ import { ingestPlugin } from "./ingest/plugin.js";
 import { portfolioPlugin } from "./portfolio/plugin.js";
 import { agentsPlugin } from "./agents/plugin.js";
 import { experimentsPlugin } from "./experiments/plugin.js";
+import { riskPlugin } from "./risk/plugin.js";
+import { executionPlugin } from "./execution/plugin.js";
+import { telegramPlugin } from "./telegram/plugin.js";
+import { settingsPlugin } from "./settings/plugin.js";
+import { reportsPlugin } from "./reports/plugin.js";
 
 /**
  * buildApp() constructs the Fastify instance and registers every domain plugin.
@@ -15,7 +20,7 @@ import { experimentsPlugin } from "./experiments/plugin.js";
  * here — each domain owns its own plugin file (see imports above). Adding a new
  * domain = new plugin file + one register() line, reviewed as a shared change.
  *
- *   auth/credentials/portfolio/experiments -> M4    ingest -> M2    agents -> M1
+ *   auth/credentials/portfolio/experiments/risk/execution/telegram/settings/reports -> M4    ingest -> M2    agents -> M1
  */
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
@@ -36,6 +41,11 @@ export async function buildApp(): Promise<FastifyInstance> {
   await app.register(portfolioPlugin);
   await app.register(agentsPlugin);
   await app.register(experimentsPlugin);
+  await app.register(riskPlugin);
+  await app.register(executionPlugin);
+  await app.register(telegramPlugin);
+  await app.register(settingsPlugin);
+  await app.register(reportsPlugin);
 
   return app;
 }

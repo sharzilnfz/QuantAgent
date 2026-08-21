@@ -1,9 +1,14 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { loadFixture } from "@committee/fixtures";
-import { ExperimentSuiteResult, VarianceSweepResult } from "@committee/contracts";
+import {
+  ExperimentSuiteResult,
+  MultiAssetSuiteResult,
+  VarianceSweepResult,
+} from "@committee/contracts";
 import { isLlmConfigured } from "../agents/technical/llm-client.js";
 import { runBenchmarkSuite } from "./suite.js";
+import { runMultiAssetBenchmarkSuite } from "./multi-asset-suite.js";
 import { runVarianceSweep } from "./variance-sweep.js";
 import { computeDatasetHash } from "./hash.js";
 
@@ -11,6 +16,7 @@ import { computeDatasetHash } from "./hash.js";
  * OWNER: M4 (Evaluation Lab Experiments HTTP Surface).
  *
  *   GET /experiments/suite?symbol=AAPL
+ *   GET /experiments/multi-asset/suite?universe=AAPL,NVDA,SPY
  *   GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3[&live=1]
  *
  * Serves deterministic offline evaluation benchmark suites on frozen fixtures
@@ -23,6 +29,13 @@ const SuiteQuery = z.object({
   symbol: z.string().min(1).default("AAPL"),
 });
 
+const MultiAssetSuiteQuery = z.object({
+  universe: z
+    .string()
+    .optional()
+    .transform((val) => (val ? val.split(",").map((s) => s.trim().toUpperCase()) : ["AAPL", "NVDA", "SPY"])),
+});
+
 const VarianceSweepQuery = z.object({
   symbol: z.string().min(1).default("AAPL"),
   windowSize: z.coerce.number().min(10).max(100).default(25),
@@ -33,6 +46,7 @@ const VarianceSweepQuery = z.object({
 
 // In-memory cache keyed by symbol and datasetHash for fast repeated evaluation reads
 const suiteCache = new Map<string, ExperimentSuiteResult>();
+const multiAssetSuiteCache = new Map<string, MultiAssetSuiteResult>();
 const sweepCache = new Map<string, VarianceSweepResult>();
 
 export async function experimentsPlugin(app: FastifyInstance): Promise<void> {
@@ -68,6 +82,35 @@ export async function experimentsPlugin(app: FastifyInstance): Promise<void> {
     }
 
     return reply.code(200).send(suite);
+  });
+
+  app.get("/experiments/multi-asset/suite", async (request, reply) => {
+    const queryResult = MultiAssetSuiteQuery.safeParse(request.query ?? {});
+    if (!queryResult.success) {
+      return reply.code(400).send({
+        error: "invalid_query",
+        issues: queryResult.error.issues,
+      });
+    }
+
+    const universe = queryResult.data.universe;
+    const cacheKey = universe.join(":");
+
+    let multiSuite = multiAssetSuiteCache.get(cacheKey);
+    if (!multiSuite) {
+      try {
+        multiSuite = await runMultiAssetBenchmarkSuite({ universe });
+        multiAssetSuiteCache.set(cacheKey, multiSuite);
+      } catch (err) {
+        request.log.warn({ universe, err: (err as Error).message }, "Failed to run multi-asset suite");
+        return reply.code(404).send({
+          error: "multi_asset_suite_error",
+          message: (err as Error).message,
+        });
+      }
+    }
+
+    return reply.code(200).send(multiSuite);
   });
 
   app.get("/experiments/variance-sweep", async (request, reply) => {
@@ -130,3 +173,4 @@ export async function experimentsPlugin(app: FastifyInstance): Promise<void> {
     return reply.code(200).send(sweep);
   });
 }
+

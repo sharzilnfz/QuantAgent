@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Timeframe } from "./enums";
-import { FinancialMetrics, Trade, EquityPoint } from "./backtest";
+import { FinancialMetrics, Trade, EquityPoint, MultiAssetTrade, MultiAssetEquityPoint } from "./backtest";
 import { DecisionLineageRecord } from "./lineage";
 
 /**
@@ -97,3 +97,48 @@ export const ExperimentSuiteResult = z.object({
   summary: z.record(z.string(), z.unknown()).optional(),
 });
 export type ExperimentSuiteResult = z.infer<typeof ExperimentSuiteResult>;
+
+/**
+ * Manifest for multi-asset universe portfolio experiments.
+ */
+export const MultiAssetExperimentManifest = z.object({
+  id: z.string().uuid(),
+  createdAt: z.string().datetime(),
+  gitCommit: z.string(),
+  datasetHash: z.string(),
+  symbols: z.array(z.string()),
+  timeframe: Timeframe.default("1Day"),
+  strategy: z.union([z.string(), ExperimentStrategyConfig]),
+  strategyConfig: ExperimentStrategyConfig.optional(),
+  metrics: FinancialMetrics,
+  benchmarkDelta: BenchmarkDelta.optional(),
+  decisionMetrics: DecisionIntelligenceMetrics.optional(),
+  trades: z.array(MultiAssetTrade),
+  equityCurve: z.array(MultiAssetEquityPoint),
+  perAssetTurnover: z.record(z.string(), z.number()).default({}),
+  perAssetTradeCount: z.record(z.string(), z.number()).default({}),
+  tokenCost: z.number().default(0).optional(),
+  latencyMs: z.number().default(0).optional(),
+  fallbackRate: z.number().default(0).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+export type MultiAssetExperimentManifest = z.infer<typeof MultiAssetExperimentManifest>;
+
+/**
+ * Suite result evaluating multiple strategies across a multi-asset universe against an Equal-Weight Basket benchmark.
+ */
+export const MultiAssetSuiteResult = z.object({
+  id: z.string().optional(),
+  suiteId: z.string().optional(),
+  universe: z.array(z.string()),
+  datasetHash: z.string(),
+  gitCommit: z.string(),
+  createdAt: z.string(),
+  benchmark: MultiAssetExperimentManifest,
+  experiments: z.array(MultiAssetExperimentManifest),
+  totalDurationMs: z.number().optional(),
+  totalCost: z.number().optional(),
+  summary: z.record(z.string(), z.unknown()).optional(),
+});
+export type MultiAssetSuiteResult = z.infer<typeof MultiAssetSuiteResult>;
+

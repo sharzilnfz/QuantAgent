@@ -16,11 +16,14 @@ import { TechnicalAgent } from "../technical/agent.js";
 import { evaluateConsensus } from "./consensus.js";
 import { DebateSynthesizer } from "./debate.js";
 import { DecisionLineageRecorder } from "./lineage.js";
+import { MemoryStore } from "../../memory/store.js";
 
 export interface CoordinatorOptions {
   debateEnabled?: boolean;
   deterministicOffline?: boolean;
   includePolymarket?: boolean;
+  memoryEnabled?: boolean;
+  memoryStore?: MemoryStore;
   specialists?: Agent[];
   synthesizer?: DebateSynthesizer;
   lineageRecorder?: DecisionLineageRecorder;
@@ -30,6 +33,8 @@ export interface CoordinatorOptions {
 export class MultiAgentCoordinator {
   public readonly debateEnabled: boolean;
   public readonly deterministicOffline: boolean;
+  public readonly memoryEnabled: boolean;
+  public readonly memoryStore?: MemoryStore;
   private readonly specialists: Agent[];
   private readonly synthesizer: DebateSynthesizer;
   public readonly lineageRecorder?: DecisionLineageRecorder;
@@ -38,6 +43,12 @@ export class MultiAgentCoordinator {
   constructor(options: CoordinatorOptions = {}) {
     this.debateEnabled = options.debateEnabled ?? true;
     this.deterministicOffline = options.deterministicOffline ?? false;
+    this.memoryEnabled = options.memoryEnabled ?? true;
+    this.memoryStore =
+      options.memoryStore ??
+      (this.memoryEnabled
+        ? new MemoryStore({ deterministicOffline: this.deterministicOffline })
+        : undefined);
     this.lineageRecorder = options.lineageRecorder;
     this.logger = options.logger ?? defaultAgentLogger;
 
@@ -87,6 +98,20 @@ export class MultiAgentCoordinator {
     const startedAt = Date.now();
 
     const { runId: _unusedRunId, ...agentInputWithoutRunId } = input;
+
+    // 0. Query point-in-time MemoryContext if enabled and not explicitly injected
+    if (this.memoryEnabled && this.memoryStore && !agentInputWithoutRunId.memory) {
+      const newsSnippet = input.news && input.news.length > 0
+        ? input.news.map((n) => n.headline).slice(0, 3).join(". ")
+        : "";
+      const queryText = `${input.symbol} ${newsSnippet}`.trim();
+
+      agentInputWithoutRunId.memory = this.memoryStore.queryMemoryContext({
+        symbol: input.symbol,
+        asOf: input.decisionTs,
+        queryText: queryText.length > 0 ? queryText : undefined,
+      });
+    }
 
     // 1. Run all specialists concurrently via runAgents
     const { outputs } = await runAgents(
@@ -146,6 +171,7 @@ export class MultiAgentCoordinator {
           sentiment,
           fundamental,
           polymarket,
+          memory: agentInputWithoutRunId.memory,
         },
         { ...input, runId },
       );
@@ -158,6 +184,18 @@ export class MultiAgentCoordinator {
       mode = "ablation_neutral_fallback";
       finalBias = "neutral";
       finalConfidence = 0.0;
+    }
+
+    // Record decision into short-term memory if store is available
+    if (this.memoryStore) {
+      this.memoryStore.recordShortTermDecision({
+        decisionTs: input.decisionTs,
+        symbol: input.symbol,
+        direction: finalBias,
+        confidence: finalConfidence,
+        rationale: synthesisResult?.rationale ?? technical.rationale ?? "Consensus majority agreement",
+        asOf: input.decisionTs,
+      });
     }
 
     const consensusResult: ConsensusResult = ConsensusResult.parse({

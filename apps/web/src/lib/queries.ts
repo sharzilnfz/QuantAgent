@@ -15,8 +15,10 @@ export const queryKeys = {
   watchlist: ["watchlist"] as const,
   latestAgentOutput: (symbol: string) => ["agents", "latest", symbol] as const,
   experimentsSuite: (symbol: string) => ["experiments", "suite", symbol] as const,
+  multiAssetExperimentsSuite: (universe: string[]) => ["experiments", "multi-asset", "suite", universe.join(",")] as const,
   varianceSweep: (symbol: string, windowSize: number, runs: number, budget: number) =>
     ["experiments", "variance-sweep", symbol, windowSize, runs, budget] as const,
+  agentConfig: ["agents", "config"] as const,
 };
 
 export function createQueryClient(): QueryClient {
@@ -123,6 +125,15 @@ export function useExperimentSuite(symbol: string = "AAPL") {
   });
 }
 
+export function useMultiAssetExperimentSuite(universe: string[] = ["AAPL", "NVDA", "SPY"], enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.multiAssetExperimentsSuite(universe),
+    queryFn: ({ signal }) => api.multiAssetExperimentsSuite(universe, signal),
+    enabled,
+    retry: false,
+  });
+}
+
 export function useVarianceSweep(
   symbol: string = "AAPL",
   windowSize = 25,
@@ -135,5 +146,33 @@ export function useVarianceSweep(
     queryFn: ({ signal }) => api.varianceSweep(symbol, windowSize, runs, budget, signal),
     enabled,
     retry: false,
+  });
+}
+
+export function useAgentConfig() {
+  return useQuery({
+    queryKey: queryKeys.agentConfig,
+    queryFn: ({ signal }) => api.getAgentConfig(signal),
+  });
+}
+
+export function useUpdateAgentConfig() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (config: Parameters<typeof api.updateAgentConfig>[0]) =>
+      api.updateAgentConfig(config),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(queryKeys.agentConfig, updated);
+    },
+  });
+}
+
+export function useResetAgentConfig() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.resetAgentConfig(),
+    onSuccess: (reset) => {
+      queryClient.setQueryData(queryKeys.agentConfig, reset);
+    },
   });
 }

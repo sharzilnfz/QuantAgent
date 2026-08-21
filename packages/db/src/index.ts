@@ -16,6 +16,7 @@ import type {
 } from "./schema/users";
 import type { priceBars, indicatorSnapshots } from "./schema/market";
 import type { agentRuns, agentOutputs } from "./schema/agents";
+import type { portfolioSnapshots } from "./schema/portfolio";
 
 /** Inferred SELECT (Row) types. */
 export type User = typeof users.$inferSelect;
@@ -26,6 +27,7 @@ export type PriceBar = typeof priceBars.$inferSelect;
 export type IndicatorSnapshot = typeof indicatorSnapshots.$inferSelect;
 export type AgentRun = typeof agentRuns.$inferSelect;
 export type AgentOutput = typeof agentOutputs.$inferSelect;
+export type PortfolioSnapshot = typeof portfolioSnapshots.$inferSelect;
 
 /** Inferred INSERT types. */
 export type NewUser = typeof users.$inferInsert;
@@ -36,3 +38,4 @@ export type NewPriceBar = typeof priceBars.$inferInsert;
 export type NewIndicatorSnapshot = typeof indicatorSnapshots.$inferInsert;
 export type NewAgentRun = typeof agentRuns.$inferInsert;
 export type NewAgentOutput = typeof agentOutputs.$inferInsert;
+export type NewPortfolioSnapshot = typeof portfolioSnapshots.$inferInsert;

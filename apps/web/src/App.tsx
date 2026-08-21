@@ -7,6 +7,7 @@ import { LoginPage } from "./routes/LoginPage";
 import { PortfolioPage } from "./routes/PortfolioPage";
 import { ObservatoryPage } from "./routes/ObservatoryPage";
 import { LineagePage } from "./routes/LineagePage";
+import { AgentConfigPage } from "./routes/AgentConfigPage";
 import { RequireAuth } from "./routes/RequireAuth";
 
 export function AppRoutes() {
@@ -17,6 +18,7 @@ export function AppRoutes() {
         <Route path="/" element={<PortfolioPage />} />
         <Route path="/observatory" element={<ObservatoryPage />} />
         <Route path="/lineage" element={<LineagePage />} />
+        <Route path="/config" element={<AgentConfigPage />} />
       </Route>
       {/* Unknown paths land on the dashboard, which re-guards them. */}
       <Route path="*" element={<Navigate to="/" replace />} />
