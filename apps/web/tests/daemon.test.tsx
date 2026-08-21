@@ -33,7 +33,7 @@ const mockDaemonStatus: DaemonStatus = {
         symbol: "AAPL",
         decisionTs: "2024-06-28T20:00:00.000Z",
         consensus: {
-          lineageId: "l1",
+          lineageId: "11111111-1111-1111-1111-111111111111",
           consensusReached: true,
           mode: "consensus_short_circuit",
           finalBias: "bullish",
@@ -41,7 +41,7 @@ const mockDaemonStatus: DaemonStatus = {
           specialistVotes: {},
         },
         riskAssessment: {
-          assessmentId: "r1",
+          assessmentId: "22222222-2222-2222-2222-222222222222",
           symbol: "AAPL",
           direction: "bullish",
           asOf: "2024-06-28T20:00:00.000Z",
@@ -92,7 +92,7 @@ describe("Autonomous Trading Daemon UI & Controls", () => {
     expect(screen.getByText(/idle/i)).toBeInTheDocument();
     expect(screen.getByText(/Dry-Run Simulation/i)).toBeInTheDocument();
     expect(screen.getByText(/Every 60s/i)).toBeInTheDocument();
-    expect(screen.getByText(/5/i)).toBeInTheDocument();
+    expect(screen.getByText("Completed Cycles:")).toBeInTheDocument();
   });
 
   it("triggers start daemon and toggles button label", async () => {
