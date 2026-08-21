@@ -51,13 +51,14 @@ export class AlpacaWebSocketClient extends EventEmitter implements IStreamClient
         this.ws = new WebSocket(this.feedUrl);
 
         this.ws.onopen = () => {
-          // Send authentication message
-          const authMsg = {
-            action: "auth",
-            key: this.apiKey,
-            secret: this.apiSecret,
-          };
-          this.ws?.send(JSON.stringify(authMsg));
+          if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            const authMsg = {
+              action: "auth",
+              key: this.apiKey,
+              secret: this.apiSecret,
+            };
+            this.ws.send(JSON.stringify(authMsg));
+          }
         };
 
         this.ws.onmessage = (event: MessageEvent) => {

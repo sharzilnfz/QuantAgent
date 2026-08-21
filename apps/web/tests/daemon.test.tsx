@@ -57,9 +57,51 @@ const mockDaemonStatus: DaemonStatus = {
   },
 };
 
-const mockRadarEmpty: LiveSignalRadarResponse = {
+const mockRadarResponse: LiveSignalRadarResponse = {
   asOf: "2026-08-22T02:00:00.000Z",
-  items: [],
+  items: [
+    {
+      symbol: "AAPL",
+      currentBar: {
+        symbol: "AAPL",
+        timeframe: "1Day",
+        ts: "2024-06-28T20:00:00.000Z",
+        open: 210.5,
+        high: 212.8,
+        low: 209.2,
+        close: 210.62,
+        volume: 48500000,
+        asOf: "2024-06-28T20:00:00.000Z",
+      },
+      recentBars: [],
+      indicators: {
+        symbol: "AAPL",
+        timeframe: "1Day",
+        ts: "2024-06-28T20:00:00.000Z",
+        rsi: 62.4,
+        macd: 2.15,
+        macdSignal: 1.82,
+        bbUpper: 218.4,
+        bbLower: 198.6,
+        sma20: 205.1,
+        sma50: 195.4,
+        asOf: "2024-06-28T20:00:00.000Z",
+      },
+      rsiZone: "neutral",
+      macdCross: "bullish",
+      trend: "bullish",
+      specialistVotes: {},
+      consensus: {
+        lineageId: "l1",
+        consensusReached: true,
+        mode: "consensus_short_circuit",
+        finalBias: "bullish",
+        finalConfidence: 0.8,
+        specialistVotes: {},
+      },
+      asOf: "2024-06-28T20:00:00.000Z",
+    },
+  ],
 };
 
 describe("Autonomous Trading Daemon UI & Controls", () => {
@@ -83,7 +125,7 @@ describe("Autonomous Trading Daemon UI & Controls", () => {
         status: 200,
         body: { ...mockDaemonStatus.config, dryRun: false },
       },
-      "/signals/radar": { status: 200, body: mockRadarEmpty },
+      "/signals/radar": { status: 200, body: mockRadarResponse },
     });
   });
 

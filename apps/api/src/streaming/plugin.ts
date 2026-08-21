@@ -5,10 +5,12 @@ import type { MarketStreamMessage } from "@committee/contracts";
 export const streamingPlugin: FastifyPluginAsync = async (app) => {
   const engine = getStreamEngine();
 
-  // Ensure streaming engine starts with the server
-  void engine.start().catch((err) => {
-    app.log.warn({ err }, "Failed to initialize market streaming engine at startup");
-  });
+  // Ensure streaming engine starts with the server in non-test environments
+  if (process.env.NODE_ENV !== "test" && !process.env.VITEST) {
+    void engine.start().catch((err) => {
+      app.log.warn({ err }, "Failed to initialize market streaming engine at startup");
+    });
+  }
 
   /**
    * SSE Endpoint: `GET /streaming/market-data`
