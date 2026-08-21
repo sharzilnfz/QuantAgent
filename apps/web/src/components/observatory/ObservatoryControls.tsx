@@ -99,7 +99,7 @@ export function ObservatoryControls({
                       : "border border-hairline bg-surface text-ink-2 hover:bg-surface-well hover:text-ink",
                   )}
                 >
-                  {sym}
+                  {sym === "BASKET" ? "🌐 Universe (AAPL+NVDA+SPY)" : sym}
                 </button>
               );
             })}
