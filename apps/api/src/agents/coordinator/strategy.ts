@@ -56,9 +56,16 @@ export class MultiAgentCoordinatorStrategy implements Strategy {
 
   constructor(options: MultiAgentCoordinatorStrategyOptions = {}) {
     const debateMode = options.debateEnabled ?? true;
+    const rounds = options.debateRounds ?? 1;
     this.name =
       options.name ??
-      `multi-agent-coordinator-${debateMode ? "debate-on" : "debate-off"}`;
+      `multi-agent-coordinator-${
+        !debateMode
+          ? "debate-off"
+          : rounds > 1
+            ? "debate-multiround"
+            : "debate-on"
+      }`;
     this.lineageRecorder = options.lineageRecorder ?? new DecisionLineageRecorder();
     this.coordinator = new MultiAgentCoordinator({
       ...options,

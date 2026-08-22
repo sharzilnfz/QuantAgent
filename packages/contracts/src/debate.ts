@@ -17,8 +17,20 @@ export const CoordinatorMode = z.enum([
 export type CoordinatorMode = z.infer<typeof CoordinatorMode>;
 
 /**
+ * Structured critique argument generated during adversarial cross-examination rounds.
+ */
+export const DebateCritique = z.object({
+  agent: z.string(),
+  stance: Direction,
+  rebuttal: z.string().min(1).max(2000),
+  revisedConfidence: z.number().min(0).max(1),
+});
+export type DebateCritique = z.infer<typeof DebateCritique>;
+
+/**
  * Structured LLM synthesis output generated during multi-agent debate reconciliation.
- * Encapsulates the reconciled stance, confidence score, rationale, and dissenting view analysis.
+ * Encapsulates the reconciled stance, confidence score, rationale, dissenting view analysis,
+ * and multi-round cross-examination critiques.
  */
 export const DebateSynthesis = z.object({
   direction: Direction,
@@ -26,6 +38,8 @@ export const DebateSynthesis = z.object({
   rationale: z.string().min(1).max(2000),
   dissentingView: z.string().min(1).max(2000).optional(),
   primaryDriver: z.enum(["technical", "sentiment", "fundamental", "macro", "compromise"]).default("compromise"),
+  rounds: z.number().int().min(1).max(3).optional(),
+  critiques: z.array(DebateCritique).optional(),
   tokenCost: z.number().min(0).default(0).optional(),
   latencyMs: z.number().min(0).default(0).optional(),
 });

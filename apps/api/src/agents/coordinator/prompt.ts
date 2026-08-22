@@ -86,6 +86,50 @@ Reconcile this disagreement. Select a reconciled bias ('bullish', 'bearish', or 
 }
 
 
+export function buildMultiRoundDebateUserPrompt(
+  ctx: DebatePromptContext,
+  critiques: { agent: string; stance: Direction; rebuttal: string; revisedConfidence: number }[],
+): string {
+  const basePrompt = buildDebateUserPrompt(ctx);
+  const critiqueText = critiques
+    .map(
+      (c) =>
+        `### ${c.agent.toUpperCase()} Specialist Counter-Critique (Round 1 Cross-Examination)\n- Maintained Stance: ${c.stance.toUpperCase()}\n- Revised Confidence: ${c.revisedConfidence.toFixed(2)}\n- Rebuttal & Critique: ${c.rebuttal}`,
+    )
+    .join("\n\n");
+
+  return `${basePrompt}
+
+# Round 1 Adversarial Cross-Examination Critiques
+The specialists have reviewed each other's claims and submitted the following formal counter-critiques:
+
+${critiqueText}
+
+# Final Multi-Round Adjudication Task (Round 2)
+Taking into account BOTH the original specialist signals and the Round 1 adversarial rebuttals/revised confidences, render a definitive final decision. Select the reconciled direction ('bullish', 'bearish', or 'neutral'), calibrated confidence [0, 1], full synthesis rationale, primary driver ('technical', 'sentiment', 'fundamental', 'macro', or 'compromise'), and articulated dissenting view.`;
+}
+
+export function buildCrossExaminationPrompt(
+  ctx: DebatePromptContext,
+  targetAgent: AgentOutput,
+  opposingAgent: AgentOutput,
+): string {
+  return `# Adversarial Cross-Examination (Round 1)
+You are the ${targetAgent.agent.toUpperCase()} Specialist for ${ctx.symbol} at ${ctx.decisionTs}.
+
+Your initial stance was **${targetAgent.direction.toUpperCase()}** (${(targetAgent.confidence * 100).toFixed(0)}% confidence):
+"${targetAgent.rationale}"
+
+The opposing **${opposingAgent.agent.toUpperCase()}** Specialist has taken a conflicting stance of **${opposingAgent.direction.toUpperCase()}** (${(opposingAgent.confidence * 100).toFixed(0)}% confidence):
+"${opposingAgent.rationale}"
+Evidence: ${JSON.stringify(opposingAgent.evidence, null, 2)}
+
+## Cross-Examination Task:
+1. Directly critique the opposing specialist's evidence and methodology.
+2. Defend why your evidence (indicators / news / filings / macro odds) should take priority.
+3. State whether your conviction has changed, providing a revised confidence score [0.0, 1.0].`;
+}
+
 export function debateOutputToolSchema(): Record<string, unknown> {
   return {
     type: "object",
@@ -111,8 +155,28 @@ export function debateOutputToolSchema(): Record<string, unknown> {
       },
       primaryDriver: {
         type: "string",
-        enum: ["technical", "sentiment", "compromise"],
+        enum: ["technical", "sentiment", "fundamental", "macro", "compromise"],
         description: "Which specialist view primarily drove the synthesized decision.",
+      },
+      rounds: {
+        type: "integer",
+        minimum: 1,
+        maximum: 3,
+        description: "Total debate rounds executed.",
+      },
+      critiques: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            agent: { type: "string" },
+            stance: { type: "string", enum: ["bullish", "bearish", "neutral"] },
+            rebuttal: { type: "string" },
+            revisedConfidence: { type: "number", minimum: 0, maximum: 1 },
+          },
+          required: ["agent", "stance", "rebuttal", "revisedConfidence"],
+        },
+        description: "Adversarial cross-examination critiques from Round 1.",
       },
     },
     required: ["direction", "confidence", "rationale"],
@@ -138,9 +202,13 @@ export function normalizeDebateOutput(raw: unknown): unknown {
   const primaryDriver =
     obj.primaryDriver === "technical" ||
     obj.primaryDriver === "sentiment" ||
+    obj.primaryDriver === "fundamental" ||
+    obj.primaryDriver === "macro" ||
     obj.primaryDriver === "compromise"
       ? obj.primaryDriver
       : "compromise";
+  const rounds = typeof obj.rounds === "number" ? obj.rounds : 1;
+  const critiques = Array.isArray(obj.critiques) ? obj.critiques : undefined;
 
   return {
     direction,
@@ -148,5 +216,7 @@ export function normalizeDebateOutput(raw: unknown): unknown {
     rationale,
     dissentingView,
     primaryDriver,
+    rounds,
+    critiques,
   };
 }

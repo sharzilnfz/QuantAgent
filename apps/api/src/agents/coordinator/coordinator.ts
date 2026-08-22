@@ -20,6 +20,7 @@ import { MemoryStore } from "../../memory/store.js";
 
 export interface CoordinatorOptions {
   debateEnabled?: boolean;
+  debateRounds?: number;
   deterministicOffline?: boolean;
   includePolymarket?: boolean;
   memoryEnabled?: boolean;
@@ -32,6 +33,7 @@ export interface CoordinatorOptions {
 
 export class MultiAgentCoordinator {
   public readonly debateEnabled: boolean;
+  public readonly debateRounds: number;
   public readonly deterministicOffline: boolean;
   public readonly memoryEnabled: boolean;
   public readonly memoryStore?: MemoryStore;
@@ -42,6 +44,7 @@ export class MultiAgentCoordinator {
 
   constructor(options: CoordinatorOptions = {}) {
     this.debateEnabled = options.debateEnabled ?? true;
+    this.debateRounds = options.debateRounds ?? 1;
     this.deterministicOffline = options.deterministicOffline ?? false;
     this.memoryEnabled = options.memoryEnabled ?? true;
     this.memoryStore =
@@ -84,6 +87,7 @@ export class MultiAgentCoordinator {
       options.synthesizer ??
       new DebateSynthesizer({
         deterministicOffline: this.deterministicOffline,
+        debateRounds: this.debateRounds,
       });
   }
 
@@ -210,6 +214,7 @@ export class MultiAgentCoordinator {
         runId,
         durationMs: Date.now() - startedAt,
         tokenCost: synthesisResult?.tokenCost ?? 0,
+        debateRounds: this.debateRounds,
       },
     });
 
