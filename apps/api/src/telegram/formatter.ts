@@ -7,6 +7,7 @@ import type {
   TelegramAlertPayload,
   TelegramEodDigestPayload,
   PortfolioState,
+  PendingTradeApproval,
 } from "@committee/contracts";
 
 export class TelegramFormatter {
@@ -142,6 +143,101 @@ export class TelegramFormatter {
   }
 
   /**
+   * Formats a high-risk trade requiring 2-way manual approval.
+   */
+  static formatPendingApprovalAlert(approval: PendingTradeApproval): string {
+    const actionEmoji = approval.side === "buy" ? "🟡" : "🟠";
+    const confidencePct = Math.round(approval.confidence * 100);
+
+    const lines: string[] = [
+      `⚠️ *ACTION REQUIRED: TRADE APPROVAL REQUEST*`,
+      `━━━━━━━━━━━━━━━━━━━━━━`,
+      `${actionEmoji} *Proposed Trade:* ${approval.side.toUpperCase()} ${approval.targetQty} ${approval.symbol}`,
+      `• *Estimated Price:* \$${approval.estimatedPrice.toFixed(2)}`,
+      `• *Total Notional:* \$${approval.estimatedNotional.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      `• *Agent Confidence:* ${confidencePct}%`,
+      `• *Risk Gate Assessment:* \`${approval.riskStatus}\``,
+    ];
+
+    if (approval.riskNotes && approval.riskNotes.length > 0) {
+      lines.push(`• *Risk Notes:* _${approval.riskNotes.join("; ")}_`);
+    }
+
+    lines.push(
+      ``,
+      `📖 *Committee Rationale:*`,
+      `${approval.rationale}`,
+      ``,
+      `⏳ *Expires At:* _${new Date(approval.expiresAt).toUTCString()}_`,
+      `🆔 *Approval ID:* \`${approval.approvalId}\``,
+      ``,
+      `_Tap a button below or type \`/approve ${approval.approvalId.slice(0, 8)}\` to execute._`,
+    );
+
+    return lines.join("\n");
+  }
+
+  /**
+   * Formats an approval resolution result.
+   */
+  static formatApprovalResolution(approval: PendingTradeApproval): string {
+    const isApproved = approval.status === "approved";
+    const icon = isApproved ? "✅" : approval.status === "expired" ? "⌛" : "❌";
+    const title = isApproved
+      ? "TRADE APPROVED & SUBMITTED"
+      : approval.status === "expired"
+        ? "TRADE APPROVAL EXPIRED"
+        : "TRADE REJECTED";
+
+    const lines: string[] = [
+      `${icon} *${title}*`,
+      `━━━━━━━━━━━━━━━━━━━━━━`,
+      `• *Trade:* ${approval.side.toUpperCase()} ${approval.targetQty} ${approval.symbol}`,
+      `• *Status:* \`${approval.status.toUpperCase()}\``,
+      `• *Resolved By:* ${approval.resolvedBy ?? "User"}`,
+      `• *Resolved At:* _${new Date(approval.resolvedAt ?? approval.createdAt).toUTCString()}_`,
+    ];
+
+    if (approval.resolutionReason) {
+      lines.push(`• *Reason:* _${approval.resolutionReason}_`);
+    }
+
+    if (approval.executionId) {
+      lines.push(`• *Execution ID:* \`${approval.executionId}\``);
+    }
+
+    return lines.join("\n");
+  }
+
+  /**
+   * Formats a list of currently pending trade approvals.
+   */
+  static formatPendingList(approvals: PendingTradeApproval[]): string {
+    if (approvals.length === 0) {
+      return "✅ *No pending trade approvals.*\nAll recent proposals have been resolved.";
+    }
+
+    const lines: string[] = [
+      `⏳ *PENDING TRADE APPROVALS (${approvals.length})*`,
+      `━━━━━━━━━━━━━━━━━━━━━━`,
+    ];
+
+    for (const a of approvals) {
+      lines.push(
+        `• *${a.side.toUpperCase()} ${a.targetQty} ${a.symbol}* (\$${a.estimatedNotional.toFixed(2)})`,
+        `  ID: \`${a.approvalId.slice(0, 8)}\` | Expires: _${new Date(a.expiresAt).toLocaleTimeString()}_`,
+      );
+    }
+
+    lines.push(
+      ``,
+      `_Use \`/approve <id>\` or \`/reject <id>\` to resolve._`,
+    );
+
+    return lines.join("\n");
+  }
+
+  /**
    * Formats help message.
    */
   static formatHelp(): string {
@@ -151,6 +247,9 @@ export class TelegramFormatter {
       `Available commands:`,
       `• \`/portfolio\` — View current paper equity, cash, and open positions.`,
       `• \`/latest\` — View the most recent multi-agent committee decision.`,
+      `• \`/pending\` — List active pending trade approvals awaiting confirmation.`,
+      `• \`/approve <id>\` — Approve and execute a pending trade.`,
+      `• \`/reject <id>\` — Reject a pending trade proposal.`,
       `• \`/watchlist\` — List tracked market symbols.`,
       `• \`/eod\` — Request on-demand daily summary recap.`,
       `• \`/help\` — Display this command reference.`,

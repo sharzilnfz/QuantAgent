@@ -6,6 +6,8 @@
 import { getPortfolioState, getWatchlist } from "../portfolio/service.js";
 import { TelegramFormatter } from "./formatter.js";
 import type { ITelegramClient } from "./client.js";
+import { pendingTradeApprovalStore, PendingTradeApprovalStore } from "./approval-store.js";
+import type { TelegramBotService } from "./service.js";
 
 export interface CommandContext {
   chatId: string | number;
@@ -16,9 +18,17 @@ export interface CommandContext {
 
 export class TelegramCommandHandler {
   private readonly defaultUserId: string;
+  private readonly botService?: TelegramBotService;
+  private readonly approvalStore: PendingTradeApprovalStore;
 
-  constructor(defaultUserId: string = "00000000-0000-4000-8000-000000000000") {
+  constructor(
+    defaultUserId: string = "00000000-0000-4000-8000-000000000000",
+    botService?: TelegramBotService,
+    approvalStore?: PendingTradeApprovalStore,
+  ) {
     this.defaultUserId = defaultUserId;
+    this.botService = botService;
+    this.approvalStore = approvalStore ?? pendingTradeApprovalStore;
   }
 
   /**
@@ -154,6 +164,91 @@ export class TelegramCommandHandler {
           return digest;
         } catch {
           const fallback = `⚠️ *Failed to generate EOD digest.*`;
+          await ctx.client.sendMessage(ctx.chatId, fallback);
+          return fallback;
+        }
+      }
+
+      case "/pending": {
+        const pending = this.approvalStore.list("pending");
+        const message = TelegramFormatter.formatPendingList(pending);
+        await ctx.client.sendMessage(ctx.chatId, message);
+        return message;
+      }
+
+      case "/approve": {
+        if (!arg) {
+          const msg = "⚠️ *Please specify an approval ID:*\nExample: `/approve 1a2b3c4d`";
+          await ctx.client.sendMessage(ctx.chatId, msg);
+          return msg;
+        }
+
+        if (this.botService) {
+          const res = await this.botService.resolveApproval(
+            arg,
+            "approve",
+            `User via /approve`,
+            "Manual approval command",
+            ctx.chatId,
+          );
+          if (!res.ok) {
+            const err = `❌ *Approval Failed:* ${res.error}`;
+            await ctx.client.sendMessage(ctx.chatId, err);
+            return err;
+          }
+          return `✅ Trade ${res.approval.symbol} approved and routed!`;
+        }
+
+        try {
+          const updated = this.approvalStore.resolve(arg, {
+            status: "approved",
+            resolvedBy: `User ${ctx.chatId}`,
+            resolutionReason: "Manual command confirmation",
+          });
+          const message = TelegramFormatter.formatApprovalResolution(updated);
+          await ctx.client.sendMessage(ctx.chatId, message);
+          return message;
+        } catch (err) {
+          const fallback = `❌ *Failed to approve:* ${err instanceof Error ? err.message : String(err)}`;
+          await ctx.client.sendMessage(ctx.chatId, fallback);
+          return fallback;
+        }
+      }
+
+      case "/reject": {
+        if (!arg) {
+          const msg = "⚠️ *Please specify an approval ID:*\nExample: `/reject 1a2b3c4d`";
+          await ctx.client.sendMessage(ctx.chatId, msg);
+          return msg;
+        }
+
+        if (this.botService) {
+          const res = await this.botService.resolveApproval(
+            arg,
+            "reject",
+            `User via /reject`,
+            "Manual rejection command",
+            ctx.chatId,
+          );
+          if (!res.ok) {
+            const err = `❌ *Rejection Failed:* ${res.error}`;
+            await ctx.client.sendMessage(ctx.chatId, err);
+            return err;
+          }
+          return `❌ Trade ${res.approval.symbol} rejected!`;
+        }
+
+        try {
+          const updated = this.approvalStore.resolve(arg, {
+            status: "rejected",
+            resolvedBy: `User ${ctx.chatId}`,
+            resolutionReason: "Manual command rejection",
+          });
+          const message = TelegramFormatter.formatApprovalResolution(updated);
+          await ctx.client.sendMessage(ctx.chatId, message);
+          return message;
+        } catch (err) {
+          const fallback = `❌ *Failed to reject:* ${err instanceof Error ? err.message : String(err)}`;
           await ctx.client.sendMessage(ctx.chatId, fallback);
           return fallback;
         }

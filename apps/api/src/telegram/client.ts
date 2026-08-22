@@ -3,9 +3,12 @@
  * Telegram Bot API client with zero-cost offline deterministic mock fallback.
  */
 
+import type { InlineKeyboardMarkup } from "@committee/contracts";
+
 export interface TelegramMessageOptions {
   parseMode?: "Markdown" | "HTML" | "MarkdownV2";
   disableNotification?: boolean;
+  replyMarkup?: InlineKeyboardMarkup;
 }
 
 export interface DispatchedTelegramMessage {
@@ -15,12 +18,24 @@ export interface DispatchedTelegramMessage {
   timestamp: string;
 }
 
+export interface AnsweredCallbackQuery {
+  callbackQueryId: string;
+  text?: string;
+  showAlert?: boolean;
+  timestamp: string;
+}
+
 export interface ITelegramClient {
   sendMessage(
     chatId: string | number,
     text: string,
     options?: TelegramMessageOptions,
   ): Promise<{ ok: boolean; messageId?: number; description?: string }>;
+  answerCallbackQuery(
+    callbackQueryId: string,
+    text?: string,
+    showAlert?: boolean,
+  ): Promise<{ ok: boolean; description?: string }>;
   getMe(): Promise<{ ok: boolean; username?: string; description?: string }>;
   isMock(): boolean;
   getDispatchedMessages(): DispatchedTelegramMessage[];
@@ -58,15 +73,21 @@ export class TelegramHttpClient implements ITelegramClient {
     options?: TelegramMessageOptions,
   ): Promise<{ ok: boolean; messageId?: number; description?: string }> {
     try {
+      const payload: Record<string, unknown> = {
+        chat_id: chatId,
+        text,
+        parse_mode: options?.parseMode ?? "Markdown",
+        disable_notification: options?.disableNotification ?? false,
+      };
+
+      if (options?.replyMarkup) {
+        payload.reply_markup = options.replyMarkup;
+      }
+
       const res = await fetch(`${this.baseUrl}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text,
-          parse_mode: options?.parseMode ?? "Markdown",
-          disable_notification: options?.disableNotification ?? false,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = (await res.json()) as {
@@ -89,6 +110,36 @@ export class TelegramHttpClient implements ITelegramClient {
         ok: false,
         description: data.description ?? `HTTP ${res.status}`,
       };
+    } catch (err) {
+      return {
+        ok: false,
+        description: err instanceof Error ? err.message : String(err),
+      };
+    }
+  }
+
+  async answerCallbackQuery(
+    callbackQueryId: string,
+    text?: string,
+    showAlert?: boolean,
+  ): Promise<{ ok: boolean; description?: string }> {
+    try {
+      const res = await fetch(`${this.baseUrl}/answerCallbackQuery`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          callback_query_id: callbackQueryId,
+          text,
+          show_alert: showAlert ?? false,
+        }),
+      });
+
+      const data = (await res.json()) as {
+        ok: boolean;
+        description?: string;
+      };
+
+      return { ok: data.ok, description: data.description };
     } catch (err) {
       return {
         ok: false,
@@ -120,6 +171,7 @@ export class TelegramHttpClient implements ITelegramClient {
  */
 export class DeterministicMockTelegramClient implements ITelegramClient {
   private readonly dispatched: DispatchedTelegramMessage[] = [];
+  private readonly answeredCallbacks: AnsweredCallbackQuery[] = [];
   private messageCounter = 1000;
 
   isMock(): boolean {
@@ -132,6 +184,14 @@ export class DeterministicMockTelegramClient implements ITelegramClient {
 
   clearDispatchedMessages(): void {
     this.dispatched.length = 0;
+  }
+
+  getAnsweredCallbacks(): AnsweredCallbackQuery[] {
+    return [...this.answeredCallbacks];
+  }
+
+  clearAnsweredCallbacks(): void {
+    this.answeredCallbacks.length = 0;
   }
 
   async sendMessage(
@@ -147,6 +207,20 @@ export class DeterministicMockTelegramClient implements ITelegramClient {
       timestamp: new Date().toISOString(),
     });
     return { ok: true, messageId: this.messageCounter };
+  }
+
+  async answerCallbackQuery(
+    callbackQueryId: string,
+    text?: string,
+    showAlert?: boolean,
+  ): Promise<{ ok: boolean; description?: string }> {
+    this.answeredCallbacks.push({
+      callbackQueryId,
+      text,
+      showAlert,
+      timestamp: new Date().toISOString(),
+    });
+    return { ok: true };
   }
 
   async getMe(): Promise<{ ok: boolean; username?: string; description?: string }> {
