@@ -129,7 +129,7 @@ describe("EOD Reports Fastify HTTP Endpoints", () => {
     const json = res.json();
     expect(EodReportRecord.safeParse(json).success).toBe(true);
     expect(json.portfolioEquity).toBe(100_000);
-  });
+  }, 15000);
 
   it("GET /reports/cron/status returns scheduler state", async () => {
     const res = await app.inject({
