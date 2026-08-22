@@ -173,7 +173,8 @@ export class TemporalGuard {
       for (let j = 0; j < ev.history.length; j++) {
         const pt = ev.history[j];
         if (!pt) continue;
-        const ptMs = Date.parse(pt.asOf ?? pt.ts);
+        const rawPtAsOf = typeof pt.asOf === "string" && pt.asOf.length > 0 ? pt.asOf : pt.ts;
+      const ptMs = Date.parse(rawPtAsOf);
         if (ptMs <= cutoffMs) {
           filteredHistory.push(pt);
         }

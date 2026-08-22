@@ -25,9 +25,9 @@ export const pgVector = customType<{
   toDriver(value: number[]): string {
     return JSON.stringify(value);
   },
-  fromDriver(value: string | number[]): number[] {
+  fromDriver(value: string | number[] | null): number[] {
     if (Array.isArray(value)) return value;
-    return typeof value === "string" ? JSON.parse(value) : [];
+    return typeof value === "string" && value.length > 0 ? JSON.parse(value) : [];
   },
 });
 

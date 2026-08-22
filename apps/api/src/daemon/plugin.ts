@@ -1,16 +1,13 @@
 import type { FastifyPluginAsync } from "fastify";
 import { getTradingDaemon } from "./service.js";
 import { DaemonConfig } from "@committee/contracts";
+import { requireAuth } from "../auth/require-auth.js";
 
 export const daemonPlugin: FastifyPluginAsync = async (app) => {
   const daemon = getTradingDaemon();
 
   // All daemon routes require authentication
-  app.addHook("preHandler", async (request, reply) => {
-    if (!request.user) {
-      return reply.code(401).send({ error: "unauthorized", message: "Authentication required." });
-    }
-  });
+  app.addHook("preHandler", requireAuth);
 
   /** `GET /daemon/status` -> DaemonStatus */
   app.get("/daemon/status", async (_request, reply) => {

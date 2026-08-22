@@ -4,6 +4,7 @@ import postgres from "postgres";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { existsSync } from "node:fs";
+import * as schema from "./schema";
 
 /**
  * Runs pending Drizzle migrations against DATABASE_URL, then exits.
@@ -31,7 +32,7 @@ const migrationsFolder = resolve(__dirname, "../migrations");
 const migrationClient = postgres(connectionString, { max: 1 });
 
 async function main(): Promise<void> {
-  const db = drizzle(migrationClient);
+  const db = drizzle(migrationClient, { schema });
   console.log(`Running migrations from ${migrationsFolder} ...`);
   await migrate(db, { migrationsFolder });
   console.log("Migrations complete.");

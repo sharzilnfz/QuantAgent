@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import { existsSync } from "node:fs";
 import { users, watchlistItems } from "./schema";
+import * as schema from "./schema";
 
 /**
  * Idempotent seed: one demo user + a 3-symbol watchlist (AAPL/MSFT/SPY).
@@ -74,9 +75,9 @@ async function main(): Promise<void> {
 
   const sql = postgres(connectionString, { max: 1 });
   try {
-    await seed(drizzle(sql));
+    await seed(drizzle(sql, { schema }));
     console.log(
-      `Seed complete: ${DEMO_EMAIL} (password: ${DEMO_PASSWORD}) with watchlist ${DEMO_SYMBOLS.join(", ")}.`,
+      `Seed complete: ${DEMO_EMAIL} with watchlist ${DEMO_SYMBOLS.join(", ")}.`,
     );
   } catch (err) {
     console.error("Seed failed:", err);
