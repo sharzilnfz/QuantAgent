@@ -148,4 +148,71 @@ describe("Mathematical PositionAllocatorEngine (Layer 5)", () => {
     expect(allocation.targetQty).toBe(75);
     expect(allocation.targetNotional).toBe(15000);
   });
+
+  it("calculates rolling annualized realized volatility from historical bars", async () => {
+    const { computeRollingAnnualizedVolatility } = await import("../src/portfolio/allocator.js");
+
+    const bars = [
+      { symbol: "AAPL", timeframe: "1Day" as const, ts: "2024-01-01T00:00:00Z", asOf: "2024-01-01T00:00:00Z", open: 180, high: 182, low: 179, close: 180, volume: 1000 },
+      { symbol: "AAPL", timeframe: "1Day" as const, ts: "2024-01-02T00:00:00Z", asOf: "2024-01-02T00:00:00Z", open: 180, high: 185, low: 180, close: 184, volume: 1000 },
+      { symbol: "AAPL", timeframe: "1Day" as const, ts: "2024-01-03T00:00:00Z", asOf: "2024-01-03T00:00:00Z", open: 184, high: 186, low: 182, close: 183, volume: 1000 },
+      { symbol: "AAPL", timeframe: "1Day" as const, ts: "2024-01-04T00:00:00Z", asOf: "2024-01-04T00:00:00Z", open: 183, high: 188, low: 183, close: 187, volume: 1000 },
+      { symbol: "AAPL", timeframe: "1Day" as const, ts: "2024-01-05T00:00:00Z", asOf: "2024-01-05T00:00:00Z", open: 187, high: 190, low: 186, close: 189, volume: 1000 },
+    ];
+
+    const vol = computeRollingAnnualizedVolatility(bars, 20);
+    expect(vol).toBeGreaterThan(0.10);
+    expect(vol).toBeLessThan(0.60);
+  });
+
+  it("scales multi-asset basket allocations to preserve the configured cash buffer", () => {
+    const allocator = new PositionAllocatorEngine({
+      config: {
+        defaultMethod: "fixed_percentage",
+        fixedPercentage: 0.40, // 40% per asset
+        maxWeightCap: 0.50,
+        cashBuffer: 0.10, // Must keep 10% cash buffer (max 90% gross equity)
+      },
+    });
+
+    const inputs = [
+      {
+        symbol: "AAPL",
+        direction: "bullish" as const,
+        confidence: 0.90,
+        estimatedPrice: 200,
+        portfolio: basePortfolio,
+        riskAssessment: { ...approvedRiskAssessment, symbol: "AAPL", adjustedConstraints: { maxAllowedWeight: 0.40 } },
+        decisionTs: "2024-06-30T20:00:00.000Z",
+      },
+      {
+        symbol: "NVDA",
+        direction: "bullish" as const,
+        confidence: 0.90,
+        estimatedPrice: 100,
+        portfolio: basePortfolio,
+        riskAssessment: { ...approvedRiskAssessment, symbol: "NVDA", adjustedConstraints: { maxAllowedWeight: 0.40 } },
+        decisionTs: "2024-06-30T20:00:00.000Z",
+      },
+      {
+        symbol: "MSFT",
+        direction: "bullish" as const,
+        confidence: 0.90,
+        estimatedPrice: 400,
+        portfolio: basePortfolio,
+        riskAssessment: { ...approvedRiskAssessment, symbol: "MSFT", adjustedConstraints: { maxAllowedWeight: 0.40 } },
+        decisionTs: "2024-06-30T20:00:00.000Z",
+      },
+    ];
+
+    const portfolioAllocations = allocator.allocatePortfolio(inputs, basePortfolio);
+    expect(portfolioAllocations.length).toBe(3);
+
+    const totalWeight = portfolioAllocations.reduce((sum, a) => sum + a.targetWeight, 0);
+    expect(totalWeight).toBeLessThanOrEqual(0.90);
+    for (const alloc of portfolioAllocations) {
+      expect(alloc.sizingParameters.portfolioScaled).toBe(true);
+      expect(alloc.sizingParameters.cashBufferPreserved).toBe(0.10);
+    }
+  });
 });

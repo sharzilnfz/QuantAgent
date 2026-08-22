@@ -45,7 +45,13 @@ export const AllocationConfig = z.object({
   targetVolatility: z.number().positive().default(0.15),
   /** Fixed allocation fraction of equity when using fixed_percentage sizing (e.g. 0.05 = 5%). */
   fixedPercentage: z.number().min(0.01).max(1.0).default(0.05),
-  /** Hard upper bound on target allocation weight regardless of sizing calculation. */
+  /** Hard upper bound on single-asset target allocation weight regardless of sizing calculation. */
   maxWeightCap: z.number().min(0.01).max(1.0).default(0.20),
+  /** Minimum cash buffer fraction preserved for uninvested liquidity (e.g. 0.05 = 5%). */
+  cashBuffer: z.number().min(0).max(0.5).default(0.05),
+  /** Rolling window of daily bars used to calculate historical realized volatility. */
+  volatilityLookback: z.number().int().min(5).max(100).default(20),
+  /** Default reward-to-risk payout ratio (b) for Kelly sizing if unspecified. */
+  defaultPayoffRatio: z.number().positive().default(1.5),
 });
 export type AllocationConfig = z.infer<typeof AllocationConfig>;
