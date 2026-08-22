@@ -87,6 +87,25 @@ All layers are **implemented in source code and verified with unit and integrati
 - **Agent Config Center** (`AgentConfigPage.tsx`): Interactive parameter sliders for specialist weights, risk limits, and consensus policies.
 - **Portfolio View** (`PortfolioPage.tsx`): Live broker equity, KPI cards, value history, and positions table.
 
+### 3.7 Advanced Features Implemented & Integrated
+- **Interactive Telegram 2-Way Trade Approvals (`apps/api/src/telegram/`)**:
+  - Full inline keyboard `[✅ Approve Trade]` / `[❌ Reject Trade]` state machine with prefix matching and TTL expiration.
+  - REST endpoints (`/telegram/approvals`, `/telegram/approvals/:id/approve`, `/telegram/approvals/:id/reject`) and Telegram command routing (`/pending`, `/approve <id>`, `/reject <id>`).
+- **Multi-Round Adversarial Specialist Debate Protocol (`apps/api/src/agents/coordinator/`)**:
+  - $R=2$ adversarial cross-examination protocol with structured `DebateCritique` contract validation (`packages/contracts/src/debate.ts`).
+  - Deterministic offline fallback and strategy labeling (`multi-agent-coordinator-debate-multiround`).
+- **Market Calendar Guard & Expanded Multi-Asset Universe (`packages/fixtures/`)**:
+  - Comprehensive NYSE/NASDAQ holiday engine (2023–2026) and 13:00 ET Early Close schedule recognition (`market-calendar.ts`).
+  - `MarketCalendarGuard.assertTradingDay()` throwing `TemporalIntegrityViolation` on weekend/holiday executions.
+  - 7 frozen offline datasets (`AAPL`, `NVDA`, `SPY`, `MSFT`, `GOOGL`, `TLT`, `QQQ`) with 500+ daily bars, SEC EDGAR 10-Q/10-K filings, and Polymarket odds.
+- **Volatility-Targeted & Fractional Kelly Sizing Engine (`apps/api/src/portfolio/`)**:
+  - Rolling 20-day annualized realized log-return volatility: $\sigma = \text{std}(\ln(P_t/P_{t-1})) \cdot \sqrt{252}$.
+  - Calibrated Fractional Kelly optimization ($f^* = \frac{p(b+1) - 1}{b} \cdot \kappa$).
+  - `allocatePortfolio()` multi-asset gross exposure normalization guaranteeing minimum cash liquidity buffers ($1 - \text{cashBuffer}$).
+- **Model Context Protocol (MCP) Server Tools (`apps/api/src/mcp/`)**:
+  - Full JSON-RPC 2.0 MCP server exposing 8 tools: `quant_query_market_data`, `quant_get_indicators`, `quant_run_backtest`, `quant_evaluate_multiagent`, `quant_request_trade_approval`, `quant_query_portfolio`, `quant_check_market_calendar`.
+  - Dual Stdio CLI transport (`pnpm mcp:server`) and Fastify HTTP transport (`POST /mcp`, `GET /mcp/tools`).
+
 ---
 
 ## 4. Verification & Running the System

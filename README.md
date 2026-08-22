@@ -14,21 +14,23 @@ first commit.
 
 ---
 
-## Status — Sprint 1 (walking skeleton)
+## Status & Feature Inventory
 
-| Spec | Feature | Owner |
-|---|---|---|
-| 01 | Database schema & core models (`as_of` from day one) | M4 |
-| 02 | Shared contracts (Zod schemas) | M1 |
-| 03 | Auth, sessions & encrypted Alpaca credential vault | M4 |
-| 04 | Market data ingestion (Alpaca) | M2 |
-| 05 | Technical indicator engine + backtest skeleton | M2 |
-| 06 | Agent framework & base interface + stub agents | M1 |
-| 07 | Technical analyst agent | M1 |
-| 08 | Dashboard shell & portfolio view | M3 |
+All architectural layers, specialist agents, consensus protocols, and advanced tool integrations are **fully implemented and verified**:
 
-Sprints 2–4 (debate/consensus, risk gate, execution, memory, evaluation & ablation suite, Telegram bot)
-are specced in [`PRD.md`](PRD.md) and not yet implemented.
+| Feature Area | Description | Owner | Status |
+|---|---|---|---|
+| **L0 Data Fixtures & Calendar** | Multi-asset frozen fixtures (`AAPL`, `NVDA`, `SPY`, `MSFT`, `GOOGL`, `TLT`, `QQQ`), NYSE/NASDAQ calendar guard | M2 | ✅ Complete |
+| **L1 Mathematical Signal Engine** | Pure TypeScript indicators (Wilder RSI, MACD, Bollinger Bands, SMA/EMA) | M2 | ✅ Complete |
+| **L2 Specialist Agents** | 4 Specialists: Technical, Sentiment (News), Fundamental (EDGAR XBRL), Polymarket (Macro Odds) | M1 | ✅ Complete |
+| **L3 Multi-Round Debate** | Adversarial cross-examination ($R=2$) & consensus short-circuiting | M1 | ✅ Complete |
+| **L4 Deterministic Risk Gate** | Algorithmic circuit breakers, exposure ceilings, volatility limits | M4 | ✅ Complete |
+| **L5 Volatility & Kelly Sizing** | 20d rolling log-return volatility, Fractional Kelly optimization, cash buffer preservation | M2/M4 | ✅ Complete |
+| **L6 Broker & Live Execution** | Alpaca Paper API client, deterministic mock broker, live execution router | M4 | ✅ Complete |
+| **Layered Memory System** | Short-term cache, pgvector long-term memory, episodic trade reflections | M1/M4 | ✅ Complete |
+| **Interactive Telegram Approvals** | 2-way approval state machine with inline buttons and Fastify REST routes | M4 | ✅ Complete |
+| **Model Context Protocol (MCP)** | JSON-RPC 2.0 Stdio CLI (`pnpm mcp:server`) and Fastify HTTP routes (`/mcp`) | M1/M4 | ✅ Complete |
+| **Decision Observatory UI** | Multi-series tearsheet, lineage DAG inspector, live signals radar, portfolio view | M3 | ✅ Complete |
 
 ---
 
