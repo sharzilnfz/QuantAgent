@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "ingest:prices": "tsx src/ingest/cli.ts",
-    "demo:replay": "tsx src/cli/replay.ts"
+    "demo:replay": "tsx src/cli/replay.ts",
+    "mcp:server": "tsx src/mcp/cli.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
