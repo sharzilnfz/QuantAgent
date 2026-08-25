@@ -19,7 +19,7 @@
  */
 import { Timeframe } from "@committee/contracts";
 
-import { ingestPrices } from "./prices.js";
+import { MarketDataIngestor } from "./market-data-ingestor.js";
 import { InMemoryPriceBarStore } from "./store.js";
 
 interface Args {
@@ -87,7 +87,7 @@ export async function main(argv: readonly string[] = process.argv.slice(2)): Pro
   }
 
   const store = args.dryRun ? new InMemoryPriceBarStore() : undefined;
-  const result = await ingestPrices(
+  const result = await MarketDataIngestor.ingest(
     {
       symbols: args.symbols,
       from: args.from,

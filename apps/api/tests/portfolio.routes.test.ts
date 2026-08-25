@@ -20,11 +20,11 @@ describe("GET /portfolio returns a contract-valid PortfolioState", () => {
     expect(PortfolioState.safeParse(state).success).toBe(true);
   });
 
-  it("is an explicit empty Sprint-1 snapshot, not fabricated numbers", async () => {
+  it("returns initial zero positions and deterministic mock paper balance", async () => {
     const state = await getPortfolioState("00000000-0000-4000-8000-000000000000");
     expect(state.positions).toEqual([]);
-    expect(state.cash).toBe(0);
-    expect(state.equity).toBe(0);
+    expect(state.cash).toBe(100_000);
+    expect(state.equity).toBe(100_000);
   });
 
   it("stamps asOf as an ISO-8601 instant", async () => {

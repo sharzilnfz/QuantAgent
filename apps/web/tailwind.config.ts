@@ -27,7 +27,15 @@ export default {
         grid: "var(--grid)",
         axis: "var(--axis)",
         hairline: "var(--hairline)",
-        series: "var(--series-1)",
+        series: {
+          DEFAULT: "var(--series-1)",
+          bench: "var(--series-bench)",
+          baseline: "var(--series-baseline)",
+          debateOn: "var(--series-debate-on)",
+          debateOff: "var(--series-debate-off)",
+          specialist: "var(--series-specialist)",
+        },
+        drawdown: "var(--drawdown-fill)",
         meter: {
           fill: "var(--meter-fill)",
           track: "var(--meter-track)",

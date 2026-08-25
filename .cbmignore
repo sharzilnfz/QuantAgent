@@ -1,0 +1,13 @@
+# codebase-memory-mcp ignore file
+# Ignore directories that do not contain source code for the application logic
+
+.agents/
+.claude/
+.codex/
+.gemini/
+.impeccable/
+docs/
+specs/
+
+# Ignore markdown documentation files in root
+/*.md

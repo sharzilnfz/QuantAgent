@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 
 import { installSensitiveErrorHandler } from "../auth/redaction.js";
 import { requireAuth } from "../auth/require-auth.js";
+import { config } from "../config.js";
 import { StoreCredentialsBody } from "./schemas.js";
 import { getCredentialStatus, storeCredentials } from "./service.js";
 
@@ -21,6 +22,16 @@ export async function credentialsPlugin(app: FastifyInstance): Promise<void> {
 
   app.post("/credentials", { preHandler: requireAuth }, async (request, reply) => {
     if (!request.user) return reply.code(401).send({ error: "unauthorized" });
+
+    // An unconfigured vault is a deploy state, not a crypto failure: say so
+    // plainly instead of letting it surface as an opaque 500 from the redactor.
+    if (!config.CREDENTIAL_ENC_KEY) {
+      return reply.code(503).send({
+        error: "vault_not_configured",
+        message:
+          "CREDENTIAL_ENC_KEY is not set on the server — credential storage is disabled.",
+      });
+    }
 
     const parsed = StoreCredentialsBody.safeParse(request.body);
     if (!parsed.success) {

@@ -317,11 +317,9 @@ describe("TechnicalAgent — runner integration", () => {
       {
         logger: silentLogger,
         persistence: {
-          async createRun() {},
-          async saveOutput(_runId, output) {
-            saved.push(output);
+          async recordRun(run) {
+            saved.push(...run.outputs);
           },
-          async finishRun() {},
         },
       },
     );

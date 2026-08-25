@@ -6,7 +6,7 @@
  */
 
 export type Direction = "bullish" | "bearish" | "neutral";
-export type AgentName = "technical" | "sentiment" | "fundamental";
+export type AgentName = "technical" | "sentiment" | "fundamental" | "polymarket";
 
 /** Mirrors the contracts `AgentOutput` Zod schema. */
 export type AgentOutputPayload = {

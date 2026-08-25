@@ -14,21 +14,23 @@ first commit.
 
 ---
 
-## Status — Sprint 1 (walking skeleton)
+## Status & Feature Inventory
 
-| Spec | Feature | Owner |
-|---|---|---|
-| 01 | Database schema & core models (`as_of` from day one) | M4 |
-| 02 | Shared contracts (Zod schemas) | M1 |
-| 03 | Auth, sessions & encrypted Alpaca credential vault | M4 |
-| 04 | Market data ingestion (Alpaca) | M2 |
-| 05 | Technical indicator engine + backtest skeleton | M2 |
-| 06 | Agent framework & base interface + stub agents | M1 |
-| 07 | Technical analyst agent | M1 |
-| 08 | Dashboard shell & portfolio view | M3 |
+All architectural layers, specialist agents, consensus protocols, and advanced tool integrations are **fully implemented and verified**:
 
-Sprints 2–4 (debate/consensus, risk gate, execution, memory, evaluation & ablation suite, Telegram bot)
-are specced in [`PRD.md`](PRD.md) and not yet implemented.
+| Feature Area | Description | Owner | Status |
+|---|---|---|---|
+| **L0 Data Fixtures & Calendar** | Multi-asset frozen fixtures (`AAPL`, `NVDA`, `SPY`, `MSFT`, `GOOGL`, `TLT`, `QQQ`), NYSE/NASDAQ calendar guard | M2 | ✅ Complete |
+| **L1 Mathematical Signal Engine** | Pure TypeScript indicators (Wilder RSI, MACD, Bollinger Bands, SMA/EMA) | M2 | ✅ Complete |
+| **L2 Specialist Agents** | 4 Specialists: Technical, Sentiment (News), Fundamental (EDGAR XBRL), Polymarket (Macro Odds) | M1 | ✅ Complete |
+| **L3 Multi-Round Debate** | Adversarial cross-examination ($R=2$) & consensus short-circuiting | M1 | ✅ Complete |
+| **L4 Deterministic Risk Gate** | Algorithmic circuit breakers, exposure ceilings, volatility limits | M4 | ✅ Complete |
+| **L5 Volatility & Kelly Sizing** | 20d rolling log-return volatility, Fractional Kelly optimization, cash buffer preservation | M2/M4 | ✅ Complete |
+| **L6 Broker & Live Execution** | Alpaca Paper API client, deterministic mock broker, live execution router | M4 | ✅ Complete |
+| **Layered Memory System** | Short-term cache, pgvector long-term memory, episodic trade reflections | M1/M4 | ✅ Complete |
+| **Interactive Telegram Approvals** | 2-way approval state machine with inline buttons and Fastify REST routes | M4 | ✅ Complete |
+| **Model Context Protocol (MCP)** | JSON-RPC 2.0 Stdio CLI (`pnpm mcp:server`) and Fastify HTTP routes (`/mcp`) | M1/M4 | ✅ Complete |
+| **Decision Observatory UI** | Multi-series tearsheet, lineage DAG inspector, live signals radar, portfolio view | M3 | ✅ Complete |
 
 ---
 
@@ -109,8 +111,8 @@ pnpm dev:api                      # API on :3000
 pnpm dev:web                      # dashboard on :5173
 
 cd apps/quant                     # quant service on :8000
-python -m venv .venv && .venv/Scripts/python -m pip install -r requirements.txt
-.venv/Scripts/python -m uvicorn app.main:app --reload
+uv sync
+uv run uvicorn app.main:app --reload --port 8000
 ```
 
 Or bring up everything at once: `docker compose up --build`.
@@ -123,7 +125,7 @@ Or bring up everything at once: `docker compose up --build`.
 pnpm test                                          # all TS packages
 pnpm --filter @committee/api test                  # API (agents, auth, ingestion)
 pnpm --filter @committee/web test                  # dashboard
-cd apps/quant && .venv/Scripts/python -m pytest    # indicators + backtest
+cd apps/quant && uv run pytest                     # indicators + backtest (Python)
 pnpm typecheck                                     # whole workspace
 ```
 
@@ -138,12 +140,79 @@ anywhere.
 
 ---
 
+## Manual Testing & Verification
+
+### 1. Service Status & Health Checks
+
+| Service | Port / URL | Health Check / Endpoint | Status |
+| :--- | :--- | :--- | :--- |
+| **Observatory Web UI** | `http://localhost:5173` | `GET /` (React Dashboard) | `200 OK` |
+| **Backend API (Fastify)** | `http://localhost:3000` | `GET http://localhost:3000/health` | `{"status":"ok"}` |
+| **Python Quant Engine** | `http://localhost:8000` | `GET http://localhost:8000/health`<br>`GET http://localhost:8000/docs` (Swagger UI) | `{"status":"ok"}` |
+| **PostgreSQL + pgvector** | `localhost:5432` | `pg_isready -U committee` | Ready |
+
+---
+
+### 2. Demo Credentials
+- **Email**: `demo@committee.local`
+- **Password**: `demo-committee`
+- **Pre-seeded Watchlist**: `AAPL`, `MSFT`, `SPY`
+
+---
+
+### 3. Individual Dev Starters (if running locally without full Docker)
+
+```bash
+# Terminal 1 — Database
+docker compose up -d postgres && pnpm db:migrate && pnpm db:seed
+
+# Terminal 2 — Backend API (:3000)
+pnpm dev:api
+
+# Terminal 3 — Python Quant Service (:8000)
+cd apps/quant && uv run uvicorn app.main:app --port 8000 --reload
+
+# Terminal 4 — Observatory Web UI (:5173)
+pnpm dev:web
+```
+
+*Or launch the entire containerized stack in one command:*
+```bash
+docker compose up --build -d
+```
+
+---
+
+### 4. Manual Test Workflows
+
+1. **Web Dashboard & Watchlist**:
+   - Navigate to `http://localhost:5173` and log in with demo credentials (`demo@committee.local` / `demo-committee`).
+   - Verify portfolio summary and pre-seeded watchlist items (`AAPL`, `MSFT`, `SPY`).
+2. **Observatory & Tearsheets**:
+   - Switch to the **Observatory** tab.
+   - Inspect comparison tearsheets, multi-series equity curves, drawdown profile, and benchmark deltas (SMA/RSI vs Buy & Hold).
+3. **Decision Lineage DAG Inspector**:
+   - In the tearsheet view, click **"Audit Lineage"** on any evaluated run.
+   - Inspect the interactive specialist agents' debate synthesis DAG, timestamps, and confidence telemetry.
+4. **Live Variance Sweeps ($N=3$)**:
+   - Toggle the **Variance Sweep** harness on the Observatory header to inspect empirical variance bands across non-deterministic LLM evaluation runs.
+5. **Offline Multi-Agent Replay (CLI)**:
+   - Run deterministic evaluation replay across frozen fixtures ($0.00 API cost):
+     ```bash
+     pnpm demo:replay
+     # Or inside Docker:
+     docker compose exec api pnpm demo:replay
+     ```
+
+---
+
 ## Documentation
 
-- [`PRD.md`](PRD.md) — problem, solution, user stories, sprint breakdown
-- [`specs/00-overview.md`](specs/00-overview.md) — architecture, conventions, spec index
-- [`QuantAgent_Capstone_Guide.md`](QuantAgent_Capstone_Guide.md) — strategy, field fundamentals, evaluation methodology
-- [`Git_Workflow_Branches_Worktrees.md`](Git_Workflow_Branches_Worktrees.md) — branching, worktrees, commit conventions
+- [`docs/prd/PRD.md`](docs/prd/PRD.md) — Problem, solution, user stories, sprint breakdown
+- [`docs/prd/PRD_EVALUATION_LAB.md`](docs/prd/PRD_EVALUATION_LAB.md) — Evaluation lab PRD, master specification, and ablation harness
+- [`specs/00-overview.md`](specs/00-overview.md) — Architecture, conventions, spec index
+- [`docs/guides/QuantAgent_Capstone_Guide.md`](docs/guides/QuantAgent_Capstone_Guide.md) — Strategy, field fundamentals, evaluation methodology
+- [`Git_Workflow_Branches_Worktrees.md`](Git_Workflow_Branches_Worktrees.md) — Branching, worktrees, commit conventions
 
-> **Naming note:** if this project is published, avoid the name "QuantAgent" — it collides with an
-> existing arXiv paper title.
+> **Naming note:** If this project is published, avoid the name "QuantAgent" — it collides with an existing arXiv paper title.
+

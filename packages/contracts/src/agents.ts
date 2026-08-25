@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { AgentName, Direction, Timeframe } from "./enums";
-import { PriceBar, IndicatorSnapshot } from "./signals";
+import { PriceBar, IndicatorSnapshot, NewsItem } from "./signals";
+import { PredictionMarketEvent } from "./polymarket";
+import { FundamentalReport } from "./fundamentals";
+import { MemoryContext } from "./memory";
 
 /**
  * L2 agent I/O contracts. Raw model text is UNTRUSTED until it parses against `AgentOutput`.
@@ -14,7 +17,7 @@ import { PriceBar, IndicatorSnapshot } from "./signals";
  * Semantic version of the agent I/O contracts. Bump on any breaking change to
  * `AgentInput` / `AgentOutput`. Consumers may assert compatibility against this.
  */
-export const CONTRACTS_VERSION = "1.0.0";
+export const CONTRACTS_VERSION = "1.6.0";
 
 /**
  * What the orchestrator hands an agent. Bounded to what is knowable at `decisionTs`:
@@ -27,7 +30,10 @@ export const AgentInput = z.object({
   decisionTs: z.string().datetime(),
   bars: z.array(PriceBar), // as_of <= decisionTs, enforced upstream
   indicators: IndicatorSnapshot.nullable(),
-  memory: z.unknown().optional(), // filled in Sprint 3
+  news: z.array(NewsItem).optional(), // as_of <= decisionTs, optional point-in-time news
+  predictionMarkets: z.array(PredictionMarketEvent).optional(), // as_of <= decisionTs, optional prediction market events
+  fundamentals: z.array(FundamentalReport).optional(), // as_of <= decisionTs, optional point-in-time financial statements
+  memory: MemoryContext.optional(), // Layered point-in-time memory context (Sprint 3)
 });
 export type AgentInput = z.infer<typeof AgentInput>;
 
@@ -57,3 +63,17 @@ export type AgentOutput = z.infer<typeof AgentOutput>;
  * output and by the quant service to validate the same payload.
  */
 export const AgentOutputJsonSchema = zodToJsonSchema(AgentOutput, "AgentOutput");
+
+/**
+ * `GET /agents/latest` response: the run envelope plus its validated outputs.
+ * An absent run is signalled by a 404 (`no_runs_for_symbol`), not an empty envelope.
+ */
+export const AgentRunEnvelope = z.object({
+  runId: z.string().uuid(),
+  symbol: z.string(),
+  timeframe: Timeframe,
+  decisionTs: z.string().datetime(),
+  status: z.string(),
+  outputs: z.array(AgentOutput),
+});
+export type AgentRunEnvelope = z.infer<typeof AgentRunEnvelope>;

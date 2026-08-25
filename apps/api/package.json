@@ -8,12 +8,15 @@
     "start": "pnpm --filter @committee/db migrate && pnpm --filter @committee/db seed && tsx src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "ingest:prices": "tsx src/ingest/cli.ts"
+    "ingest:prices": "tsx src/ingest/cli.ts",
+    "demo:replay": "tsx src/cli/replay.ts",
+    "mcp:server": "tsx src/mcp/cli.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
     "@committee/contracts": "workspace:*",
     "@committee/db": "workspace:*",
+    "@committee/fixtures": "workspace:*",
     "@fastify/cookie": "^11.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",
@@ -23,6 +26,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@committee/fixtures": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.7",
     "tsx": "^4.19.2",

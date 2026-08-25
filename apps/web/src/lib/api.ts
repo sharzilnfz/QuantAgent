@@ -18,7 +18,18 @@
  * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
  * spec-03 session cookie rides along.
  */
-import { AgentOutput, PortfolioState } from "@committee/contracts";
+import {
+  AgentRunEnvelope,
+  CommitteeSystemConfig,
+  DaemonConfig,
+  DaemonCycleResult,
+  DaemonStatus,
+  ExperimentSuiteResult,
+  LiveSignalRadarResponse,
+  MultiAssetSuiteResult,
+  PortfolioState,
+  VarianceSweepResult,
+} from "@committee/contracts";
 
 const API_BASE = "/api";
 
@@ -224,17 +235,149 @@ export const api = {
     return parseContract(PortfolioPointSchema.array(), payload, "/portfolio/history");
   },
 
-  /** `GET /agents/latest?symbol=AAPL -> AgentOutput | null`. */
-  async latestAgentOutput(symbol: string, signal?: AbortSignal): Promise<AgentOutput | null> {
+  /**
+   * `GET /agents/latest?symbol=AAPL -> AgentRunEnvelope` (404 when no run exists).
+   * Resolves to the first output of the latest run, or `null` when the symbol has
+   * no runs yet — the card's intentional empty state.
+   */
+  async latestAgentOutput(
+    symbol: string,
+    signal?: AbortSignal,
+  ): Promise<AgentRunEnvelope["outputs"][number] | null> {
     const path = `/agents/latest?symbol=${encodeURIComponent(symbol)}`;
-    const payload = await request(path, { signal });
-    if (payload === null || payload === undefined) return null;
-    return parseContract(AgentOutput, payload, path);
+    let payload: unknown;
+    try {
+      payload = await request(path, { signal });
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 404) return null;
+      throw error;
+    }
+    const envelope = parseContract(AgentRunEnvelope, payload, path);
+    return envelope.outputs[0] ?? null;
   },
 
   /** `GET /watchlist -> { symbol }[]` (seeded; management UI is Sprint 2). */
   async watchlist(signal?: AbortSignal): Promise<WatchlistEntry[]> {
     return parseWatchlist(await request("/watchlist", { signal }), "/watchlist");
+  },
+
+  /** `GET /experiments/suite?symbol=AAPL -> ExperimentSuiteResult`. */
+  async experimentsSuite(symbol = "AAPL", signal?: AbortSignal): Promise<ExperimentSuiteResult> {
+    const path = `/experiments/suite?symbol=${encodeURIComponent(symbol)}`;
+    const payload = await request(path, { signal });
+    return parseContract(ExperimentSuiteResult, payload, path);
+  },
+
+  /** `GET /experiments/multi-asset/suite?universe=AAPL,NVDA,SPY -> MultiAssetSuiteResult`. */
+  async multiAssetExperimentsSuite(
+    universe = ["AAPL", "NVDA", "SPY"],
+    signal?: AbortSignal,
+  ): Promise<MultiAssetSuiteResult> {
+    const path = `/experiments/multi-asset/suite?universe=${encodeURIComponent(universe.join(","))}`;
+    const payload = await request(path, { signal });
+    return parseContract(MultiAssetSuiteResult, payload, path);
+  },
+
+  /** `GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3 -> VarianceSweepResult`. */
+  async varianceSweep(
+    symbol = "AAPL",
+    windowSize = 25,
+    runs = 3,
+    budget = 5.0,
+    signal?: AbortSignal,
+  ): Promise<VarianceSweepResult> {
+    const path = `/experiments/variance-sweep?symbol=${encodeURIComponent(symbol)}&windowSize=${windowSize}&runs=${runs}&budget=${budget}`;
+    const payload = await request(path, { signal });
+    return parseContract(VarianceSweepResult, payload, path);
+  },
+
+  /** `GET /agents/config -> CommitteeSystemConfig`. */
+  async getAgentConfig(signal?: AbortSignal): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config";
+    const payload = await request(path, { signal });
+    return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `PUT /agents/config -> CommitteeSystemConfig`. */
+  async updateAgentConfig(config: Partial<CommitteeSystemConfig>): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config";
+    const payload = await request(path, {
+      method: "PUT",
+      body: config,
+    });
+    return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `POST /agents/config/reset -> CommitteeSystemConfig`. */
+  async resetAgentConfig(): Promise<CommitteeSystemConfig> {
+    const path = "/agents/config/reset";
+    const payload = await request(path, {
+      method: "POST",
+    });
+    return parseContract(CommitteeSystemConfig, payload, path);
+  },
+
+  /** `GET /signals/radar?symbols=AAPL,NVDA,SPY -> LiveSignalRadarResponse`. */
+  async getSignalsRadar(
+    symbols?: string[],
+    signal?: AbortSignal,
+  ): Promise<LiveSignalRadarResponse> {
+    const query = symbols ? `?symbols=${encodeURIComponent(symbols.join(","))}` : "";
+    const path = `/signals/radar${query}`;
+    const payload = await request(path, { signal });
+    return parseContract(LiveSignalRadarResponse, payload, path);
+  },
+
+  /** `POST /signals/evaluate -> evaluation result payload`. */
+  async evaluateSignal(body: {
+    symbol: string;
+    decisionTs?: string;
+    debateEnabled?: boolean;
+  }): Promise<Record<string, unknown>> {
+    const path = "/signals/evaluate";
+    const payload = await request(path, {
+      method: "POST",
+      body,
+    });
+    return payload as Record<string, unknown>;
+  },
+
+  /** `GET /daemon/status -> DaemonStatus`. */
+  async getDaemonStatus(signal?: AbortSignal): Promise<DaemonStatus> {
+    const path = "/daemon/status";
+    const payload = await request(path, { signal });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/start -> DaemonStatus`. */
+  async startDaemon(): Promise<DaemonStatus> {
+    const path = "/daemon/start";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/stop -> DaemonStatus`. */
+  async stopDaemon(): Promise<DaemonStatus> {
+    const path = "/daemon/stop";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonStatus, payload, path);
+  },
+
+  /** `POST /daemon/run-cycle -> DaemonCycleResult`. */
+  async runDaemonCycle(): Promise<DaemonCycleResult> {
+    const path = "/daemon/run-cycle";
+    const payload = await request(path, { method: "POST" });
+    return parseContract(DaemonCycleResult, payload, path);
+  },
+
+  /** `POST /daemon/config -> DaemonConfig`. */
+  async updateDaemonConfig(config: Partial<DaemonConfig>): Promise<DaemonConfig> {
+    const path = "/daemon/config";
+    const payload = await request(path, {
+      method: "POST",
+      body: config,
+    });
+    return parseContract(DaemonConfig, payload, path);
   },
 };
 

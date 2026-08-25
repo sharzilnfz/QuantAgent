@@ -16,7 +16,9 @@ services:
       retries: 10
 
   quant:
-    build: ./apps/quant
+    build:
+      context: ./apps/quant
+      network: host
     environment:
       DATABASE_URL: postgres://committee:committee@postgres:5432/committee
     ports:
@@ -29,6 +31,7 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+      network: host
     env_file: .env
     environment:
       DATABASE_URL: postgres://committee:committee@postgres:5432/committee
@@ -40,6 +43,7 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
+      start_period: 15s
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,6 +54,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      network: host
     env_file: .env
     environment:
       VITE_API_URL: http://api:3000

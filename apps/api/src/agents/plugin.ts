@@ -1,10 +1,12 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
+import { AgentRunEnvelope } from "@committee/contracts";
 import { requireAuth } from "../auth/require-auth.js";
 import { config } from "../config.js";
 import { runAgents } from "./runner.js";
 import { TechnicalAgent } from "./technical/agent.js";
+import { isLlmConfigured } from "./technical/llm-client.js";
 
 /**
  * OWNER: M1 (specs 06/07) — Agent framework HTTP surface.
@@ -59,14 +61,17 @@ export async function agentsPlugin(app: FastifyInstance): Promise<void> {
         .from(agentOutputs)
         .where(eq(agentOutputs.runId, run.id));
 
-      return reply.send({
-        runId: run.id,
-        symbol: run.symbol,
-        timeframe: run.timeframe,
-        decisionTs: run.decisionTs.toISOString(),
-        status: run.status,
-        outputs: outputs.map((row) => row.raw),
-      });
+      // Validate at the boundary so a drifted row shape fails here, not in the browser.
+      return reply.send(
+        AgentRunEnvelope.parse({
+          runId: run.id,
+          symbol: run.symbol,
+          timeframe: run.timeframe,
+          decisionTs: run.decisionTs.toISOString(),
+          status: run.status,
+          outputs: outputs.map((row) => row.raw),
+        }),
+      );
     } catch (err) {
       request.log.error({ err }, "agents.latest failed");
       return reply.code(503).send({ error: "agent_store_unavailable" });
@@ -79,7 +84,7 @@ export async function agentsPlugin(app: FastifyInstance): Promise<void> {
       return reply.code(400).send({ error: "invalid_body", issues: body.error.issues });
     }
 
-    if (!config.ANTHROPIC_API_KEY) {
+    if (!isLlmConfigured()) {
       return reply.code(503).send({ error: "llm_not_configured" });
     }
 

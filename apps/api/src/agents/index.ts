@@ -30,9 +30,7 @@ export {
 export {
   createDbPersistence,
   resolveDefaultPersistence,
-  runRecordFromInput,
-  type AgentRunPersistence,
-  type AgentRunRecord,
+  type AgentRunStore,
   type AgentRunStatus,
 } from "./persistence.js";
 
@@ -43,5 +41,46 @@ export {
 } from "./stubs/index.js";
 
 export * from "./technical/index.js";
+export {
+  SentimentAgent,
+  SentimentTelemetry,
+  InMemoryNewsProvider,
+  FixtureNewsProvider,
+  resolveDefaultNewsProvider,
+  classifySentimentHeadlines,
+  classifyHeadlines,
+  SENTIMENT_SYSTEM_PROMPT,
+  buildSentimentUserPrompt,
+  sentimentOutputToolSchema,
+  normalizeSentimentModelOutput,
+  type SentimentAgentOptions,
+  type SentimentTelemetrySnapshot,
+  type NewsProvider,
+  type NewsQuery,
+  type SentimentClassification,
+  type SentimentPromptContext,
+} from "./sentiment/index.js";
+
+export * from "./coordinator/index.js";
+export {
+  FundamentalAgent,
+  classifyFundamentals,
+  FUNDAMENTAL_SYSTEM_PROMPT,
+  buildFundamentalUserPrompt,
+  fundamentalOutputToolSchema,
+  type FundamentalAgentOptions,
+  type FundamentalClassification,
+  type FundamentalPromptContext,
+} from "./fundamental/index.js";
+export {
+  PolymarketAgent,
+  classifyMacroOdds,
+  POLYMARKET_SYSTEM_PROMPT,
+  buildPolymarketUserPrompt,
+  polymarketOutputToolSchema,
+  normalizePolymarketModelOutput,
+  type PolymarketAgentOptions,
+  type MacroOddsClassification,
+} from "./polymarket/index.js";
 
 export { agentsPlugin } from "./plugin.js";

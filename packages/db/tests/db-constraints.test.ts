@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { eq, sql as raw } from "drizzle-orm";
+import { eq, and, lte } from "drizzle-orm";
 import postgres from "postgres";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
@@ -180,7 +180,12 @@ describeDb("migration round-trip on a live Postgres", () => {
       .select()
       .from(priceBars)
       .where(
-        raw`${priceBars.symbol} = 'PITWINDOW' and ${priceBars.asOf} <= ${decisionTs}`,
+        and(
+          eq(priceBars.symbol, "PITWINDOW"),
+          // Typed operator, not a raw template: interpolating a JS Date through
+          // `sql` sends it as a string parameter and postgres rejects it.
+          lte(priceBars.asOf, decisionTs),
+        ),
       );
 
     expect(visible).toHaveLength(1);

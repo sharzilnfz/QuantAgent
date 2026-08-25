@@ -16,11 +16,13 @@
     "seed": "tsx src/seed.ts"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.38.3",
     "postgres": "^3.4.5"
   },
   "devDependencies": {
     "@committee/contracts": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.7",
     "drizzle-kit": "^0.30.2",
     "tsx": "^4.19.2",

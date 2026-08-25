@@ -8,7 +8,7 @@ import {
 import { config } from "../../config.js";
 import { BaseAgent, NO_OPINION, type BaseAgentOptions } from "../base.js";
 import { classify, hasNoUsableFacts, type IndicatorFacts } from "./classify.js";
-import { createLlmClient, type LlmClient } from "./llm-client.js";
+import { createLlmClient, isLlmConfigured, type LlmClient } from "./llm-client.js";
 import {
   AGENT_OUTPUT_TOOL_NAME,
   TECHNICAL_SYSTEM_PROMPT,
@@ -29,6 +29,8 @@ import {
  *                       Missing snapshot -> NO_OPINION. Never a fabricated bias.
  *   2. FACTS            `classify()` computes the mechanical read in TypeScript.
  *   3. NARRATION        ONE cheap-tier LLM call weighs and explains those facts.
+ *                       (`deterministicOffline` skips this step: the mechanical
+ *                       read IS the output, at $0.00 — replay/ablation mode.)
  *   4. VALIDATION       the reply is untrusted until `AgentOutput.parse` passes;
  *                       parse failure -> one retry -> NO_OPINION. Never a crash.
  *   5. FACTS WIN        `evidence` is rebuilt from the COMPUTED values, spread last,
@@ -45,25 +47,36 @@ export interface TechnicalAgentOptions extends BaseAgentOptions {
   /** Cheap tier. Defaults to `config.LLM_CHEAP_MODEL` (`claude-haiku-4-5`). */
   model?: string;
   maxTokens?: number;
+  /** Skip the LLM entirely: the mechanical `classify()` read is the output. */
+  deterministicOffline?: boolean;
 }
 
 export class TechnicalAgent extends BaseAgent {
   readonly name: AgentName = "technical";
 
-  private readonly llm: LlmClient;
+  private readonly llm: LlmClient | undefined;
   private readonly snapshots: SnapshotProvider | null;
   private readonly model: string;
   private readonly maxTokens: number;
+  private readonly deterministicOffline: boolean;
 
   constructor(options: TechnicalAgentOptions = {}) {
     super(options);
-    this.llm = options.llm ?? createLlmClient();
+    this.deterministicOffline = options.deterministicOffline ?? false;
     this.snapshots =
       options.snapshots === undefined
         ? resolveDefaultSnapshotProvider()
         : options.snapshots;
     this.model = options.model ?? config.LLM_CHEAP_MODEL;
     this.maxTokens = options.maxTokens ?? 1024;
+
+    if (options.llm) {
+      this.llm = options.llm;
+    } else if (!this.deterministicOffline && isLlmConfigured()) {
+      this.llm = createLlmClient();
+    } else {
+      this.llm = undefined;
+    }
   }
 
   protected async run(input: AgentInput): Promise<AgentOutput> {
@@ -122,28 +135,59 @@ export class TechnicalAgent extends BaseAgent {
       maxTokens: this.maxTokens,
     };
 
+    // Deterministic offline path ($0.00, replay/ablation): the mechanical read
+    // IS the output. The rendered prompt is still captured for lineage audits.
+    if (this.deterministicOffline || !this.llm) {
+      const offlineOutput: AgentOutput = {
+        agent: this.name,
+        direction: read.direction,
+        confidence: read.strength,
+        rationale: `Deterministic technical read: ${read.direction} with conviction ${(read.strength * 100).toFixed(0)}% from point-in-time indicators (RSI ${facts.rsi !== null ? facts.rsi.toFixed(2) : "n/a"}, SMA20 ${facts.sma20 !== null ? facts.sma20.toFixed(2) : "n/a"}, SMA50 ${facts.sma50 !== null ? facts.sma50.toFixed(2) : "n/a"}).`,
+        evidence: {
+          renderedPrompt: request.user,
+          rawCompletion: JSON.stringify({
+            agent: this.name,
+            direction: read.direction,
+            confidence: read.strength,
+          }),
+          completionMode: "deterministic-offline",
+          completionValidated: true,
+          deterministic: true,
+          snapshotAsOf: snapshot.asOf,
+          snapshotTs: snapshot.ts,
+          decisionTs: input.decisionTs,
+          ...read.evidence,
+        },
+      };
+      return offlineOutput;
+    }
+
     // ONE call, plus at most ONE retry on a malformed/failed reply.
     const narration = await this.narrate(request, input, 0);
     if (!narration) return NO_OPINION(this.name, "error");
 
-    const agree = narration.direction === read.direction;
+    const agree = narration.output.direction === read.direction;
 
     return {
       agent: this.name,
-      direction: narration.direction,
-      confidence: blendConfidence(read.strength, narration.confidence, agree),
-      rationale: narration.rationale,
+      direction: narration.output.direction,
+      confidence: blendConfidence(read.strength, narration.output.confidence, agree),
+      rationale: narration.output.rationale,
       evidence: {
         // Model-authored keys first...
-        ...narration.evidence,
+        ...narration.output.evidence,
         // ...then the COMPUTED facts, which overwrite anything that collides.
         // This single ordering is what enforces facts-vs-narration.
         ...read.evidence,
+        renderedPrompt: request.user,
+        rawCompletion: narration.rawText,
+        completionMode: "llm",
+        completionValidated: true,
         snapshotAsOf: snapshot.asOf,
         snapshotTs: snapshot.ts,
         decisionTs: input.decisionTs,
-        modelDirection: narration.direction,
-        modelConfidence: narration.confidence,
+        modelDirection: narration.output.direction,
+        modelConfidence: narration.output.confidence,
         modelAgreesWithRules: agree,
         model: this.model,
       },
@@ -196,15 +240,16 @@ export class TechnicalAgent extends BaseAgent {
     return best?.close ?? null;
   }
 
-  /** One LLM call; on validation failure retry exactly once, then give up cleanly. */
+  /** One LLM call; on validation failure retry exactly once, then give up cleanly.
+   *  Returns the parsed output plus the raw completion text for lineage capture. */
   private async narrate(
     request: Parameters<LlmClient["completeStructured"]>[0],
     input: AgentInput,
     attempt: number,
-  ): Promise<AgentOutput | null> {
+  ): Promise<{ output: AgentOutput; rawText: string } | null> {
     let raw: unknown;
     try {
-      raw = await this.llm.completeStructured(request);
+      raw = await this.llm!.completeStructured(request);
     } catch (err) {
       this.logger({
         event: "technical.llm_failed",
@@ -217,9 +262,13 @@ export class TechnicalAgent extends BaseAgent {
       return attempt === 0 ? this.narrate(request, input, 1) : null;
     }
 
+    const rawText = JSON.stringify(raw) ?? "";
+
     // UNTRUSTED until it parses.
     const parsed = AgentOutput.safeParse(raw);
-    if (parsed.success && parsed.data.agent === this.name) return parsed.data;
+    if (parsed.success && parsed.data.agent === this.name) {
+      return { output: parsed.data, rawText };
+    }
 
     this.logger({
       event: "technical.llm_invalid",

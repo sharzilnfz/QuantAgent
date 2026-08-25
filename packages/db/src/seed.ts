@@ -1,9 +1,12 @@
+import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { existsSync } from "node:fs";
 import { users, watchlistItems } from "./schema";
+import * as schema from "./schema";
 
 /**
  * Idempotent seed: one demo user + a 3-symbol watchlist (AAPL/MSFT/SPY).
@@ -12,20 +15,26 @@ import { users, watchlistItems } from "./schema";
  */
 
 export const DEMO_EMAIL = "demo@committee.local";
-// Not a real credential — a placeholder hash. Spec 03 owns auth/crypto.
-export const DEMO_PASSWORD_HASH =
-  "$2b$10$seedplaceholderhashseedplaceholderhashse";
+/** Documented demo login (dev convenience; not a credential of any real system). */
+export const DEMO_PASSWORD = "demo-committee";
 export const DEMO_SYMBOLS = ["AAPL", "MSFT", "SPY"] as const;
 
 type SeedDb = ReturnType<typeof drizzle>;
 
 /** Idempotent. Safe to run any number of times against the same database. */
 export async function seed(db: SeedDb): Promise<{ userId: string }> {
-  // Upsert the demo user by unique email.
+  // A real bcrypt hash so the demo user can actually log in (spec 03 comparison).
+  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
+
+  // Upsert the demo user by unique email. The hash is updated on conflict so
+  // re-seeding also repairs databases seeded with the old placeholder hash.
   const inserted = await db
     .insert(users)
-    .values({ email: DEMO_EMAIL, passwordHash: DEMO_PASSWORD_HASH })
-    .onConflictDoNothing({ target: users.email })
+    .values({ email: DEMO_EMAIL, passwordHash })
+    .onConflictDoUpdate({
+      target: users.email,
+      set: { passwordHash },
+    })
     .returning();
 
   const demoUser =
@@ -52,6 +61,13 @@ export async function seed(db: SeedDb): Promise<{ userId: string }> {
 }
 
 async function main(): Promise<void> {
+  if (!process.env.DATABASE_URL) {
+    const rootEnvPath = resolve(fileURLToPath(import.meta.url), "../../../../.env");
+    if (existsSync(rootEnvPath) && typeof process.loadEnvFile === "function") {
+      process.loadEnvFile(rootEnvPath);
+    }
+  }
+
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set — cannot seed.");
@@ -59,7 +75,7 @@ async function main(): Promise<void> {
 
   const sql = postgres(connectionString, { max: 1 });
   try {
-    await seed(drizzle(sql));
+    await seed(drizzle(sql, { schema }));
     console.log(
       `Seed complete: ${DEMO_EMAIL} with watchlist ${DEMO_SYMBOLS.join(", ")}.`,
     );

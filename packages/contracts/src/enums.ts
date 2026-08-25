@@ -9,8 +9,8 @@ import { z } from "zod";
 export const Direction = z.enum(["bullish", "bearish", "neutral"]);
 export type Direction = z.infer<typeof Direction>;
 
-/** The three L2 specialist agents. Agents are interchangeable by name. */
-export const AgentName = z.enum(["technical", "sentiment", "fundamental"]);
+/** The specialist agents. Agents are interchangeable by name. */
+export const AgentName = z.enum(["technical", "sentiment", "fundamental", "polymarket"]);
 export type AgentName = z.infer<typeof AgentName>;
 
 /** Bar aggregation window used across market-data and indicator payloads. */
