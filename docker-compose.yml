@@ -1,6 +1,7 @@
 services:
   postgres:
     image: pgvector/pgvector:pg17
+    restart: unless-stopped
     environment:
       POSTGRES_USER: committee
       POSTGRES_PASSWORD: committee
@@ -10,19 +11,29 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U committee"]
+      test: ["CMD-SHELL", "pg_isready -U committee -d committee"]
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 5s
 
   quant:
     build:
       context: ./apps/quant
+      dockerfile: Dockerfile
       network: host
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgres://committee:committee@postgres:5432/committee
+      PYTHONUNBUFFERED: "1"
     ports:
       - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request, sys; sys.exit(0 if urllib.request.urlopen(\"http://localhost:8000/health\").getcode() == 200 else 1)'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
     depends_on:
       postgres:
         condition: service_healthy
@@ -32,29 +43,33 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       network: host
+    restart: unless-stopped
     env_file: .env
     environment:
       DATABASE_URL: postgres://committee:committee@postgres:5432/committee
       QUANT_SERVICE_URL: http://quant:8000
+      PORT: "3000"
     ports:
       - "3000:3000"
     healthcheck:
-      test: ["CMD-SHELL", "node -e 'fetch(\"http://localhost:3000/auth/me\").then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))'"]
-      interval: 3s
-      timeout: 3s
+      test: ["CMD-SHELL", "node -e 'fetch(\"http://localhost:3000/health\").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))'"]
+      interval: 5s
+      timeout: 5s
       retries: 10
       start_period: 15s
     depends_on:
       postgres:
         condition: service_healthy
       quant:
-        condition: service_started
+        condition: service_healthy
 
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      target: dev
       network: host
+    restart: unless-stopped
     env_file: .env
     environment:
       VITE_API_URL: http://api:3000
