@@ -35,6 +35,8 @@ export class AlpacaWebSocketClient extends EventEmitter implements IStreamClient
     this.apiSecret = options.apiSecret ?? "";
     this.feedUrl = options.feedUrl ?? "wss://stream.data.alpaca.markets/v2/iex";
     this.activeSymbols = new Set(options.symbols ?? ["AAPL", "NVDA", "SPY"]);
+    // Avoid unhandled error throw on client instance
+    this.on("error", () => {});
   }
 
   isConnected(): boolean {

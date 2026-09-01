@@ -1,0 +1,24 @@
+{
+  "step": "04-Portfolio-State",
+  "method": "GET",
+  "url": "/portfolio",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 816.1,
+  "timestamp": "2026-09-01T16:38:22.413Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "committee_session=e94ea800-8bae-42c9-b1d8-6d545b5c6a58; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax",
+    "content-length": "80",
+    "date": "Tue, 01 Sep 2026 16:38:22 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "cash": 100000,
+    "equity": 100000,
+    "positions": [],
+    "asOf": "2026-09-01T16:38:22.409Z"
+  }
+}

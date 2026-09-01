@@ -15,7 +15,7 @@ export class MarketStreamEngine extends EventEmitter {
 
     if (customClient) {
       this.client = customClient;
-    } else if (config.ALPACA_KEY && config.ALPACA_SECRET) {
+    } else if (process.env.NODE_ENV !== "test" && !process.env.VITEST && config.ALPACA_KEY && config.ALPACA_SECRET) {
       this.client = new AlpacaWebSocketClient({
         apiKey: config.ALPACA_KEY,
         apiSecret: config.ALPACA_SECRET,
@@ -29,6 +29,8 @@ export class MarketStreamEngine extends EventEmitter {
 
     this.initializeHistories(["AAPL", "NVDA", "SPY"]);
     this.bindEvents();
+    // Default error listener to avoid uncaught exception on emitter
+    this.on("error", () => {});
   }
 
   private initializeHistories(symbols: string[]) {

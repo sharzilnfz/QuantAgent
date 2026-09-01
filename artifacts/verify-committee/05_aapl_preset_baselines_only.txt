@@ -1,0 +1,252 @@
+### Page
+- Page URL: http://localhost:5173/lineage?symbol=AAPL&strategy=multi-agent-debate-on
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f23e3]:
+  - complementary [ref=f23e4]:
+    - generic [ref=f23e5]: The Committee
+    - navigation "Primary" [ref=f23e9]:
+      - list [ref=f23e10]:
+        - listitem [ref=f23e11]:
+          - link "Portfolio" [ref=f23e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f23e15]:
+          - link "Observatory" [ref=f23e16] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f23e20]:
+          - link "Lineage" [ref=f23e21] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f23e24]:
+          - link "Agent Config" [ref=f23e25] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f23e29]:
+          - link "Signals" [ref=f23e30] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f23e33]:
+    - banner [ref=f23e34]:
+      - generic [ref=f23e35]:
+        - generic [ref=f23e36]:
+          - paragraph [ref=f23e37]: demo@committee.local
+          - paragraph [ref=f23e38]: Paper trading
+        - button "Switch to dark theme" [ref=f23e39] [cursor=pointer]
+        - button "Log out" [ref=f23e42] [cursor=pointer]
+    - main [ref=f23e43]:
+      - generic [ref=f23e44]:
+        - generic [ref=f23e45]:
+          - generic [ref=f23e46]:
+            - generic [ref=f23e47]:
+              - heading "Decision Provenance Inspector" [level=1] [ref=f23e48]
+              - generic [ref=f23e49]: Audit DAG
+            - paragraph [ref=f23e50]: Audited point-in-time inputs, multi-agent debate transcripts, and LLM completions.
+          - generic [ref=f23e51]:
+            - generic [ref=f23e52]:
+              - button "AAPL" [ref=f23e53] [cursor=pointer]
+              - button "NVDA" [ref=f23e54] [cursor=pointer]
+              - button "SPY" [ref=f23e55] [cursor=pointer]
+            - link [ref=f23e56] [cursor=pointer]:
+              - /url: /observatory
+              - button "← Back to Observatory" [ref=f23e57]
+        - generic [ref=f23e58]:
+          - generic [ref=f23e59]:
+            - generic [ref=f23e60]:
+              - generic [ref=f23e61]:
+                - generic [ref=f23e62]: "Strategy:"
+                - generic [ref=f23e63]:
+                  - button "buy-and-hold" [ref=f23e64] [cursor=pointer]
+                  - button "sma-rsi" [ref=f23e65] [cursor=pointer]
+                  - button "multi-agent-debate-on" [ref=f23e66] [cursor=pointer]
+                  - button "multi-agent-debate-off" [ref=f23e67] [cursor=pointer]
+                  - button "multi-agent-polymarket" [ref=f23e68] [cursor=pointer]
+              - generic [ref=f23e69]: "Keyboard: ← / → to step bars"
+            - generic [ref=f23e70]:
+              - generic [ref=f23e71]:
+                - generic [ref=f23e72]: Cost / 100 Decisions
+                - generic [ref=f23e73]: $0.0000
+                - generic [ref=f23e74]: "Total: $0.0000"
+              - generic [ref=f23e75]:
+                - generic [ref=f23e76]: Median Latency
+                - generic [ref=f23e77]: 1 ms
+                - generic [ref=f23e78]: Per inference step
+              - generic [ref=f23e79]:
+                - generic [ref=f23e80]: Fallback / Error Rate
+                - generic [ref=f23e81]: 0.9%
+                - generic [ref=f23e82]: Schema rejections
+              - generic [ref=f23e83]:
+                - generic [ref=f23e84]: Debate Reconciliations
+                - generic [ref=f23e85]: 169 / 502
+                - generic [ref=f23e86]: Disagreements resolved
+          - generic [ref=f23e87]:
+            - generic [ref=f23e88]:
+              - button "← Prev Bar" [ref=f23e89] [cursor=pointer]
+              - generic [ref=f23e90]:
+                - text: Bar
+                - strong [ref=f23e91]: "502"
+                - text: of 502
+              - button "Next Bar →" [disabled] [ref=f23e92]
+            - generic [ref=f23e93]:
+              - generic [ref=f23e94]: T = 2024-12-31T21:00:00.000Z
+              - generic [ref=f23e95]: bullish (53% CONF)
+              - generic [ref=f23e96]: ⚡ Consensus Fast-Pass
+          - generic [ref=f23e97]:
+            - button "1. Multi-Agent Debate & Stances" [ref=f23e98] [cursor=pointer]
+            - button "2. Point-in-Time Inputs (OHLCV, Indicators, News, SEC XBRL)" [ref=f23e99] [cursor=pointer]
+            - button "3. Prompts & LLM Completions" [ref=f23e100] [cursor=pointer]
+            - button "4. Execution Fill" [ref=f23e101] [cursor=pointer]
+          - generic [ref=f23e103]:
+            - generic [ref=f23e104]:
+              - generic [ref=f23e105]:
+                - generic [ref=f23e106]:
+                  - heading "Specialist Signal Evaluations" [level=3] [ref=f23e107]
+                  - paragraph [ref=f23e108]: Concurrent specialist readings at decision timestamp Jan 1
+                - generic [ref=f23e109]: "Active Specialists: 3"
+              - generic [ref=f23e110]:
+                - generic [ref=f23e111]:
+                  - generic [ref=f23e112]:
+                    - generic [ref=f23e113]:
+                      - generic [ref=f23e114]: technical Specialist
+                      - generic [ref=f23e115]: neutral (3%)
+                    - paragraph [ref=f23e116]: "Deterministic technical read: neutral with conviction 3% from point-in-time indicators (RSI 56.68, SMA20 249.81, SMA50 237.60)."
+                  - generic [ref=f23e117]:
+                    - generic [ref=f23e118]:
+                      - generic [ref=f23e119]: "Facts & Evidence:"
+                      - generic [ref=f23e120]: Ground Truth
+                    - generic [ref=f23e121]:
+                      - generic [ref=f23e122]:
+                        - generic [ref=f23e123]: "rule:"
+                        - generic [ref=f23e124]: macd_bear_cross+sma20_above_sma50+close_above_sma20
+                      - generic [ref=f23e125]:
+                        - generic [ref=f23e126]: "rsi Zone:"
+                        - generic [ref=f23e127]: neutral
+                      - generic [ref=f23e128]:
+                        - generic [ref=f23e129]: "mechanical Direction:"
+                        - generic [ref=f23e130]: neutral
+                      - generic [ref=f23e131]:
+                        - generic [ref=f23e132]: "mechanical Strength:"
+                        - generic [ref=f23e133]: "0.03"
+                      - generic [ref=f23e134]:
+                        - generic [ref=f23e135]: "mechanical Score:"
+                        - generic [ref=f23e136]: "0.03"
+                      - generic [ref=f23e137]:
+                        - generic [ref=f23e138]: "indicator Coverage:"
+                        - generic [ref=f23e139]: "1"
+                      - generic [ref=f23e140]:
+                        - generic [ref=f23e141]: "rsi:"
+                        - generic [ref=f23e142]: "56.68"
+                      - generic [ref=f23e143]:
+                        - generic [ref=f23e144]: "macd:"
+                        - generic [ref=f23e145]: "5.09"
+                      - generic [ref=f23e146]:
+                        - generic [ref=f23e147]: "macd Signal:"
+                        - generic [ref=f23e148]: "5.55"
+                      - generic [ref=f23e149]:
+                        - generic [ref=f23e150]: "bb Upper:"
+                        - generic [ref=f23e151]: "259.68"
+                      - generic [ref=f23e152]:
+                        - generic [ref=f23e153]: "bb Lower:"
+                        - generic [ref=f23e154]: "239.94"
+                      - generic [ref=f23e155]:
+                        - generic [ref=f23e156]: "sma20:"
+                        - generic [ref=f23e157]: "249.81"
+                      - generic [ref=f23e158]:
+                        - generic [ref=f23e159]: "sma50:"
+                        - generic [ref=f23e160]: "237.60"
+                      - generic [ref=f23e161]:
+                        - generic [ref=f23e162]: "close:"
+                        - generic [ref=f23e163]: "250.42"
+                      - generic [ref=f23e164]:
+                        - generic [ref=f23e165]: "macd Histogram:"
+                        - generic [ref=f23e166]: "-0.46"
+                - generic [ref=f23e167]:
+                  - generic [ref=f23e168]:
+                    - generic [ref=f23e169]:
+                      - generic [ref=f23e170]: sentiment Specialist
+                      - generic [ref=f23e171]: bullish (18%)
+                    - paragraph [ref=f23e172]: "Deterministic sentiment: 4 bullish, 2 bearish, 5 neutral out of 11 point-in-time headlines."
+                  - generic [ref=f23e173]:
+                    - generic [ref=f23e174]:
+                      - generic [ref=f23e175]: "Facts & Evidence:"
+                      - generic [ref=f23e176]: Ground Truth
+                    - generic [ref=f23e177]:
+                      - generic [ref=f23e178]:
+                        - generic [ref=f23e179]: "headlines Considered:"
+                        - generic [ref=f23e180]: "11"
+                      - generic [ref=f23e181]:
+                        - generic [ref=f23e182]: "net Sentiment Score:"
+                        - generic [ref=f23e183]: "0.18"
+                      - generic [ref=f23e184]:
+                        - generic [ref=f23e185]: "bullish Count:"
+                        - generic [ref=f23e186]: "4"
+                      - generic [ref=f23e187]:
+                        - generic [ref=f23e188]: "bearish Count:"
+                        - generic [ref=f23e189]: "2"
+                      - generic [ref=f23e190]:
+                        - generic [ref=f23e191]: "neutral Count:"
+                        - generic [ref=f23e192]: "5"
+                      - generic [ref=f23e193]:
+                        - generic [ref=f23e194]: "symbol:"
+                        - generic [ref=f23e195]: AAPL
+                      - generic [ref=f23e196]:
+                        - generic [ref=f23e197]: "mechanical Direction:"
+                        - generic [ref=f23e198]: bullish
+                      - generic [ref=f23e199]:
+                        - generic [ref=f23e200]: "mechanical Strength:"
+                        - generic [ref=f23e201]: "0.18"
+                - generic [ref=f23e202]:
+                  - generic [ref=f23e203]:
+                    - generic [ref=f23e204]:
+                      - generic [ref=f23e205]: fundamental Specialist
+                      - generic [ref=f23e206]: bullish (87%)
+                    - paragraph [ref=f23e207]: "SEC 10-K (2024 FY) filed 2024-11-01. Revenue: $94.93B (+6.1% YoY), Operating Margin: 31.2%. FCF: $24.40B, D/E: 5.41."
+                  - generic [ref=f23e208]:
+                    - generic [ref=f23e209]:
+                      - generic [ref=f23e210]: "Facts & Evidence:"
+                      - generic [ref=f23e211]: Ground Truth
+                    - generic [ref=f23e212]:
+                      - generic [ref=f23e213]:
+                        - generic [ref=f23e214]: "form:"
+                        - generic [ref=f23e215]: 10-K
+                      - generic [ref=f23e216]:
+                        - generic [ref=f23e217]: "fiscal Year:"
+                        - generic [ref=f23e218]: "2024"
+                      - generic [ref=f23e219]:
+                        - generic [ref=f23e220]: "fiscal Period:"
+                        - generic [ref=f23e221]: FY
+                      - generic [ref=f23e222]:
+                        - generic [ref=f23e223]: "period End Date:"
+                        - generic [ref=f23e224]: 2024-09-28
+                      - generic [ref=f23e225]:
+                        - generic [ref=f23e226]: "filed At:"
+                        - generic [ref=f23e227]: 2024-11-01T18:00:00.000Z
+                      - generic [ref=f23e228]:
+                        - generic [ref=f23e229]: "revenue Billion:"
+                        - generic [ref=f23e230]: "94.93"
+                      - generic [ref=f23e231]:
+                        - generic [ref=f23e232]: "operating Margin:"
+                        - generic [ref=f23e233]: "0.31"
+                      - generic [ref=f23e234]:
+                        - generic [ref=f23e235]: "net Margin:"
+                        - generic [ref=f23e236]: "0.15"
+                      - generic [ref=f23e237]:
+                        - generic [ref=f23e238]: "free Cash Flow Billion:"
+                        - generic [ref=f23e239]: "24.40"
+                      - generic [ref=f23e240]:
+                        - generic [ref=f23e241]: "debt To Equity:"
+                        - generic [ref=f23e242]: "5.41"
+                      - generic [ref=f23e243]:
+                        - generic [ref=f23e244]: "revenue Growth Yo Y:"
+                        - generic [ref=f23e245]: "0.06"
+                      - generic [ref=f23e246]:
+                        - generic [ref=f23e247]: "statements Considered:"
+                        - generic [ref=f23e248]: "8"
+                      - generic [ref=f23e249]:
+                        - generic [ref=f23e250]: "symbol:"
+                        - generic [ref=f23e251]: AAPL
+            - generic [ref=f23e252]:
+              - heading "L3 Coordinator Reconciliation Outcome" [level=3] [ref=f23e253]
+              - generic [ref=f23e254]:
+                - generic [ref=f23e255]: ✓ Unanimous Consensus Short-Circuit
+                - paragraph [ref=f23e257]: Specialists aligned on directional bias (bullish). Reconciled immediately with zero extra LLM token cost ($0.00).
+```
+### Events
+- New console entries: var/folders/y9/hnkm2lv91n5chc4116wp_hf40000gn/T/.playwright-mcp/console-2026-09-01T16-35-52-608Z.log#L3

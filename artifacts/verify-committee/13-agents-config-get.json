@@ -1,0 +1,64 @@
+{
+  "step": "13-Agents-Config-GET",
+  "method": "GET",
+  "url": "/agents/config",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 0.9,
+  "timestamp": "2026-09-01T16:38:30.792Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "689",
+    "date": "Tue, 01 Sep 2026 16:38:30 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "version": "1.0.0",
+    "updatedAt": "2026-09-01T16:38:30.792Z",
+    "specialists": {
+      "technical": {
+        "enabled": true,
+        "weight": 1,
+        "modelTier": "cheap",
+        "temperature": 0.1
+      },
+      "sentiment": {
+        "enabled": true,
+        "weight": 1,
+        "modelTier": "cheap",
+        "temperature": 0.2
+      },
+      "fundamental": {
+        "enabled": true,
+        "weight": 1,
+        "modelTier": "cheap",
+        "temperature": 0.1
+      },
+      "polymarket": {
+        "enabled": true,
+        "weight": 0.8,
+        "modelTier": "cheap",
+        "temperature": 0.1
+      }
+    },
+    "risk": {
+      "maxPositionPct": 20,
+      "maxConcentrationPct": 80,
+      "stopLossPct": 5,
+      "takeProfitPct": 15,
+      "requireApprovalAboveUsd": 10000
+    },
+    "consensus": {
+      "protocol": "majority_fast_pass",
+      "agreementThreshold": 0.67,
+      "synthesisModelTier": "standard"
+    },
+    "telegram": {
+      "enabled": false,
+      "sendTradeAlerts": true,
+      "sendEodDigest": true
+    }
+  }
+}

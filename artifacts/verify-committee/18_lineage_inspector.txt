@@ -1,0 +1,154 @@
+The Committee
+Portfolio
+Observatory
+Lineage
+Agent Config
+Signals
+
+demo@committee.local
+
+Paper trading
+
+Log out
+Decision Provenance Inspector
+AUDIT DAG
+
+Audited point-in-time inputs, multi-agent debate transcripts, and LLM completions.
+
+AAPL
+NVDA
+SPY
+← Back to Observatory
+STRATEGY:
+buy-and-hold
+sma-rsi
+multi-agent-debate-on
+multi-agent-debate-off
+multi-agent-polymarket
+Keyboard: ← / → to step bars
+COST / 100 DECISIONS
+$0.0000
+Total: $0.0000
+MEDIAN LATENCY
+1 ms
+Per inference step
+FALLBACK / ERROR RATE
+0.9%
+Schema rejections
+DEBATE RECONCILIATIONS
+169 / 502
+Disagreements resolved
+← Prev Bar
+Bar 502 of 502
+Next Bar →
+T = 2024-12-31T21:00:00.000Z
+BULLISH (53% CONF)
+⚡ Consensus Fast-Pass
+1. Multi-Agent Debate & Stances
+2. Point-in-Time Inputs (OHLCV, Indicators, News, SEC XBRL)
+3. Prompts & LLM Completions
+4. Execution Fill
+Specialist Signal Evaluations
+
+Concurrent specialist readings at decision timestamp Jan 1
+
+Active Specialists: 3
+Technical Specialist
+NEUTRAL (3%)
+
+Deterministic technical read: neutral with conviction 3% from point-in-time indicators (RSI 56.68, SMA20 249.81, SMA50 237.60).
+
+FACTS & EVIDENCE:
+Ground Truth
+Rule:
+macd_bear_cross+sma20_above_sma50+close_above_sma20
+Rsi Zone:
+neutral
+Mechanical Direction:
+neutral
+Mechanical Strength:
+0.03
+Mechanical Score:
+0.03
+Indicator Coverage:
+1
+Rsi:
+56.68
+Macd:
+5.09
+Macd Signal:
+5.55
+Bb Upper:
+259.68
+Bb Lower:
+239.94
+Sma20:
+249.81
+Sma50:
+237.60
+Close:
+250.42
+Macd Histogram:
+-0.46
+Sentiment Specialist
+BULLISH (18%)
+
+Deterministic sentiment: 4 bullish, 2 bearish, 5 neutral out of 11 point-in-time headlines.
+
+FACTS & EVIDENCE:
+Ground Truth
+Headlines Considered:
+11
+Net Sentiment Score:
+0.18
+Bullish Count:
+4
+Bearish Count:
+2
+Neutral Count:
+5
+Symbol:
+AAPL
+Mechanical Direction:
+bullish
+Mechanical Strength:
+0.18
+Fundamental Specialist
+BULLISH (87%)
+
+SEC 10-K (2024 FY) filed 2024-11-01. Revenue: $94.93B (+6.1% YoY), Operating Margin: 31.2%. FCF: $24.40B, D/E: 5.41.
+
+FACTS & EVIDENCE:
+Ground Truth
+Form:
+10-K
+Fiscal Year:
+2024
+Fiscal Period:
+FY
+Period End Date:
+2024-09-28
+Filed At:
+2024-11-01T18:00:00.000Z
+Revenue Billion:
+94.93
+Operating Margin:
+0.31
+Net Margin:
+0.15
+Free Cash Flow Billion:
+24.40
+Debt To Equity:
+5.41
+Revenue Growth Yo Y:
+0.06
+Statements Considered:
+8
+Symbol:
+AAPL
+L3 Coordinator Reconciliation Outcome
+✓ Unanimous Consensus Short-Circuit
+
+Specialists aligned on directional bias (bullish). Reconciled immediately with zero extra LLM token cost ($0.00).
+
+-12%

@@ -40,7 +40,6 @@ ENV PNPM_HOME="/home/node/.local/share/pnpm" \
     PATH="/home/node/.local/share/pnpm:/pnpm:$PATH"
 
 # Copy installed dependencies and workspace setup
-COPY --from=deps --chown=node:node /pnpm /pnpm
 COPY --from=deps --chown=node:node /repo /repo
 
 # Copy source code
@@ -72,7 +71,6 @@ ENV NODE_ENV=production \
     PNPM_HOME="/home/node/.local/share/pnpm" \
     PATH="/home/node/.local/share/pnpm:/pnpm:$PATH"
 
-COPY --from=deps --chown=node:node /pnpm /pnpm
 COPY --from=deps --chown=node:node /repo /repo
 COPY --from=builder --chown=node:node /repo/apps/web/dist ./apps/web/dist
 COPY --chown=node:node tsconfig.base.json ./

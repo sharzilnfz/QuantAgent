@@ -160,7 +160,7 @@ A migration is a **versioned change to your database**. Think of it like Git com
 
 ## The Package: `packages/db`
 
-### [package.json](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/package.json)
+### [package.json](../../packages/db/package.json)
 
 ```json
 {
@@ -181,7 +181,7 @@ A migration is a **versioned change to your database**. Think of it like Git com
 
 ## The Enums
 
-### [src/schema/enums.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/schema/enums.ts)
+### [src/schema/enums.ts](../../packages/db/src/schema/enums.ts)
 
 ```typescript
 import { pgEnum } from "drizzle-orm/pg-core";
@@ -204,7 +204,7 @@ An enum (enumeration) is a column type that can only hold one of a fixed set of 
 
 ## The User & Auth Tables
 
-### [src/schema/users.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/schema/users.ts)
+### [src/schema/users.ts](../../packages/db/src/schema/users.ts)
 
 Let's go through every table, member by member:
 
@@ -323,7 +323,7 @@ A watchlist is the list of stocks a user wants the agents to analyze. The **comp
 
 ## The Market Fact Tables (The Heart of Point-in-Time)
 
-### [src/schema/market.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/schema/market.ts)
+### [src/schema/market.ts](../../packages/db/src/schema/market.ts)
 
 ### `priceBars` Table
 
@@ -461,7 +461,7 @@ Values can be `null` because indicators need a **warm-up period** (e.g., RSI nee
 
 ## The Agent Tables
 
-### [src/schema/agents.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/schema/agents.ts)
+### [src/schema/agents.ts](../../packages/db/src/schema/agents.ts)
 
 ### `agentRuns` Table
 
@@ -517,7 +517,7 @@ agent_runs (id = "run-123")
 
 ## The Database Client
 
-### [src/client.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/client.ts)
+### [src/client.ts](../../packages/db/src/client.ts)
 
 The client is **lazily initialized** using JavaScript Proxies:
 
@@ -536,7 +536,7 @@ Normally, when you `import { db } from "@committee/db"`, the connection would op
 
 ## The Migration
 
-### [migrations/0000_ancient_rictor.sql](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/migrations/0000_ancient_rictor.sql)
+### [migrations/0000_ancient_rictor.sql](../../packages/db/migrations/0000_ancient_rictor.sql)
 
 This single SQL file creates everything from scratch:
 
@@ -556,7 +556,7 @@ Running `pnpm db:migrate` applies this migration to a fresh database.
 
 ## The Seed Script
 
-### [src/seed.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/db/src/seed.ts)
+### [src/seed.ts](../../packages/db/src/seed.ts)
 
 The seed creates demo data for development:
 - One user: `demo@committee.local` with password `committee`
@@ -626,7 +626,7 @@ packages/contracts/
 
 ## The Enums
 
-### [src/enums.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/src/enums.ts)
+### [src/enums.ts](../../packages/contracts/src/enums.ts)
 
 ```typescript
 import { z } from "zod";
@@ -663,7 +663,7 @@ Direction.parse("sideways");     // ❌ throws ZodError
 
 ## The Signal Schemas
 
-### [src/signals.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/src/signals.ts)
+### [src/signals.ts](../../packages/contracts/src/signals.ts)
 
 ### `PriceBar` Schema
 
@@ -708,7 +708,7 @@ export const IndicatorSnapshot = z.object({
 
 ## The Agent Schemas
 
-### [src/agents.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/src/agents.ts)
+### [src/agents.ts](../../packages/contracts/src/agents.ts)
 
 ### `CONTRACTS_VERSION`
 
@@ -808,7 +808,7 @@ This converts the Zod schema into **JSON Schema** format (a standard that many t
 
 ## The Portfolio Schema
 
-### [src/portfolio.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/src/portfolio.ts)
+### [src/portfolio.ts](../../packages/contracts/src/portfolio.ts)
 
 ```typescript
 export const PortfolioState = z.object({
@@ -843,7 +843,7 @@ A snapshot of the trading account:
 
 ## The Barrel Export
 
-### [src/index.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/src/index.ts)
+### [src/index.ts](../../packages/contracts/src/index.ts)
 
 ```typescript
 export * from "./enums";
@@ -874,7 +874,7 @@ The placeholder comment shows where Sprint 2 schemas will go — the extension p
 
 ## The Tests
 
-### [tests/agents.test.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/tests/agents.test.ts)
+### [tests/agents.test.ts](../../packages/contracts/tests/agents.test.ts)
 
 The tests verify the schemas reject bad data:
 
@@ -892,7 +892,7 @@ it("rejects an unknown direction enum", () => {
 });
 ```
 
-### [tests/types.test.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/packages/contracts/tests/types.test.ts) — The Compile-Time Guard
+### [tests/types.test.ts](../../packages/contracts/tests/types.test.ts) — The Compile-Time Guard
 
 ```typescript
 interface AgentOutputInsert {
@@ -923,4 +923,4 @@ After Spec 02, every team member has:
 
 ---
 
-> **Continue to [Part 2](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part2.md) for Specs 03–05 (Auth, Market Data Ingestion, Technical Indicator Engine)**
+> **Continue to [Part 2](./masterclass-part2.md) for Specs 03–05 (Auth, Market Data Ingestion, Technical Indicator Engine)**

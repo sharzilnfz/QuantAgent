@@ -41,8 +41,7 @@ ENV PORT=3000 \
     PNPM_HOME="/home/node/.local/share/pnpm" \
     PATH="/home/node/.local/share/pnpm:/pnpm:$PATH"
 
-# Copy installed node_modules and pnpm binaries with non-root ownership
-COPY --from=deps --chown=node:node /pnpm /pnpm
+# Copy installed node_modules and dependencies with non-root ownership
 COPY --from=deps --chown=node:node /repo /repo
 
 # Copy application source code and monorepo packages

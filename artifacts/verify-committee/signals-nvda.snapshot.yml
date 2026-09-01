@@ -1,0 +1,229 @@
+### Page
+- Page URL: http://localhost:5173/signals
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f18e9]:
+  - complementary [ref=f18e10]:
+    - generic [ref=f18e11]: The Committee
+    - navigation "Primary" [ref=f18e15]:
+      - list [ref=f18e16]:
+        - listitem [ref=f18e17]:
+          - link "Portfolio" [ref=f18e18] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f18e21]:
+          - link "Observatory" [ref=f18e22] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f18e26]:
+          - link "Lineage" [ref=f18e27] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f18e30]:
+          - link "Agent Config" [ref=f18e31] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f18e35]:
+          - link "Signals" [ref=f18e36] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f18e39]:
+    - banner [ref=f18e40]:
+      - generic [ref=f18e41]:
+        - generic [ref=f18e42]:
+          - paragraph [ref=f18e43]: demo@committee.local
+          - paragraph [ref=f18e44]: Paper trading
+        - button "Switch to dark theme" [ref=f18e45] [cursor=pointer]
+        - button "Log out" [ref=f18e48] [cursor=pointer]
+    - main [ref=f18e49]:
+      - generic [ref=f18e50]:
+        - generic [ref=f18e51]:
+          - generic [ref=f18e52]:
+            - generic [ref=f18e53]:
+              - heading "Live Signals & Indicator Radar" [level=1] [ref=f18e54]
+              - generic [ref=f18e55]: Real-Time Radar
+            - paragraph [ref=f18e56]: Point-in-time technical indicator gauges, specialist agent readings, and on-demand deliberation.
+          - generic [ref=f18e57]:
+            - generic [ref=f18e58]: WebSocket Stream Active
+            - button "⚡ Evaluate NVDA On-Demand" [ref=f18e273] [cursor=pointer]:
+              - generic [ref=f18e62]: ⚡
+              - generic [ref=f18e63]: Evaluate NVDA On-Demand
+            - link [ref=f18e64] [cursor=pointer]:
+              - /url: /observatory
+              - button "Observatory Lab →" [ref=f18e65]
+        - generic [ref=f18e66]:
+          - generic [ref=f18e67]:
+            - generic [ref=f18e68]:
+              - heading "Autonomous Trading Daemon (L4/L6)" [level=2] [ref=f18e69]
+              - paragraph [ref=f18e70]: Continuous background multi-agent committee deliberation & automated paper execution loop.
+            - generic [ref=f18e72]:
+              - generic [ref=f18e73]: idle
+              - button "🛡️ Dry-Run Simulation" [ref=f18e75] [cursor=pointer]
+          - generic [ref=f18e77]:
+            - generic [ref=f18e78]:
+              - generic [ref=f18e79]:
+                - text: "Frequency:"
+                - strong [ref=f18e80]: Every 60s
+              - generic [ref=f18e81]: "Watchlist: AAPL, NVDA, SPY"
+              - generic [ref=f18e82]: "Completed Cycles: 0"
+            - generic [ref=f18e83]:
+              - button "▶ Start Daemon" [ref=f18e84] [cursor=pointer]
+              - button "⚡ Run Cycle Now" [ref=f18e85] [cursor=pointer]
+        - generic [ref=f18e86]:
+          - generic [ref=f18e87]:
+            - generic [ref=f18e88]: "Active Asset:"
+            - generic [ref=f18e89]:
+              - button "AAPL" [ref=f18e90] [cursor=pointer]
+              - button "NVDA" [ref=f18e93] [cursor=pointer]
+              - button "SPY" [ref=f18e96] [cursor=pointer]
+          - generic [ref=f18e99]:
+            - generic [ref=f18e100]:
+              - text: "Last Close:"
+              - strong [ref=f18e101]: $134.29
+            - generic [ref=f18e102]: "Volume: 155,659,200"
+            - generic [ref=f18e103]: "As Of: Jan 1"
+        - generic [ref=f18e104]:
+          - generic [ref=f18e105]:
+            - heading "1. Technical Indicator Telemetry (L1 Deterministic Math)" [level=2] [ref=f18e106]
+            - generic [ref=f18e107]:
+              - generic [ref=f18e108]:
+                - generic [ref=f18e109]:
+                  - generic [ref=f18e110]:
+                    - heading "Wilder RSI (14)" [level=2] [ref=f18e111]
+                    - paragraph [ref=f18e112]: Momentum & exhaustion oscillator
+                  - generic [ref=f18e113]: neutral
+                - generic [ref=f18e115]:
+                  - generic [ref=f18e116]:
+                    - generic [ref=f18e117]: "45.2"
+                    - generic [ref=f18e118]: "Range: 0–100"
+                  - generic [ref=f18e124]:
+                    - generic [ref=f18e125]: 0 (Oversold ≤30)
+                    - generic [ref=f18e126]: "50"
+                    - generic [ref=f18e127]: 100 (Overbought ≥70)
+              - generic [ref=f18e128]:
+                - generic [ref=f18e129]:
+                  - generic [ref=f18e130]:
+                    - heading "MACD (12, 26, 9)" [level=2] [ref=f18e131]
+                    - paragraph [ref=f18e132]: Moving Average Convergence
+                  - generic [ref=f18e133]: bullish cross
+                - generic [ref=f18e135]:
+                  - generic [ref=f18e136]:
+                    - generic [ref=f18e137]: "MACD Line:"
+                    - generic [ref=f18e138]: "-0.763"
+                  - generic [ref=f18e139]:
+                    - generic [ref=f18e140]: "Signal Line (EMA9):"
+                    - generic [ref=f18e141]: "-0.957"
+                  - generic [ref=f18e142]:
+                    - generic [ref=f18e143]: "Divergence Histogram:"
+                    - generic [ref=f18e144]: "+0.193"
+              - generic [ref=f18e145]:
+                - generic [ref=f18e146]:
+                  - generic [ref=f18e147]:
+                    - heading "Bollinger Bands (20, 2σ)" [level=2] [ref=f18e148]
+                    - paragraph [ref=f18e149]: Volatility envelope
+                  - generic [ref=f18e150]: Population σ
+                - generic [ref=f18e152]:
+                  - generic [ref=f18e153]:
+                    - generic [ref=f18e154]: "Upper Band (+2σ):"
+                    - generic [ref=f18e155]: $146.14
+                  - generic [ref=f18e156]:
+                    - generic [ref=f18e157]: "Lower Band (-2σ):"
+                    - generic [ref=f18e158]: $128.16
+                  - generic [ref=f18e159]:
+                    - generic [ref=f18e160]: "Bandwidth Spread:"
+                    - generic [ref=f18e161]: 14.0%
+              - generic [ref=f18e162]:
+                - generic [ref=f18e163]:
+                  - generic [ref=f18e164]:
+                    - heading "Trend Alignment" [level=2] [ref=f18e165]
+                    - paragraph [ref=f18e166]: SMA 20 & SMA 50 structure
+                  - generic [ref=f18e167]: bearish
+                - generic [ref=f18e169]:
+                  - generic [ref=f18e170]:
+                    - generic [ref=f18e171]: "SMA 20 (Fast):"
+                    - generic [ref=f18e172]: $137.15
+                  - generic [ref=f18e173]:
+                    - generic [ref=f18e174]: "SMA 50 (Slow):"
+                    - generic [ref=f18e175]: $139.89
+                  - generic [ref=f18e176]:
+                    - generic [ref=f18e177]: "Cross Status:"
+                    - generic [ref=f18e178]: Death Crossover
+          - generic [ref=f18e179]:
+            - generic [ref=f18e180]:
+              - heading "2. Specialist Agent Signal Stances (L2 Specialists)" [level=2] [ref=f18e181]
+              - generic [ref=f18e182]: "Active Specialists: 4"
+            - generic [ref=f18e183]:
+              - generic [ref=f18e184]:
+                - generic [ref=f18e185]:
+                  - generic [ref=f18e186]:
+                    - generic [ref=f18e187]: technical
+                    - generic [ref=f18e188]: neutral
+                  - generic [ref=f18e190]:
+                    - generic [ref=f18e191]: "Confidence:"
+                    - generic [ref=f18e192]: 3%
+                  - paragraph [ref=f18e195]: "Deterministic technical read: neutral with conviction 3% from point-in-time indicators (RSI 45.17, SMA20 137.15, SMA50 139.89)."
+                - generic [ref=f18e196]:
+                  - generic [ref=f18e197]: "Evidence facts:"
+                  - generic [ref=f18e198]: 23 metrics
+              - generic [ref=f18e199]:
+                - generic [ref=f18e200]:
+                  - generic [ref=f18e201]:
+                    - generic [ref=f18e202]: sentiment
+                    - generic [ref=f18e203]: bullish
+                  - generic [ref=f18e205]:
+                    - generic [ref=f18e206]: "Confidence:"
+                    - generic [ref=f18e207]: 42%
+                  - paragraph [ref=f18e210]: "Deterministic sentiment: 7 bullish, 2 bearish, 3 neutral out of 12 point-in-time headlines."
+                - generic [ref=f18e211]:
+                  - generic [ref=f18e212]: "Evidence facts:"
+                  - generic [ref=f18e213]: 14 metrics
+              - generic [ref=f18e214]:
+                - generic [ref=f18e215]:
+                  - generic [ref=f18e216]:
+                    - generic [ref=f18e217]: fundamental
+                    - generic [ref=f18e218]: bullish
+                  - generic [ref=f18e220]:
+                    - generic [ref=f18e221]: "Confidence:"
+                    - generic [ref=f18e222]: 95%
+                  - paragraph [ref=f18e225]: "SEC 10-Q (2025 Q2) filed 2024-08-28. Revenue: $30.04B (+122.4% YoY), Operating Margin: 62.1%. FCF: $14.05B, D/E: 0.47."
+                - generic [ref=f18e226]:
+                  - generic [ref=f18e227]: "Evidence facts:"
+                  - generic [ref=f18e228]: 15 metrics
+              - generic [ref=f18e229]:
+                - generic [ref=f18e230]:
+                  - generic [ref=f18e231]:
+                    - generic [ref=f18e232]: polymarket
+                    - generic [ref=f18e233]: bullish
+                  - generic [ref=f18e235]:
+                    - generic [ref=f18e236]: "Confidence:"
+                    - generic [ref=f18e237]: 98%
+                  - paragraph [ref=f18e240]: Polymarket crowdsourced macro probability analysis identifies 'dovish_easing' regime. Fed rate cut odds are 99%. CPI inflation >3% probability stands at 18%. Recession risk is priced at 8%. Mechanical stance is bullish with conviction 98%.
+                - generic [ref=f18e241]:
+                  - generic [ref=f18e242]: "Evidence facts:"
+                  - generic [ref=f18e243]: 12 metrics
+          - generic [ref=f18e244]:
+            - generic [ref=f18e245]:
+              - generic [ref=f18e246]:
+                - generic [ref=f18e247]:
+                  - heading "L3 Multi-Agent Coordinator Consensus" [level=2] [ref=f18e248]
+                  - paragraph [ref=f18e249]: Final synthesized trade stance and resolution mode.
+                - generic [ref=f18e250]: ⚡ Consensus Fast-Pass
+              - generic [ref=f18e252]:
+                - generic [ref=f18e253]:
+                  - generic [ref=f18e254]:
+                    - text: "Consensus Final Bias:"
+                    - generic [ref=f18e255]: bullish (78% Confidence)
+                  - generic [ref=f18e256]:
+                    - text: "Resolution Cost:"
+                    - generic [ref=f18e257]: $0.0000 USD
+                - paragraph [ref=f18e258]: Specialists reached natural majority directional consensus without requiring single-pass LLM debate synthesis.
+            - generic [ref=f18e259]:
+              - generic [ref=f18e261]:
+                - heading "Latest News Headline" [level=2] [ref=f18e262]
+                - paragraph [ref=f18e263]: Benzinga archive headline <= asOf
+              - generic [ref=f18e264]:
+                - generic [ref=f18e265]:
+                  - generic [ref=f18e266]: “Nvidia Q3 revenue hits $35.08B, beating consensus estimates”
+                  - generic [ref=f18e267]: "Source: Benzinga Financial Archive"
+                - link [ref=f18e269] [cursor=pointer]:
+                  - /url: /lineage?symbol=NVDA
+                  - button "Audit Full Input Lineage →" [ref=f18e270]
+          - group [ref=f18e271]:
+            - 'generic "Accessible Table View: Raw Indicator & Price Bar Values (WCAG Twin)" [ref=f18e272] [cursor=pointer]'
+```

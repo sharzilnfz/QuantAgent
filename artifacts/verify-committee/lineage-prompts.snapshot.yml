@@ -1,0 +1,107 @@
+### Page
+- Page URL: http://localhost:5173/lineage?symbol=AAPL&strategy=multi-agent-debate-on
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f12e3]:
+  - complementary [ref=f12e4]:
+    - generic [ref=f12e5]: The Committee
+    - navigation "Primary" [ref=f12e9]:
+      - list [ref=f12e10]:
+        - listitem [ref=f12e11]:
+          - link "Portfolio" [ref=f12e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f12e15]:
+          - link "Observatory" [ref=f12e16] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f12e20]:
+          - link "Lineage" [ref=f12e21] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f12e24]:
+          - link "Agent Config" [ref=f12e25] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f12e29]:
+          - link "Signals" [ref=f12e30] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f12e33]:
+    - banner [ref=f12e34]:
+      - generic [ref=f12e35]:
+        - generic [ref=f12e36]:
+          - paragraph [ref=f12e37]: demo@committee.local
+          - paragraph [ref=f12e38]: Paper trading
+        - button "Switch to light theme" [ref=f12e39] [cursor=pointer]
+        - button "Log out" [ref=f12e43] [cursor=pointer]
+    - main [ref=f12e44]:
+      - generic [ref=f12e45]:
+        - generic [ref=f12e46]:
+          - generic [ref=f12e47]:
+            - generic [ref=f12e48]:
+              - heading "Decision Provenance Inspector" [level=1] [ref=f12e49]
+              - generic [ref=f12e50]: Audit DAG
+            - paragraph [ref=f12e51]: Audited point-in-time inputs, multi-agent debate transcripts, and LLM completions.
+          - generic [ref=f12e52]:
+            - generic [ref=f12e53]:
+              - button "AAPL" [ref=f12e54] [cursor=pointer]
+              - button "NVDA" [ref=f12e55] [cursor=pointer]
+              - button "SPY" [ref=f12e56] [cursor=pointer]
+            - link [ref=f12e57] [cursor=pointer]:
+              - /url: /observatory
+              - button "← Back to Observatory" [ref=f12e58]
+        - generic [ref=f12e59]:
+          - generic [ref=f12e60]:
+            - generic [ref=f12e61]:
+              - generic [ref=f12e62]:
+                - generic [ref=f12e63]: "Strategy:"
+                - generic [ref=f12e64]:
+                  - button "buy-and-hold" [ref=f12e65] [cursor=pointer]
+                  - button "sma-rsi" [ref=f12e66] [cursor=pointer]
+                  - button "multi-agent-debate-on" [ref=f12e67] [cursor=pointer]
+                  - button "multi-agent-debate-off" [ref=f12e68] [cursor=pointer]
+                  - button "multi-agent-polymarket" [ref=f12e69] [cursor=pointer]
+              - generic [ref=f12e70]: "Keyboard: ← / → to step bars"
+            - generic [ref=f12e71]:
+              - generic [ref=f12e72]:
+                - generic [ref=f12e73]: Cost / 100 Decisions
+                - generic [ref=f12e74]: $0.0000
+                - generic [ref=f12e75]: "Total: $0.0000"
+              - generic [ref=f12e76]:
+                - generic [ref=f12e77]: Median Latency
+                - generic [ref=f12e78]: 1 ms
+                - generic [ref=f12e79]: Per inference step
+              - generic [ref=f12e80]:
+                - generic [ref=f12e81]: Fallback / Error Rate
+                - generic [ref=f12e82]: 0.9%
+                - generic [ref=f12e83]: Schema rejections
+              - generic [ref=f12e84]:
+                - generic [ref=f12e85]: Debate Reconciliations
+                - generic [ref=f12e86]: 169 / 502
+                - generic [ref=f12e87]: Disagreements resolved
+          - generic [ref=f12e88]:
+            - generic [ref=f12e89]:
+              - button "← Prev Bar" [ref=f12e90] [cursor=pointer]
+              - generic [ref=f12e91]:
+                - text: Bar
+                - strong [ref=f12e92]: "502"
+                - text: of 502
+              - button "Next Bar →" [disabled] [ref=f12e93]
+            - generic [ref=f12e94]:
+              - generic [ref=f12e95]: T = 2024-12-31T21:00:00.000Z
+              - generic [ref=f12e96]: bullish (53% CONF)
+              - generic [ref=f12e97]: ⚡ Consensus Fast-Pass
+          - generic [ref=f12e98]:
+            - button "1. Multi-Agent Debate & Stances" [ref=f12e99] [cursor=pointer]
+            - button "2. Point-in-Time Inputs (OHLCV, Indicators, News, SEC XBRL)" [ref=f12e100] [cursor=pointer]
+            - button "3. Prompts & LLM Completions" [active] [ref=f12e101] [cursor=pointer]
+            - button "4. Execution Fill" [ref=f12e102] [cursor=pointer]
+          - generic [ref=f12e105]:
+            - generic [ref=f12e106]:
+              - generic [ref=f12e107]: "Agent Prompt:"
+              - button "technical" [ref=f12e108] [cursor=pointer]
+              - button "sentiment" [ref=f12e109] [cursor=pointer]
+              - button "fundamental" [ref=f12e110] [cursor=pointer]
+            - generic [ref=f12e111]:
+              - generic [ref=f12e112]:
+                - generic [ref=f12e113]: "Exact Rendered Prompt Text:"
+                - button "Copy Prompt" [ref=f12e114] [cursor=pointer]
+              - generic [ref=f12e115]: "Symbol: AAPL Timeframe: 1Day Decision timestamp: 2024-12-31T21:00:00.000Z Indicator snapshot as-of: 2024-12-31T21:00:00.000Z (point-in-time legal) COMPUTED FACTS (authoritative — do not restate as your own figures): rule: macd_bear_cross+sma20_above_sma50+close_above_sma20 rsiZone: neutral mechanicalDirection: neutral mechanicalStrength: 0.029 mechanicalScore: 0.029 indicatorCoverage: 1 rsi: 56.68039323549466 macd: 5.087179073584025 macdSignal: 5.549920377361955 bbUpper: 259.6808169840709 bbLower: 239.93818301592972 sma20: 249.8095000000003 sma50: 237.60300000000024 close: 250.42 macdHistogram: -0.463 DETERMINISTIC RULES THAT FIRED: - macd_bear_cross: bearish (weight 0.8) - sma20_above_sma50: bullish (weight 0.5) - close_above_sma20: bullish (weight 0.4) MECHANICAL READ: neutral with strength 0.029 (signed score 0.029 over 1 indicator coverage) Weigh these signals and explain the bias. Do not introduce any number that is not listed above."
+```

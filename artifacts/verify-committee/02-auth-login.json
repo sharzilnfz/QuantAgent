@@ -1,0 +1,27 @@
+{
+  "step": "02-Auth-Login",
+  "method": "POST",
+  "url": "/auth/login",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 133.14,
+  "timestamp": "2026-09-01T16:38:21.591Z",
+  "requestPayload": {
+    "email": "demo@committee.local",
+    "password": "demo-committee"
+  },
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "committee_session=e94ea800-8bae-42c9-b1d8-6d545b5c6a58; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax",
+    "content-length": "85",
+    "date": "Tue, 01 Sep 2026 16:38:21 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "user": {
+      "id": "97829425-667c-4372-b38a-7fa7ab39dba7",
+      "email": "demo@committee.local"
+    }
+  }
+}

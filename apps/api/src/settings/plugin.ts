@@ -25,7 +25,7 @@ export async function settingsPlugin(app: FastifyInstance): Promise<void> {
    * Update active committee configuration.
    */
   app.put("/agents/config", async (request, reply) => {
-    const parsed = CommitteeSystemConfig.partial().safeParse(request.body);
+    const parsed = CommitteeSystemConfig.deepPartial().safeParse(request.body);
     if (!parsed.success) {
       return reply.code(400).send({
         error: "invalid_config_payload",

@@ -1,0 +1,194 @@
+The Committee
+Portfolio
+Observatory
+Lineage
+Agent Config
+Signals
+
+demo@committee.local
+
+Paper trading
+
+Log out
+Evaluation Observatory
+ABLATION LAB
+
+Side-by-side strategy comparison tearsheet, comparative equity curves, and decision intelligence telemetry.
+
+📜
+Audit Lineage
+DATASET TARGET:
+AAPL
+NVDA
+SPY
+🌐 Universe (AAPL+NVDA+SPY)
+Presets:
+All Strategies
+Macro Ablation
+Debate vs Ablation
+Baselines Only
+Deterministic Sweep ($N=3$, Offline Replay)
+📜
+Audit Lineage
+ACTIVE STRATEGY OVERLAY (5/5)
+Buy & Hold (Benchmark)
+BENCH
+SMA(20/50) + RSI(14)
+Multi-Agent (Debate ON)
+Multi-Agent (Debate OFF / Ablation)
+Technical + Sentiment + Polymarket
+Offline Replay (Zero Credential)
+SHA256: 0a9bfa4a26…
+Git: 65dc1e4
+Duration: 862.67ms
+Token Cost: $0.00
+Comparative Equity Trajectory ($ USD)
+
+Time-series growth across active LLM agent configurations vs deterministic baselines
+
+📜
+Audit Lineage
+Equity Curve
+Drawdown (%)
+Jan 18
+Mar 10
+May 1
+Jun 21
+Aug 11
+Oct 2
+Nov 17
+Jan 11
+Mar 1
+Apr 22
+Jun 12
+Aug 1
+Sep 20
+Nov 8
+Dec 31
+$0
+$300K
+$600K
+$900K
+$1.2M
+Buy & Hold (Benchmark)SMA(20/50) + RSI(14)Multi-Agent (Debate ON)Multi-Agent (Debate OFF / Ablation)Technical + Sentiment + Polymarket
+View comparison dataset as table
+Strategy Performance & Evaluation Tearsheet
+
+Deterministic baseline benchmark comparisons with point-in-time decision intelligence & operational telemetry
+
+Symbol: NVDA | Total Evaluated: 5
+Strategy Variant	Total Return (Δ)	Annualized (Δ)	Sharpe (Δ)	Sortino (Δ)	Max Drawdown	Win Rate	Dir. Accuracy	Brier Score	Cost & Latency	Lineage
+
+Buy & Hold (Benchmark)
+BASELINE BENCHMARK
+
+Passive 100% long buy-and-hold benchmark
+
+	
+821.42%
+benchmark	
+204.89%
+benchmark	
+2.46
+benchmark	
+4.38
+benchmark	
+--27.05%
+benchmark	
+0.00%
+1 trades	—	—	
+$0.00
+0ms	Audit Lineage
+
+SMA(20/50) + RSI(14)
+
+Deterministic SMA(20/50) trend filter + Wilder RSI(14) oversold/overbought baseline
+
+	
+164.54%
+-656.88%	
+62.96%
+-141.93%	
+1.42
+-1.05	
+2.51
+-1.87	
+--31.80%
+-4.75% Δ	
+81.82%
+44 trades	—	—	
+$0.00
+0ms	Audit Lineage
+
+Multi-Agent (Debate ON)
+
+Multi-agent committee with conditional debate synthesis on specialist disagreement
+
+	
+539.16%
+-282.26%	
+153.75%
+-51.14%	
+2.15
+-0.32	
+3.78
+-0.60	
+--27.05%
+0.00% Δ	
+0.00%
+1 trades	
+55.30%
+481 act / 20 neut	
+0.282
+MSE stance	
+$0.00
+1ms (1% fb)	Audit Lineage
+
+Multi-Agent (Debate OFF / Ablation)
+
+Multi-agent committee with neutral ablation fallback on specialist disagreement
+
+	
+177.58%
+-643.84%	
+66.95%
+-137.95%	
+1.52
+-0.94	
+2.72
+-1.67	
+--25.05%
++1.99% Δ	
+48.48%
+67 trades	
+54.25%
+306 act / 195 neut	
+0.267
+MSE stance	
+$0.00
+1ms (1% fb)	Audit Lineage
+
+Technical + Sentiment + Polymarket
+
+Multi-agent committee with Polymarket crowdsourced macro prediction probability curves
+
+	
+169.61%
+-651.81%	
+64.52%
+-140.37%	
+1.42
+-1.04	
+2.26
+-2.12	
+--27.05%
+0.00% Δ	
+65.22%
+47 trades	
+54.85%
+361 act / 140 neut	
+0.282
+MSE stance	
+$0.00
+1ms (1% fb)	Audit Lineage
+$300K

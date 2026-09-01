@@ -1,0 +1,368 @@
+### Page
+- Page URL: http://localhost:5173/observatory
+- Page Title: The Committee
+- Console: 2 errors, 0 warnings
+### Snapshot
+```yaml
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]: The Committee
+      - navigation "Primary" [ref=f1e9]:
+        - list [ref=f1e10]:
+          - listitem [ref=f1e11]:
+            - link "Portfolio" [ref=f1e12] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f1e15]:
+            - link "Observatory" [ref=f1e16] [cursor=pointer]:
+              - /url: /observatory
+          - listitem [ref=f1e20]:
+            - link "Lineage" [ref=f1e21] [cursor=pointer]:
+              - /url: /lineage
+          - listitem [ref=f1e24]:
+            - link "Agent Config" [ref=f1e25] [cursor=pointer]:
+              - /url: /config
+          - listitem [ref=f1e29]:
+            - link "Signals" [ref=f1e30] [cursor=pointer]:
+              - /url: /signals
+    - generic [ref=f1e33]:
+      - banner [ref=f1e34]:
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]:
+            - paragraph [ref=f1e37]: demo@committee.local
+            - paragraph [ref=f1e38]: Paper trading
+          - button "Switch to dark theme" [ref=f1e39] [cursor=pointer]
+          - button "Log out" [ref=f1e42] [cursor=pointer]
+      - main [ref=f1e43]:
+        - generic [ref=f1e157]:
+          - generic [ref=f1e158]:
+            - generic [ref=f1e159]:
+              - generic [ref=f1e160]:
+                - heading "Evaluation Observatory" [level=1] [ref=f1e161]
+                - generic [ref=f1e162]: Multi-Asset Universe Lab
+              - paragraph [ref=f1e163]: Cross-asset capital allocation, portfolio rebalancing, and multi-asset universe tearsheets (AAPL + NVDA + SPY).
+            - button "📜 Audit Lineage" [ref=f1e833] [cursor=pointer]:
+              - generic [ref=f1e834]: 📜
+              - generic [ref=f1e835]: Audit Lineage
+          - generic [ref=f1e836]:
+            - generic [ref=f1e837]:
+              - generic [ref=f1e838]:
+                - generic [ref=f1e839]:
+                  - generic [ref=f1e840]: "Dataset Target:"
+                  - generic [ref=f1e841]:
+                    - button "AAPL" [ref=f1e842] [cursor=pointer]
+                    - button "NVDA" [ref=f1e843] [cursor=pointer]
+                    - button "SPY" [ref=f1e844] [cursor=pointer]
+                    - button "🌐 Universe (AAPL+NVDA+SPY)" [ref=f1e845] [cursor=pointer]
+                - generic [ref=f1e846]:
+                  - generic [ref=f1e847]: "Presets:"
+                  - button "All Strategies" [ref=f1e848] [cursor=pointer]
+                  - button "Macro Ablation" [ref=f1e849] [cursor=pointer]
+                  - button "Debate vs Ablation" [ref=f1e850] [cursor=pointer]
+                  - button "Baselines Only" [ref=f1e851] [cursor=pointer]
+                  - button "Deterministic Sweep ($N=3$, Offline Replay)" [ref=f1e852] [cursor=pointer]
+                  - button "📜 Audit Lineage" [ref=f1e854] [cursor=pointer]:
+                    - generic [ref=f1e855]: 📜
+                    - generic [ref=f1e856]: Audit Lineage
+              - generic [ref=f1e857]:
+                - generic [ref=f1e858]: Active Strategy Overlay (5/5)
+                - generic [ref=f1e860]:
+                  - button "1/N Equal-Weight Basket (Benchmark) Bench" [pressed] [ref=f1e861] [cursor=pointer]:
+                    - generic [ref=f1e863]: 1/N Equal-Weight Basket (Benchmark)
+                    - generic [ref=f1e864]: Bench
+                  - button "Multi-Asset SMA(20/50) + RSI(14)" [pressed] [ref=f1e865] [cursor=pointer]
+                  - button "Multi-Asset Committee (Debate ON)" [pressed] [ref=f1e868] [cursor=pointer]
+                  - button "Multi-Asset Committee (Debate OFF / Ablation)" [pressed] [ref=f1e871] [cursor=pointer]
+                  - button "Multi-Asset Committee + Polymarket" [pressed] [ref=f1e874] [cursor=pointer]
+              - generic [ref=f1e877]:
+                - generic [ref=f1e878]: Offline Replay (Zero Credential)
+                - generic [ref=f1e880]:
+                  - text: "SHA256:"
+                  - generic [ref=f1e881]: 843a27f591…
+                - generic [ref=f1e882]: "Git: 65dc1e4"
+                - generic [ref=f1e883]:
+                  - text: "Duration:"
+                  - generic [ref=f1e884]: 2313.55ms
+                - generic [ref=f1e885]:
+                  - text: "Token Cost:"
+                  - generic [ref=f1e886]: $0.00
+            - generic [ref=f1e887]:
+              - generic [ref=f1e888]:
+                - generic [ref=f1e889]:
+                  - heading "🌐 Cross-Asset Capital Allocation & Universe Breakdown" [level=3] [ref=f1e890]:
+                    - generic [ref=f1e891]: 🌐
+                    - generic [ref=f1e892]: Cross-Asset Capital Allocation & Universe Breakdown
+                  - paragraph [ref=f1e893]: Dynamic capital distribution across universe assets with 5% risk cash reserve.
+                - generic [ref=f1e894]:
+                  - generic [ref=f1e895]: "Total Portfolio Equity:"
+                  - generic [ref=f1e896]: $245,172.01
+              - generic [ref=f1e897]:
+                - generic [ref=f1e898]:
+                  - generic [ref=f1e899]: Active Asset Exposure
+                  - generic [ref=f1e900]: 94.7% Invested / 5.3% Cash
+                - generic [ref=f1e901]:
+                  - 'generic "AAPL: 26.3% ($64,357.94)" [ref=f1e902]'
+                  - 'generic "NVDA: 25.7% ($62,982.01)" [ref=f1e903]'
+                  - 'generic "SPY: 42.8% ($104,908.32)" [ref=f1e904]'
+                  - 'generic "Cash Reserve: 5.3% ($12,923.745)" [ref=f1e905]'
+              - table [ref=f1e907]:
+                - rowgroup [ref=f1e908]:
+                  - row [ref=f1e909]:
+                    - columnheader "Asset Symbol" [ref=f1e910]
+                    - columnheader "Holding Shares" [ref=f1e911]
+                    - columnheader "Latest Price" [ref=f1e912]
+                    - columnheader "Market Value" [ref=f1e913]
+                    - columnheader "Portfolio Weight" [ref=f1e914]
+                    - columnheader "Turnover (NAV)" [ref=f1e915]
+                    - columnheader "Trades Count" [ref=f1e916]
+                - rowgroup [ref=f1e917]:
+                  - row [ref=f1e918]:
+                    - cell "AAPL" [ref=f1e919]
+                    - cell "257" [ref=f1e922]
+                    - cell "$250.42" [ref=f1e923]
+                    - cell "$64,357.94" [ref=f1e924]
+                    - cell "26.3%" [ref=f1e925]
+                    - cell "1864.6%" [ref=f1e926]
+                    - cell "336" [ref=f1e927]
+                  - row [ref=f1e928]:
+                    - cell "NVDA" [ref=f1e929]
+                    - cell "469" [ref=f1e932]
+                    - cell "$134.29" [ref=f1e933]
+                    - cell "$62,982.01" [ref=f1e934]
+                    - cell "25.7%" [ref=f1e935]
+                    - cell "2054.6%" [ref=f1e936]
+                    - cell "339" [ref=f1e937]
+                  - row [ref=f1e938]:
+                    - cell "SPY" [ref=f1e939]
+                    - cell "179" [ref=f1e942]
+                    - cell "$586.08" [ref=f1e943]
+                    - cell "$104,908.32" [ref=f1e944]
+                    - cell "42.8%" [ref=f1e945]
+                    - cell "2098.9%" [ref=f1e946]
+                    - cell "338" [ref=f1e947]
+                  - row [ref=f1e948]:
+                    - cell "USD (Cash Buffer)" [ref=f1e949]
+                    - cell "—" [ref=f1e952]
+                    - cell "$1.00" [ref=f1e953]
+                    - cell "$12,923.74" [ref=f1e954]
+                    - cell "5.3%" [ref=f1e955]
+                    - cell "—" [ref=f1e956]
+                    - cell "—" [ref=f1e957]
+            - generic [ref=f1e958]:
+              - generic [ref=f1e959]:
+                - generic [ref=f1e960]:
+                  - heading "Comparative Equity Trajectory ($ USD)" [level=3] [ref=f1e961]
+                  - paragraph [ref=f1e962]: Time-series growth across active LLM agent configurations vs deterministic baselines
+                - generic [ref=f1e963]:
+                  - button "📜 Audit Lineage" [ref=f1e964] [cursor=pointer]:
+                    - generic [ref=f1e965]: 📜
+                    - generic [ref=f1e966]: Audit Lineage
+                  - generic [ref=f1e967]:
+                    - button "Equity Curve" [ref=f1e968] [cursor=pointer]
+                    - button "Drawdown (%)" [ref=f1e969] [cursor=pointer]
+              - generic [ref=f1e1207]:
+                - img [ref=f1e1208]:
+                  - generic [ref=f1e1212]:
+                    - generic [ref=f1e1213]: Jan 18
+                    - generic [ref=f1e1215]: Mar 10
+                    - generic [ref=f1e1217]: May 1
+                    - generic [ref=f1e1219]: Jun 21
+                    - generic [ref=f1e1221]: Aug 11
+                    - generic [ref=f1e1223]: Oct 2
+                    - generic [ref=f1e1225]: Nov 17
+                    - generic [ref=f1e1227]: Jan 11
+                    - generic [ref=f1e1229]: Mar 1
+                    - generic [ref=f1e1231]: Apr 22
+                    - generic [ref=f1e1233]: Jun 12
+                    - generic [ref=f1e1235]: Aug 1
+                    - generic [ref=f1e1237]: Sep 20
+                    - generic [ref=f1e1239]: Nov 8
+                    - generic [ref=f1e1241]: Dec 31
+                - list [ref=f1e1244]:
+                  - listitem [ref=f1e1245]: 1/N Equal-Weight Basket (Benchmark)
+                  - listitem [ref=f1e1247]: Multi-Asset SMA(20/50) + RSI(14)
+                  - listitem [ref=f1e1249]: Multi-Asset Committee (Debate ON)
+                  - listitem [ref=f1e1251]: Multi-Asset Committee (Debate OFF / Ablation)
+                  - listitem [ref=f1e1253]: Multi-Asset Committee + Polymarket
+              - group [ref=f1e1020]:
+                - generic "View comparison dataset as table" [ref=f1e1021] [cursor=pointer]
+            - generic [ref=f1e1024]:
+              - generic [ref=f1e1025]:
+                - generic [ref=f1e1026]:
+                  - heading "Strategy Performance & Evaluation Tearsheet" [level=3] [ref=f1e1027]
+                  - paragraph [ref=f1e1028]: Deterministic baseline benchmark comparisons with point-in-time decision intelligence & operational telemetry
+                - generic [ref=f1e1029]: "Symbol: | Total Evaluated: 5"
+              - table [ref=f1e1031]:
+                - rowgroup [ref=f1e1032]:
+                  - row [ref=f1e1033]:
+                    - columnheader "Strategy Variant" [ref=f1e1034]
+                    - columnheader "Total Return (Δ)" [ref=f1e1035]
+                    - columnheader "Annualized (Δ)" [ref=f1e1036]
+                    - columnheader "Sharpe (Δ)" [ref=f1e1037]
+                    - columnheader "Sortino (Δ)" [ref=f1e1038]
+                    - columnheader "Max Drawdown" [ref=f1e1039]
+                    - columnheader "Win Rate" [ref=f1e1040]
+                    - columnheader "Dir. Accuracy" [ref=f1e1041]
+                    - columnheader "Brier Score" [ref=f1e1042]
+                    - columnheader "Cost & Latency" [ref=f1e1043]
+                    - columnheader "Lineage" [ref=f1e1044]
+                - rowgroup [ref=f1e1045]:
+                  - row [ref=f1e1046]:
+                    - cell [ref=f1e1047]:
+                      - button "1/N Equal-Weight Basket (Benchmark) Baseline Benchmark 1/N Equal-Weight Buy & Hold Universe Basket" [ref=f1e1048] [cursor=pointer]:
+                        - generic [ref=f1e1050]:
+                          - generic [ref=f1e1051]:
+                            - generic [ref=f1e1052]: 1/N Equal-Weight Basket (Benchmark)
+                            - generic [ref=f1e1053]: Baseline Benchmark
+                          - paragraph [ref=f1e1054]: 1/N Equal-Weight Buy & Hold Universe Basket
+                    - cell "307.51% benchmark" [ref=f1e1055]:
+                      - generic [ref=f1e1056]: 307.51%
+                      - text: benchmark
+                    - cell "102.43% benchmark" [ref=f1e1057]:
+                      - generic [ref=f1e1058]: 102.43%
+                      - text: benchmark
+                    - cell "2.30 benchmark" [ref=f1e1059]:
+                      - generic [ref=f1e1060]: "2.30"
+                      - text: benchmark
+                    - cell "3.81 benchmark" [ref=f1e1061]:
+                      - generic [ref=f1e1062]: "3.81"
+                      - text: benchmark
+                    - cell "--21.74% benchmark" [ref=f1e1063]:
+                      - generic [ref=f1e1064]: "--21.74%"
+                      - text: benchmark
+                    - cell "0.00% 3 trades" [ref=f1e1065]:
+                      - generic [ref=f1e1066]: 0.00%
+                      - generic [ref=f1e1067]: 3 trades
+                    - cell "—" [ref=f1e1068]
+                    - cell "—" [ref=f1e1069]
+                    - cell "$0.00 0ms" [ref=f1e1070]:
+                      - generic [ref=f1e1071]: $0.00
+                      - generic [ref=f1e1072]: 0ms
+                    - cell [ref=f1e1073]:
+                      - button "Audit Lineage" [ref=f1e1074] [cursor=pointer]
+                  - row [ref=f1e1075]:
+                    - cell [ref=f1e1076]:
+                      - button "Multi-Asset SMA(20/50) + RSI(14) Multi-Asset independent SMA(20/50) + RSI(14) rule-based strategy" [ref=f1e1077] [cursor=pointer]:
+                        - generic [ref=f1e1079]:
+                          - generic [ref=f1e1080]: Multi-Asset SMA(20/50) + RSI(14)
+                          - paragraph [ref=f1e1082]: Multi-Asset independent SMA(20/50) + RSI(14) rule-based strategy
+                    - cell "81.37% -226.13%" [ref=f1e1083]:
+                      - generic [ref=f1e1084]: 81.37%
+                      - generic [ref=f1e1085]: "-226.13%"
+                    - cell "34.83% -67.60%" [ref=f1e1086]:
+                      - generic [ref=f1e1087]: 34.83%
+                      - generic [ref=f1e1088]: "-67.60%"
+                    - cell "1.47 -0.83" [ref=f1e1089]:
+                      - generic [ref=f1e1090]: "1.47"
+                      - generic [ref=f1e1091]: "-0.83"
+                    - cell "2.38 -1.43" [ref=f1e1092]:
+                      - generic [ref=f1e1093]: "2.38"
+                      - generic [ref=f1e1094]: "-1.43"
+                    - cell "--20.34% +1.40% Δ" [ref=f1e1095]:
+                      - generic [ref=f1e1096]: "--20.34%"
+                      - generic [ref=f1e1097]: +1.40% Δ
+                    - cell "59.13% 238 trades" [ref=f1e1098]:
+                      - generic [ref=f1e1099]: 59.13%
+                      - generic [ref=f1e1100]: 238 trades
+                    - cell "—" [ref=f1e1101]
+                    - cell "—" [ref=f1e1102]
+                    - cell "$0.00 0ms" [ref=f1e1103]:
+                      - generic [ref=f1e1104]: $0.00
+                      - generic [ref=f1e1105]: 0ms
+                    - cell [ref=f1e1106]:
+                      - button "Audit Lineage" [ref=f1e1107] [cursor=pointer]
+                  - row [ref=f1e1108]:
+                    - cell [ref=f1e1109]:
+                      - button "Multi-Asset Committee (Debate ON) Multi-Asset Committee with conditional debate synthesis & conviction-weighted allocation" [ref=f1e1110] [cursor=pointer]:
+                        - generic [ref=f1e1112]:
+                          - generic [ref=f1e1113]: Multi-Asset Committee (Debate ON)
+                          - paragraph [ref=f1e1115]: Multi-Asset Committee with conditional debate synthesis & conviction-weighted allocation
+                    - cell "145.17% -162.34%" [ref=f1e1116]:
+                      - generic [ref=f1e1117]: 145.17%
+                      - generic [ref=f1e1118]: "-162.34%"
+                    - cell "56.86% -45.57%" [ref=f1e1119]:
+                      - generic [ref=f1e1120]: 56.86%
+                      - generic [ref=f1e1121]: "-45.57%"
+                    - cell "2.11 -0.19" [ref=f1e1122]:
+                      - generic [ref=f1e1123]: "2.11"
+                      - generic [ref=f1e1124]: "-0.19"
+                    - cell "3.50 -0.30" [ref=f1e1125]:
+                      - generic [ref=f1e1126]: "3.50"
+                      - generic [ref=f1e1127]: "-0.30"
+                    - cell "--14.90% +6.83% Δ" [ref=f1e1128]:
+                      - generic [ref=f1e1129]: "--14.90%"
+                      - generic [ref=f1e1130]: +6.83% Δ
+                    - cell "70.71% 1013 trades" [ref=f1e1131]:
+                      - generic [ref=f1e1132]: 70.71%
+                      - generic [ref=f1e1133]: 1013 trades
+                    - cell "—" [ref=f1e1134]
+                    - cell "—" [ref=f1e1135]
+                    - cell "$0.00 1ms (1% fb)" [ref=f1e1136]:
+                      - generic [ref=f1e1137]: $0.00
+                      - generic [ref=f1e1138]: 1ms (1% fb)
+                    - cell [ref=f1e1139]:
+                      - button "Audit Lineage" [ref=f1e1140] [cursor=pointer]
+                  - row [ref=f1e1141]:
+                    - cell [ref=f1e1142]:
+                      - button "Multi-Asset Committee (Debate OFF / Ablation) Multi-Asset Committee with neutral fallback ablation on specialist disagreement" [ref=f1e1143] [cursor=pointer]:
+                        - generic [ref=f1e1145]:
+                          - generic [ref=f1e1146]: Multi-Asset Committee (Debate OFF / Ablation)
+                          - paragraph [ref=f1e1148]: Multi-Asset Committee with neutral fallback ablation on specialist disagreement
+                    - cell "114.98% -192.53%" [ref=f1e1149]:
+                      - generic [ref=f1e1150]: 114.98%
+                      - generic [ref=f1e1151]: "-192.53%"
+                    - cell "46.84% -55.59%" [ref=f1e1152]:
+                      - generic [ref=f1e1153]: 46.84%
+                      - generic [ref=f1e1154]: "-55.59%"
+                    - cell "1.80 -0.50" [ref=f1e1155]:
+                      - generic [ref=f1e1156]: "1.80"
+                      - generic [ref=f1e1157]: "-0.50"
+                    - cell "3.13 -0.68" [ref=f1e1158]:
+                      - generic [ref=f1e1159]: "3.13"
+                      - generic [ref=f1e1160]: "-0.68"
+                    - cell "--18.37% +3.37% Δ" [ref=f1e1161]:
+                      - generic [ref=f1e1162]: "--18.37%"
+                      - generic [ref=f1e1163]: +3.37% Δ
+                    - cell "69.63% 764 trades" [ref=f1e1164]:
+                      - generic [ref=f1e1165]: 69.63%
+                      - generic [ref=f1e1166]: 764 trades
+                    - cell "—" [ref=f1e1167]
+                    - cell "—" [ref=f1e1168]
+                    - cell "$0.00 1ms (1% fb)" [ref=f1e1169]:
+                      - generic [ref=f1e1170]: $0.00
+                      - generic [ref=f1e1171]: 1ms (1% fb)
+                    - cell [ref=f1e1172]:
+                      - button "Audit Lineage" [ref=f1e1173] [cursor=pointer]
+                  - row [ref=f1e1174]:
+                    - cell [ref=f1e1175]:
+                      - button "Multi-Asset Committee + Polymarket Multi-Asset Committee with Polymarket macro prediction probability curves" [ref=f1e1176] [cursor=pointer]:
+                        - generic [ref=f1e1178]:
+                          - generic [ref=f1e1179]: Multi-Asset Committee + Polymarket
+                          - paragraph [ref=f1e1181]: Multi-Asset Committee with Polymarket macro prediction probability curves
+                    - cell "67.77% -239.74%" [ref=f1e1182]:
+                      - generic [ref=f1e1183]: 67.77%
+                      - generic [ref=f1e1184]: "-239.74%"
+                    - cell "29.66% -72.77%" [ref=f1e1185]:
+                      - generic [ref=f1e1186]: 29.66%
+                      - generic [ref=f1e1187]: "-72.77%"
+                    - cell "1.29 -1.01" [ref=f1e1188]:
+                      - generic [ref=f1e1189]: "1.29"
+                      - generic [ref=f1e1190]: "-1.01"
+                    - cell "1.99 -1.82" [ref=f1e1191]:
+                      - generic [ref=f1e1192]: "1.99"
+                      - generic [ref=f1e1193]: "-1.82"
+                    - cell "--20.12% +1.62% Δ" [ref=f1e1194]:
+                      - generic [ref=f1e1195]: "--20.12%"
+                      - generic [ref=f1e1196]: +1.62% Δ
+                    - cell "65.48% 797 trades" [ref=f1e1197]:
+                      - generic [ref=f1e1198]: 65.48%
+                      - generic [ref=f1e1199]: 797 trades
+                    - cell "—" [ref=f1e1200]
+                    - cell "—" [ref=f1e1201]
+                    - cell "$0.00 1ms (1% fb)" [ref=f1e1202]:
+                      - generic [ref=f1e1203]: $0.00
+                      - generic [ref=f1e1204]: 1ms (1% fb)
+                    - cell [ref=f1e1205]:
+                      - button "Audit Lineage" [ref=f1e1206] [cursor=pointer]
+  - generic [aria-hidden] [ref=f1e156]: $0
+```

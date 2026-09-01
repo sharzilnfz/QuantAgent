@@ -60,6 +60,7 @@ export class AlpacaPaperClient implements IAlpacaClient {
 
     const res = await fetch(url, {
       ...options,
+      signal: options.signal ?? AbortSignal.timeout(5000),
       headers,
     });
 
