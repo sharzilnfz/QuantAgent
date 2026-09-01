@@ -3,11 +3,14 @@
  * Agent and Committee configuration service with in-memory persistence and default fallback.
  */
 
+import type { z } from "zod";
 import {
   type CommitteeSystemConfig,
   CommitteeSystemConfig as CommitteeSystemConfigSchema,
   DEFAULT_COMMITTEE_CONFIG,
 } from "@committee/contracts";
+
+type DeepPartialConfig = z.infer<ReturnType<typeof CommitteeSystemConfigSchema.deepPartial>>;
 
 export class AgentConfigService {
   private userConfigs = new Map<string, CommitteeSystemConfig>();
@@ -30,7 +33,7 @@ export class AgentConfigService {
    * Updates configuration for a user.
    */
   async updateConfig(
-    newConfig: Partial<CommitteeSystemConfig>,
+    newConfig: DeepPartialConfig,
     userId?: string,
   ): Promise<CommitteeSystemConfig> {
     const current = await this.getConfig(userId);
