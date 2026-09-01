@@ -1,0 +1,99 @@
+### Page
+- Page URL: http://localhost:5173/lineage?symbol=AAPL&strategy=multi-agent-debate-on
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f13e3]:
+  - complementary [ref=f13e4]:
+    - generic [ref=f13e5]: The Committee
+    - navigation "Primary" [ref=f13e9]:
+      - list [ref=f13e10]:
+        - listitem [ref=f13e11]:
+          - link "Portfolio" [ref=f13e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f13e15]:
+          - link "Observatory" [ref=f13e16] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f13e20]:
+          - link "Lineage" [ref=f13e21] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f13e24]:
+          - link "Agent Config" [ref=f13e25] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f13e29]:
+          - link "Signals" [ref=f13e30] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f13e33]:
+    - banner [ref=f13e34]:
+      - generic [ref=f13e35]:
+        - generic [ref=f13e36]:
+          - paragraph [ref=f13e37]: demo@committee.local
+          - paragraph [ref=f13e38]: Paper trading
+        - button "Switch to light theme" [ref=f13e39] [cursor=pointer]
+        - button "Log out" [ref=f13e43] [cursor=pointer]
+    - main [ref=f13e44]:
+      - generic [ref=f13e45]:
+        - generic [ref=f13e46]:
+          - generic [ref=f13e47]:
+            - generic [ref=f13e48]:
+              - heading "Decision Provenance Inspector" [level=1] [ref=f13e49]
+              - generic [ref=f13e50]: Audit DAG
+            - paragraph [ref=f13e51]: Audited point-in-time inputs, multi-agent debate transcripts, and LLM completions.
+          - generic [ref=f13e52]:
+            - generic [ref=f13e53]:
+              - button "AAPL" [ref=f13e54] [cursor=pointer]
+              - button "NVDA" [ref=f13e55] [cursor=pointer]
+              - button "SPY" [ref=f13e56] [cursor=pointer]
+            - link [ref=f13e57] [cursor=pointer]:
+              - /url: /observatory
+              - button "← Back to Observatory" [ref=f13e58]
+        - generic [ref=f13e59]:
+          - generic [ref=f13e60]:
+            - generic [ref=f13e61]:
+              - generic [ref=f13e62]:
+                - generic [ref=f13e63]: "Strategy:"
+                - generic [ref=f13e64]:
+                  - button "buy-and-hold" [ref=f13e65] [cursor=pointer]
+                  - button "sma-rsi" [ref=f13e66] [cursor=pointer]
+                  - button "multi-agent-debate-on" [ref=f13e67] [cursor=pointer]
+                  - button "multi-agent-debate-off" [ref=f13e68] [cursor=pointer]
+                  - button "multi-agent-polymarket" [ref=f13e69] [cursor=pointer]
+              - generic [ref=f13e70]: "Keyboard: ← / → to step bars"
+            - generic [ref=f13e71]:
+              - generic [ref=f13e72]:
+                - generic [ref=f13e73]: Cost / 100 Decisions
+                - generic [ref=f13e74]: $0.0000
+                - generic [ref=f13e75]: "Total: $0.0000"
+              - generic [ref=f13e76]:
+                - generic [ref=f13e77]: Median Latency
+                - generic [ref=f13e78]: 1 ms
+                - generic [ref=f13e79]: Per inference step
+              - generic [ref=f13e80]:
+                - generic [ref=f13e81]: Fallback / Error Rate
+                - generic [ref=f13e82]: 0.9%
+                - generic [ref=f13e83]: Schema rejections
+              - generic [ref=f13e84]:
+                - generic [ref=f13e85]: Debate Reconciliations
+                - generic [ref=f13e86]: 169 / 502
+                - generic [ref=f13e87]: Disagreements resolved
+          - generic [ref=f13e88]:
+            - generic [ref=f13e89]:
+              - button "← Prev Bar" [ref=f13e90] [cursor=pointer]
+              - generic [ref=f13e91]:
+                - text: Bar
+                - strong [ref=f13e92]: "502"
+                - text: of 502
+              - button "Next Bar →" [disabled] [ref=f13e93]
+            - generic [ref=f13e94]:
+              - generic [ref=f13e95]: T = 2024-12-31T21:00:00.000Z
+              - generic [ref=f13e96]: bullish (53% CONF)
+              - generic [ref=f13e97]: ⚡ Consensus Fast-Pass
+          - generic [ref=f13e98]:
+            - button "1. Multi-Agent Debate & Stances" [ref=f13e99] [cursor=pointer]
+            - button "2. Point-in-Time Inputs (OHLCV, Indicators, News, SEC XBRL)" [ref=f13e100] [cursor=pointer]
+            - button "3. Prompts & LLM Completions" [ref=f13e101] [cursor=pointer]
+            - button "4. Execution Fill" [active] [ref=f13e102] [cursor=pointer]
+          - generic [ref=f13e104]:
+            - heading "Execution Fill Telemetry" [level=4] [ref=f13e105]
+            - generic [ref=f13e106]: No order execution filled at this exact decision step (stance remained steady or cash allocated).
+```

@@ -246,7 +246,7 @@ Environment variables are key-value pairs set OUTSIDE the code (in `.env` files,
 
 ## Workspaces (The Monorepo Tool)
 
-### [pnpm-workspace.yaml](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/pnpm-workspace.yaml)
+### [pnpm-workspace.yaml](../../pnpm-workspace.yaml)
 
 ```yaml
 packages:
@@ -1540,6 +1540,6 @@ All tested by:  Vitest + Testing Library
 > 🧰 **You now have a working understanding of every technology in the stack.**
 > Go back to the masterclass to see how they all work together:
 >
-> [Part 1: Big Picture, Database, Contracts](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part1.md) ·
-> [Part 2: Auth, Ingestion, Indicators](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part2.md) ·
-> [Part 3: Agents, Dashboard, Summary](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part3.md)
+> [Part 1: Big Picture, Database, Contracts](./masterclass-part1.md) ·
+> [Part 2: Auth, Ingestion, Indicators](./masterclass-part2.md) ·
+> [Part 3: Agents, Dashboard, Summary](./masterclass-part3.md)

@@ -1,0 +1,17 @@
+{
+  "step": "18-Auth-Logout",
+  "method": "POST",
+  "url": "/auth/logout",
+  "statusCode": 204,
+  "expectedStatus": 204,
+  "passed": true,
+  "durationMs": 4.76,
+  "timestamp": "2026-09-01T16:38:31.678Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "set-cookie": "committee_session=; Max-Age=0; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax",
+    "date": "Tue, 01 Sep 2026 16:38:31 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": ""
+}

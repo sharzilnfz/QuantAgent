@@ -25,6 +25,10 @@ export async function resolveAlpacaClient(userId: string): Promise<IAlpacaClient
     });
   }
 
+  if (process.env.NODE_ENV === "test" || process.env.VITEST) {
+    return sharedMockClient;
+  }
+
   // Fallback to environment variables if provided
   const envKey = process.env.ALPACA_KEY;
   const envSecret = process.env.ALPACA_SECRET;

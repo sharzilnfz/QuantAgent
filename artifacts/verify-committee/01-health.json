@@ -1,0 +1,20 @@
+{
+  "step": "01-Health-Check",
+  "method": "GET",
+  "url": "/health",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 10.89,
+  "timestamp": "2026-09-01T16:38:21.456Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "15",
+    "date": "Tue, 01 Sep 2026 16:38:21 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "status": "ok"
+  }
+}

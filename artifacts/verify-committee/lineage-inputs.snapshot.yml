@@ -1,0 +1,268 @@
+### Page
+- Page URL: http://localhost:5173/lineage?symbol=AAPL&strategy=multi-agent-debate-on
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f9e3]:
+  - complementary [ref=f9e4]:
+    - generic [ref=f9e5]: The Committee
+    - navigation "Primary" [ref=f9e9]:
+      - list [ref=f9e10]:
+        - listitem [ref=f9e11]:
+          - link "Portfolio" [ref=f9e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f9e15]:
+          - link "Observatory" [ref=f9e16] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f9e20]:
+          - link "Lineage" [ref=f9e21] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f9e24]:
+          - link "Agent Config" [ref=f9e25] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f9e29]:
+          - link "Signals" [ref=f9e30] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f9e33]:
+    - banner [ref=f9e34]:
+      - generic [ref=f9e35]:
+        - generic [ref=f9e36]:
+          - paragraph [ref=f9e37]: demo@committee.local
+          - paragraph [ref=f9e38]: Paper trading
+        - button "Switch to dark theme" [ref=f9e39] [cursor=pointer]
+        - button "Log out" [ref=f9e42] [cursor=pointer]
+    - main [ref=f9e43]:
+      - generic [ref=f9e44]:
+        - generic [ref=f9e45]:
+          - generic [ref=f9e46]:
+            - generic [ref=f9e47]:
+              - heading "Decision Provenance Inspector" [level=1] [ref=f9e48]
+              - generic [ref=f9e49]: Audit DAG
+            - paragraph [ref=f9e50]: Audited point-in-time inputs, multi-agent debate transcripts, and LLM completions.
+          - generic [ref=f9e51]:
+            - generic [ref=f9e52]:
+              - button "AAPL" [ref=f9e53] [cursor=pointer]
+              - button "NVDA" [ref=f9e54] [cursor=pointer]
+              - button "SPY" [ref=f9e55] [cursor=pointer]
+            - link [ref=f9e56] [cursor=pointer]:
+              - /url: /observatory
+              - button "← Back to Observatory" [ref=f9e57]
+        - generic [ref=f9e58]:
+          - generic [ref=f9e59]:
+            - generic [ref=f9e60]:
+              - generic [ref=f9e61]:
+                - generic [ref=f9e62]: "Strategy:"
+                - generic [ref=f9e63]:
+                  - button "buy-and-hold" [ref=f9e64] [cursor=pointer]
+                  - button "sma-rsi" [ref=f9e65] [cursor=pointer]
+                  - button "multi-agent-debate-on" [ref=f9e66] [cursor=pointer]
+                  - button "multi-agent-debate-off" [ref=f9e67] [cursor=pointer]
+                  - button "multi-agent-polymarket" [ref=f9e68] [cursor=pointer]
+              - generic [ref=f9e69]: "Keyboard: ← / → to step bars"
+            - generic [ref=f9e70]:
+              - generic [ref=f9e71]:
+                - generic [ref=f9e72]: Cost / 100 Decisions
+                - generic [ref=f9e73]: $0.0000
+                - generic [ref=f9e74]: "Total: $0.0000"
+              - generic [ref=f9e75]:
+                - generic [ref=f9e76]: Median Latency
+                - generic [ref=f9e77]: 1 ms
+                - generic [ref=f9e78]: Per inference step
+              - generic [ref=f9e79]:
+                - generic [ref=f9e80]: Fallback / Error Rate
+                - generic [ref=f9e81]: 0.9%
+                - generic [ref=f9e82]: Schema rejections
+              - generic [ref=f9e83]:
+                - generic [ref=f9e84]: Debate Reconciliations
+                - generic [ref=f9e85]: 169 / 502
+                - generic [ref=f9e86]: Disagreements resolved
+          - generic [ref=f9e87]:
+            - generic [ref=f9e88]:
+              - button "← Prev Bar" [ref=f9e89] [cursor=pointer]
+              - generic [ref=f9e90]:
+                - text: Bar
+                - strong [ref=f9e91]: "502"
+                - text: of 502
+              - button "Next Bar →" [disabled] [ref=f9e92]
+            - generic [ref=f9e93]:
+              - generic [ref=f9e94]: T = 2024-12-31T21:00:00.000Z
+              - generic [ref=f9e95]: bullish (53% CONF)
+              - generic [ref=f9e96]: ⚡ Consensus Fast-Pass
+          - generic [ref=f9e97]:
+            - button "1. Multi-Agent Debate & Stances" [ref=f9e98] [cursor=pointer]
+            - button "2. Point-in-Time Inputs (OHLCV, Indicators, News, SEC XBRL)" [active] [ref=f9e99] [cursor=pointer]
+            - button "3. Prompts & LLM Completions" [ref=f9e100] [cursor=pointer]
+            - button "4. Execution Fill" [ref=f9e101] [cursor=pointer]
+          - generic [ref=f9e258]:
+            - generic [ref=f9e259]:
+              - generic [ref=f9e260]:
+                - heading "OHLCV Bar Window (Input State ≤ Jan 1)" [level=4] [ref=f9e261]
+                - generic [ref=f9e262]: "Total Bars in Window: 20"
+              - table [ref=f9e264]:
+                - rowgroup [ref=f9e265]:
+                  - row [ref=f9e266]:
+                    - columnheader "Timestamp" [ref=f9e267]
+                    - columnheader "Open" [ref=f9e268]
+                    - columnheader "High" [ref=f9e269]
+                    - columnheader "Low" [ref=f9e270]
+                    - columnheader "Close" [ref=f9e271]
+                    - columnheader "Volume" [ref=f9e272]
+                - rowgroup [ref=f9e273]:
+                  - row [ref=f9e274]:
+                    - cell "2024-12-17T21:00:00.000Z" [ref=f9e275]
+                    - cell "$250.08" [ref=f9e276]
+                    - cell "$253.83" [ref=f9e277]
+                    - cell "$249.78" [ref=f9e278]
+                    - cell "$253.48" [ref=f9e279]
+                    - cell "51,356,400" [ref=f9e280]
+                  - row [ref=f9e281]:
+                    - cell "2024-12-18T21:00:00.000Z" [ref=f9e282]
+                    - cell "$252.16" [ref=f9e283]
+                    - cell "$254.28" [ref=f9e284]
+                    - cell "$247.74" [ref=f9e285]
+                    - cell "$248.05" [ref=f9e286]
+                    - cell "56,774,100" [ref=f9e287]
+                  - row [ref=f9e288]:
+                    - cell "2024-12-19T21:00:00.000Z" [ref=f9e289]
+                    - cell "$247.50" [ref=f9e290]
+                    - cell "$252.00" [ref=f9e291]
+                    - cell "$247.09" [ref=f9e292]
+                    - cell "$249.79" [ref=f9e293]
+                    - cell "60,882,300" [ref=f9e294]
+                  - row [ref=f9e295]:
+                    - cell "2024-12-20T21:00:00.000Z" [ref=f9e296]
+                    - cell "$248.04" [ref=f9e297]
+                    - cell "$255.00" [ref=f9e298]
+                    - cell "$245.69" [ref=f9e299]
+                    - cell "$254.49" [ref=f9e300]
+                    - cell "147,495,300" [ref=f9e301]
+                  - row [ref=f9e302]:
+                    - cell "2024-12-23T21:00:00.000Z" [ref=f9e303]
+                    - cell "$254.77" [ref=f9e304]
+                    - cell "$255.65" [ref=f9e305]
+                    - cell "$253.45" [ref=f9e306]
+                    - cell "$255.27" [ref=f9e307]
+                    - cell "40,858,800" [ref=f9e308]
+                  - row [ref=f9e309]:
+                    - cell "2024-12-24T21:00:00.000Z" [ref=f9e310]
+                    - cell "$255.49" [ref=f9e311]
+                    - cell "$258.21" [ref=f9e312]
+                    - cell "$255.29" [ref=f9e313]
+                    - cell "$258.20" [ref=f9e314]
+                    - cell "23,234,700" [ref=f9e315]
+                  - row [ref=f9e316]:
+                    - cell "2024-12-26T21:00:00.000Z" [ref=f9e317]
+                    - cell "$258.19" [ref=f9e318]
+                    - cell "$260.10" [ref=f9e319]
+                    - cell "$257.63" [ref=f9e320]
+                    - cell "$259.02" [ref=f9e321]
+                    - cell "27,237,100" [ref=f9e322]
+                  - row [ref=f9e323]:
+                    - cell "2024-12-27T21:00:00.000Z" [ref=f9e324]
+                    - cell "$257.83" [ref=f9e325]
+                    - cell "$258.70" [ref=f9e326]
+                    - cell "$253.06" [ref=f9e327]
+                    - cell "$255.59" [ref=f9e328]
+                    - cell "42,355,300" [ref=f9e329]
+                  - row [ref=f9e330]:
+                    - cell "2024-12-30T21:00:00.000Z" [ref=f9e331]
+                    - cell "$252.23" [ref=f9e332]
+                    - cell "$253.50" [ref=f9e333]
+                    - cell "$250.75" [ref=f9e334]
+                    - cell "$252.20" [ref=f9e335]
+                    - cell "35,557,500" [ref=f9e336]
+                  - row [ref=f9e337]:
+                    - cell "2024-12-31T21:00:00.000Z ★ [T]" [ref=f9e338]
+                    - cell "$252.44" [ref=f9e339]
+                    - cell "$253.28" [ref=f9e340]
+                    - cell "$249.43" [ref=f9e341]
+                    - cell "$250.42" [ref=f9e342]
+                    - cell "39,480,700" [ref=f9e343]
+            - generic [ref=f9e344]:
+              - generic [ref=f9e345]:
+                - heading "SEC EDGAR XBRL Filings (Strictly Filtered to filedAt ≤ 2024-12-31T21:00:00.000Z)" [level=4] [ref=f9e346]
+                - generic [ref=f9e347]: "Disclosures: 8"
+              - generic [ref=f9e348]:
+                - generic [ref=f9e349]:
+                  - generic [ref=f9e350]: SEC Form 10-K (2024 FY)
+                  - generic [ref=f9e351]: "Filed: 2024-11-01 (Period End: 2024-09-28)"
+                - generic [ref=f9e352]:
+                  - generic [ref=f9e353]:
+                    - generic [ref=f9e354]: "Revenue:"
+                    - generic [ref=f9e355]: $94.93B
+                  - generic [ref=f9e356]:
+                    - generic [ref=f9e357]: "YoY Revenue Growth:"
+                    - generic [ref=f9e358]: 6.1%
+                  - generic [ref=f9e359]:
+                    - generic [ref=f9e360]: "Operating Margin:"
+                    - generic [ref=f9e361]: 31.2%
+                  - generic [ref=f9e362]:
+                    - generic [ref=f9e363]: "Free Cash Flow:"
+                    - generic [ref=f9e364]: $24.40B
+                  - generic [ref=f9e365]:
+                    - generic [ref=f9e366]: "Net Margin:"
+                    - generic [ref=f9e367]: 15.5%
+                  - generic [ref=f9e368]:
+                    - generic [ref=f9e369]: "Debt / Equity:"
+                    - generic [ref=f9e370]: "5.41"
+            - generic [ref=f9e371]:
+              - generic [ref=f9e372]:
+                - heading "Benzinga News Stream (Strictly Filtered to publishedAt ≤ 2024-12-31T21:00:00.000Z)" [level=4] [ref=f9e373]
+                - generic [ref=f9e374]: "Items: 11"
+              - generic [ref=f9e375]:
+                - generic [ref=f9e376]:
+                  - generic [ref=f9e377]:
+                    - generic [ref=f9e378]: Fed raises interest rates by 25 basis points, signals ongoing increases
+                    - generic [ref=f9e379]: 2023-02-01T19:00:00Z
+                  - paragraph [ref=f9e380]: The Federal Reserve raised its benchmark interest rate by a quarter percentage point and noted inflation remains elevated.
+                - generic [ref=f9e381]:
+                  - generic [ref=f9e382]:
+                    - generic [ref=f9e383]: Apple reports Q1 FY23 revenue of $117.2 billion, down 5% year-over-year
+                    - generic [ref=f9e384]: 2023-02-02T21:30:00Z
+                  - paragraph [ref=f9e385]: Apple faced foreign exchange headwinds and supply constraints on iPhone 14 Pro during the holiday quarter.
+                - generic [ref=f9e386]:
+                  - generic [ref=f9e387]:
+                    - generic [ref=f9e388]: Apple reports Q2 results with record iPhone revenue and services growth
+                    - generic [ref=f9e389]: 2023-05-04T20:30:00Z
+                  - paragraph [ref=f9e390]: Apple beats Wall Street estimates driven by emerging markets strength and iPhone 14 momentum.
+                - generic [ref=f9e391]:
+                  - generic [ref=f9e392]:
+                    - generic [ref=f9e393]: Apple unveils Vision Pro spatial computer at WWDC23
+                    - generic [ref=f9e394]: 2023-06-05T18:00:00Z
+                  - paragraph [ref=f9e395]: Apple enters spatial computing category with high-resolution micro-OLED headset priced at $3,499.
+                - generic [ref=f9e396]:
+                  - generic [ref=f9e397]:
+                    - generic [ref=f9e398]: Apple launches iPhone 15 Pro with titanium frame and 3nm A17 Pro chip
+                    - generic [ref=f9e399]: 2023-09-12T18:30:00Z
+                  - paragraph [ref=f9e400]: New premium iPhones feature USB-C connectivity, lighter design, and enhanced camera zoom.
+                - generic [ref=f9e401]:
+                  - generic [ref=f9e402]:
+                    - generic [ref=f9e403]: Fed holds rates steady, dot plot projects three rate cuts in 2024
+                    - generic [ref=f9e404]: 2023-12-13T19:30:00Z
+                  - paragraph [ref=f9e405]: Chairman Jerome Powell indicates monetary policy easing is coming into view as inflation moderates.
+                - generic [ref=f9e406]:
+                  - generic [ref=f9e407]:
+                    - generic [ref=f9e408]: Apple returns to revenue growth in Q1 FY24 with $119.6B, Vision Pro launches
+                    - generic [ref=f9e409]: 2024-02-01T21:30:00Z
+                  - paragraph [ref=f9e410]: iPhone sales rise 6% while China revenue softens amid competitive domestic offerings.
+                - generic [ref=f9e411]:
+                  - generic [ref=f9e412]:
+                    - generic [ref=f9e413]: Apple authorizes historic $110 billion share buyback program, raises dividend
+                    - generic [ref=f9e414]: 2024-05-02T20:30:00Z
+                  - paragraph [ref=f9e415]: Largest share repurchase authorization in corporate history announced alongside Q2 results.
+                - generic [ref=f9e416]:
+                  - generic [ref=f9e417]:
+                    - generic [ref=f9e418]: Apple announces 'Apple Intelligence' personal AI system integrated across iOS 18 and macOS
+                    - generic [ref=f9e419]: 2024-06-10T18:30:00Z
+                  - paragraph [ref=f9e420]: Partnership with OpenAI integrates ChatGPT alongside privacy-focused on-device foundation models.
+                - generic [ref=f9e421]:
+                  - generic [ref=f9e422]:
+                    - generic [ref=f9e423]: Federal Reserve cuts interest rates by 50 basis points, beginning easing cycle
+                    - generic [ref=f9e424]: 2024-09-18T18:00:00Z
+                  - paragraph [ref=f9e425]: Fed makes aggressive first rate cut in four years, recalibrating policy toward labor market preservation.
+                - generic [ref=f9e426]:
+                  - generic [ref=f9e427]:
+                    - generic [ref=f9e428]: Apple reports Q4 revenue of $94.9B, up 6% YoY, driven by iPhone 16 demand
+                    - generic [ref=f9e429]: 2024-10-31T20:30:00Z
+                  - paragraph [ref=f9e430]: Services revenue sets new all-time record of $25.0B as active device installed base expands.
+```

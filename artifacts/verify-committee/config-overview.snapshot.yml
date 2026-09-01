@@ -1,0 +1,187 @@
+### Page
+- Page URL: http://localhost:5173/config
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f23e3]:
+  - complementary [ref=f23e4]:
+    - generic [ref=f23e5]: The Committee
+    - navigation "Primary" [ref=f23e9]:
+      - list [ref=f23e10]:
+        - listitem [ref=f23e11]:
+          - link "Portfolio" [ref=f23e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f23e15]:
+          - link "Observatory" [ref=f23e16] [cursor=pointer]:
+            - /url: /observatory
+        - listitem [ref=f23e20]:
+          - link "Lineage" [ref=f23e21] [cursor=pointer]:
+            - /url: /lineage
+        - listitem [ref=f23e24]:
+          - link "Agent Config" [ref=f23e25] [cursor=pointer]:
+            - /url: /config
+        - listitem [ref=f23e29]:
+          - link "Signals" [ref=f23e30] [cursor=pointer]:
+            - /url: /signals
+  - generic [ref=f23e33]:
+    - banner [ref=f23e34]:
+      - generic [ref=f23e35]:
+        - generic [ref=f23e36]:
+          - paragraph [ref=f23e37]: demo@committee.local
+          - paragraph [ref=f23e38]: Paper trading
+        - button "Switch to light theme" [ref=f23e39] [cursor=pointer]
+        - button "Log out" [ref=f23e43] [cursor=pointer]
+    - main [ref=f23e44]:
+      - generic [ref=f23e45]:
+        - generic [ref=f23e46]:
+          - generic [ref=f23e47]:
+            - heading "Agent Committee Configuration" [level=1] [ref=f23e48]
+            - paragraph [ref=f23e49]: Configure specialist weights, consensus debate policies, deterministic risk gates, and alerts.
+          - generic [ref=f23e50]:
+            - button "Reset Defaults" [ref=f23e51] [cursor=pointer]
+            - button "Save Changes" [ref=f23e52] [cursor=pointer]
+        - generic [ref=f23e53]:
+          - heading "1. Specialist Agent Roster" [level=2] [ref=f23e54]
+          - generic [ref=f23e55]:
+            - generic [ref=f23e56]:
+              - generic [ref=f23e57]:
+                - generic [ref=f23e58]:
+                  - generic [ref=f23e59]: Technical Analyst Specialist
+                  - generic [ref=f23e60]: Deterministic L1
+                - paragraph [ref=f23e61]: Evaluates verified mathematical indicators (Wilder RSI, EMA, Bollinger Bands, MACD).
+              - generic [ref=f23e62]:
+                - generic [ref=f23e63]:
+                  - generic [ref=f23e64]: Specialist Active
+                  - switch [checked] [ref=f23e65] [cursor=pointer]
+                - generic [ref=f23e66]:
+                  - generic [ref=f23e67]:
+                    - generic [ref=f23e68]: Weight Voting Multiplier
+                    - generic [ref=f23e69]: 1.0x
+                  - slider [ref=f23e70]: "1"
+                - generic [ref=f23e71]:
+                  - generic [ref=f23e72]:
+                    - generic [ref=f23e73]: Temperature (Sampling)
+                    - generic [ref=f23e74]: "0.10"
+                  - slider [ref=f23e75]: "0.1"
+            - generic [ref=f23e76]:
+              - generic [ref=f23e77]:
+                - generic [ref=f23e78]:
+                  - generic [ref=f23e79]: Sentiment Specialist
+                  - generic [ref=f23e80]: News Archive
+                - paragraph [ref=f23e81]: Analyzes timestamped Benzinga news archive strictly bounded by decision timestamp.
+              - generic [ref=f23e82]:
+                - generic [ref=f23e83]:
+                  - generic [ref=f23e84]: Specialist Active
+                  - switch [checked] [ref=f23e85] [cursor=pointer]
+                - generic [ref=f23e86]:
+                  - generic [ref=f23e87]:
+                    - generic [ref=f23e88]: Weight Voting Multiplier
+                    - generic [ref=f23e89]: 1.0x
+                  - slider [ref=f23e90]: "1"
+                - generic [ref=f23e91]:
+                  - generic [ref=f23e92]:
+                    - generic [ref=f23e93]: Temperature (Sampling)
+                    - generic [ref=f23e94]: "0.20"
+                  - slider [ref=f23e95]: "0.2"
+            - generic [ref=f23e96]:
+              - generic [ref=f23e97]:
+                - generic [ref=f23e98]:
+                  - generic [ref=f23e99]: Fundamental Specialist
+                  - generic [ref=f23e100]: SEC EDGAR
+                - paragraph [ref=f23e101]: Evaluates point-in-time SEC EDGAR XBRL corporate financial filings and balance sheets.
+              - generic [ref=f23e102]:
+                - generic [ref=f23e103]:
+                  - generic [ref=f23e104]: Specialist Active
+                  - switch [checked] [ref=f23e105] [cursor=pointer]
+                - generic [ref=f23e106]:
+                  - generic [ref=f23e107]:
+                    - generic [ref=f23e108]: Weight Voting Multiplier
+                    - generic [ref=f23e109]: 1.0x
+                  - slider [ref=f23e110]: "1"
+                - generic [ref=f23e111]:
+                  - generic [ref=f23e112]:
+                    - generic [ref=f23e113]: Temperature (Sampling)
+                    - generic [ref=f23e114]: "0.10"
+                  - slider [ref=f23e115]: "0.1"
+            - generic [ref=f23e116]:
+              - generic [ref=f23e117]:
+                - generic [ref=f23e118]:
+                  - generic [ref=f23e119]: Polymarket Macro Specialist
+                  - generic [ref=f23e120]: Gamma API
+                - paragraph [ref=f23e121]: Analyzes crowdsourced prediction market probability curves on macroeconomic events.
+              - generic [ref=f23e122]:
+                - generic [ref=f23e123]:
+                  - generic [ref=f23e124]: Specialist Active
+                  - switch [checked] [ref=f23e125] [cursor=pointer]
+                - generic [ref=f23e126]:
+                  - generic [ref=f23e127]:
+                    - generic [ref=f23e128]: Weight Voting Multiplier
+                    - generic [ref=f23e129]: 0.8x
+                  - slider [ref=f23e130]: "0.8"
+                - generic [ref=f23e131]:
+                  - generic [ref=f23e132]:
+                    - generic [ref=f23e133]: Temperature (Sampling)
+                    - generic [ref=f23e134]: "0.10"
+                  - slider [ref=f23e135]: "0.1"
+        - generic [ref=f23e136]:
+          - generic [ref=f23e137]:
+            - generic [ref=f23e139]:
+              - heading "Deterministic Risk Gate Guardrails" [level=2] [ref=f23e140]
+              - paragraph [ref=f23e141]: Hard constraints enforced by code, never negotiated by an LLM.
+            - generic [ref=f23e142]:
+              - generic [ref=f23e143]:
+                - generic [ref=f23e144]:
+                  - generic [ref=f23e145]: Max Single-Position Allocation
+                  - generic [ref=f23e146]: 20%
+                - slider "Max Single-Position Allocation" [ref=f23e147]: "20"
+                - paragraph [ref=f23e148]: Maximum portfolio equity allocated to a single asset.
+              - generic [ref=f23e149]:
+                - generic [ref=f23e150]:
+                  - generic [ref=f23e151]: Max Total Portfolio Concentration
+                  - generic [ref=f23e152]: 80%
+                - slider "Max Total Portfolio Concentration" [ref=f23e153]: "80"
+                - paragraph [ref=f23e154]: Total invested capital ceiling before forcing cash preservation.
+              - generic [ref=f23e155]:
+                - generic [ref=f23e156]:
+                  - text: Stop-Loss (%)
+                  - spinbutton "Stop-Loss (%)" [ref=f23e157]: "5"
+                - generic [ref=f23e158]:
+                  - text: Take-Profit (%)
+                  - spinbutton "Take-Profit (%)" [ref=f23e159]: "15"
+              - generic [ref=f23e160]:
+                - text: Human Approval Threshold ($)
+                - spinbutton "Human Approval Threshold ($)" [ref=f23e161]: "10000"
+                - paragraph [ref=f23e162]: Orders exceeding this estimated cost trigger human review.
+          - generic [ref=f23e163]:
+            - generic [ref=f23e165]:
+              - heading "Consensus & Debate Policy" [level=2] [ref=f23e166]
+              - paragraph [ref=f23e167]: Synthesis rules applied when specialists disagree.
+            - generic [ref=f23e168]:
+              - generic [ref=f23e169]:
+                - text: Debate Protocol
+                - combobox "Debate Protocol" [ref=f23e170]:
+                  - option "Majority Fast-Pass (2-of-3 skips LLM synthesis)" [selected]
+                  - option "Conditional Single-Pass Synthesis on Disagreement"
+                  - option "Multi-Round Critique Protocol"
+              - generic [ref=f23e171]:
+                - generic [ref=f23e172]:
+                  - generic [ref=f23e173]: Consensus Agreement Threshold
+                  - generic [ref=f23e174]: 67%
+                - slider "Consensus Agreement Threshold" [ref=f23e175]: "0.65"
+                - paragraph [ref=f23e176]: Minimum specialist directional alignment ratio.
+              - generic [ref=f23e177]:
+                - text: Synthesis Model Tier
+                - combobox "Synthesis Model Tier" [ref=f23e178]:
+                  - option "Cheap Tier (Fast & Economical)"
+                  - option "Standard Tier (Claude 3.5 Sonnet / GPT-4o)" [selected]
+                  - option "Flagship Tier (Claude 3.7 Sonnet / Reasoning)"
+              - generic [ref=f23e179]:
+                - heading "Telegram Bot Alert Preferences" [level=3] [ref=f23e180]
+                - generic [ref=f23e181]:
+                  - generic [ref=f23e182]:
+                    - checkbox "Real-time Trade Signal Alerts" [checked] [ref=f23e183]
+                    - text: Real-time Trade Signal Alerts
+                  - generic [ref=f23e184]:
+                    - checkbox "Daily End-of-Day Summary Recap" [checked] [ref=f23e185]
+                    - text: Daily End-of-Day Summary Recap
+```

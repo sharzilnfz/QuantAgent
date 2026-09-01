@@ -1,0 +1,323 @@
+### Page
+- Page URL: http://localhost:5173/observatory
+- Page Title: The Committee
+### Snapshot
+```yaml
+- generic [ref=f17e1]:
+  - generic [ref=f17e3]:
+    - complementary [ref=f17e4]:
+      - generic [ref=f17e5]: The Committee
+      - navigation "Primary" [ref=f17e9]:
+        - list [ref=f17e10]:
+          - listitem [ref=f17e11]:
+            - link "Portfolio" [ref=f17e12] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f17e15]:
+            - link "Observatory" [ref=f17e16] [cursor=pointer]:
+              - /url: /observatory
+          - listitem [ref=f17e20]:
+            - link "Lineage" [ref=f17e21] [cursor=pointer]:
+              - /url: /lineage
+          - listitem [ref=f17e24]:
+            - link "Agent Config" [ref=f17e25] [cursor=pointer]:
+              - /url: /config
+          - listitem [ref=f17e29]:
+            - link "Signals" [ref=f17e30] [cursor=pointer]:
+              - /url: /signals
+    - generic [ref=f17e33]:
+      - banner [ref=f17e34]:
+        - generic [ref=f17e35]:
+          - generic [ref=f17e36]:
+            - paragraph [ref=f17e37]: demo@committee.local
+            - paragraph [ref=f17e38]: Paper trading
+          - button "Switch to dark theme" [ref=f17e39] [cursor=pointer]
+          - button "Log out" [ref=f17e42] [cursor=pointer]
+      - main [ref=f17e43]:
+        - generic [ref=f17e44]:
+          - generic [ref=f17e45]:
+            - generic [ref=f17e46]:
+              - generic [ref=f17e47]:
+                - heading "Evaluation Observatory" [level=1] [ref=f17e48]
+                - generic [ref=f17e49]: Ablation Lab
+              - paragraph [ref=f17e50]: Side-by-side strategy comparison tearsheet, comparative equity curves, and decision intelligence telemetry.
+            - button "📜 Audit Lineage" [ref=f17e52] [cursor=pointer]:
+              - generic [ref=f17e53]: 📜
+              - generic [ref=f17e54]: Audit Lineage
+          - generic [ref=f17e55]:
+            - generic [ref=f17e56]:
+              - generic [ref=f17e57]:
+                - generic [ref=f17e58]:
+                  - generic [ref=f17e59]: "Dataset Target:"
+                  - generic [ref=f17e60]:
+                    - button "AAPL" [ref=f17e61] [cursor=pointer]
+                    - button "NVDA" [ref=f17e62] [cursor=pointer]
+                    - button "SPY" [ref=f17e63] [cursor=pointer]
+                    - button "🌐 Universe (AAPL+NVDA+SPY)" [ref=f17e64] [cursor=pointer]
+                - generic [ref=f17e65]:
+                  - generic [ref=f17e66]: "Presets:"
+                  - button "All Strategies" [ref=f17e67] [cursor=pointer]
+                  - button "Macro Ablation" [ref=f17e68] [cursor=pointer]
+                  - button "Debate vs Ablation" [ref=f17e69] [cursor=pointer]
+                  - button "Baselines Only" [ref=f17e70] [cursor=pointer]
+                  - button "Deterministic Sweep ($N=3$, Offline Replay)" [ref=f17e71] [cursor=pointer]
+                  - button "📜 Audit Lineage" [ref=f17e73] [cursor=pointer]:
+                    - generic [ref=f17e74]: 📜
+                    - generic [ref=f17e75]: Audit Lineage
+              - generic [ref=f17e76]:
+                - generic [ref=f17e77]: Active Strategy Overlay (5/5)
+                - generic [ref=f17e79]:
+                  - button "Buy & Hold (Benchmark) Bench" [pressed] [ref=f17e80] [cursor=pointer]:
+                    - generic [ref=f17e82]: Buy & Hold (Benchmark)
+                    - generic [ref=f17e83]: Bench
+                  - button "SMA(20/50) + RSI(14)" [pressed] [ref=f17e84] [cursor=pointer]
+                  - button "Multi-Agent (Debate ON)" [pressed] [ref=f17e87] [cursor=pointer]
+                  - button "Multi-Agent (Debate OFF / Ablation)" [pressed] [ref=f17e90] [cursor=pointer]
+                  - button "Technical + Sentiment + Polymarket" [pressed] [ref=f17e93] [cursor=pointer]
+              - generic [ref=f17e96]:
+                - generic [ref=f17e97]: Offline Replay (Zero Credential)
+                - generic [ref=f17e99]:
+                  - text: "SHA256:"
+                  - generic [ref=f17e100]: 89d1248ace…
+                - generic [ref=f17e101]: "Git: 65dc1e4"
+                - generic [ref=f17e102]:
+                  - text: "Duration:"
+                  - generic [ref=f17e103]: 838.11ms
+                - generic [ref=f17e104]:
+                  - text: "Token Cost:"
+                  - generic [ref=f17e105]: $0.00
+            - generic [ref=f17e106]:
+              - generic [ref=f17e107]:
+                - generic [ref=f17e108]:
+                  - heading "Underwater Drawdown Profile (%)" [level=3] [ref=f17e109]
+                  - paragraph [ref=f17e110]: Peak-to-trough historical drawdowns across evaluated strategies
+                - generic [ref=f17e111]:
+                  - button "📜 Audit Lineage" [ref=f17e112] [cursor=pointer]:
+                    - generic [ref=f17e113]: 📜
+                    - generic [ref=f17e114]: Audit Lineage
+                  - generic [ref=f17e115]:
+                    - button "Equity Curve" [ref=f17e116] [cursor=pointer]
+                    - button "Drawdown (%)" [active] [ref=f17e117] [cursor=pointer]
+              - generic [ref=f17e120]:
+                - img [ref=f17e121]:
+                  - generic [ref=f17e125]:
+                    - generic [ref=f17e126]: Jan 18
+                    - generic [ref=f17e128]: Mar 10
+                    - generic [ref=f17e130]: May 1
+                    - generic [ref=f17e132]: Jun 21
+                    - generic [ref=f17e134]: Aug 11
+                    - generic [ref=f17e136]: Oct 2
+                    - generic [ref=f17e138]: Nov 17
+                    - generic [ref=f17e140]: Jan 11
+                    - generic [ref=f17e142]: Mar 1
+                    - generic [ref=f17e144]: Apr 22
+                    - generic [ref=f17e146]: Jun 12
+                    - generic [ref=f17e148]: Aug 1
+                    - generic [ref=f17e150]: Sep 20
+                    - generic [ref=f17e152]: Nov 8
+                    - generic [ref=f17e154]: Dec 31
+                  - generic [ref=f17e157]:
+                    - generic [ref=f17e158]: "-24%"
+                    - generic [ref=f17e160]: "-18%"
+                    - generic [ref=f17e162]: "-12%"
+                    - generic [ref=f17e164]: "-6%"
+                    - generic [ref=f17e166]: 0%
+                - list [ref=f17e179]:
+                  - listitem [ref=f17e180]: Buy & Hold (Benchmark)
+                  - listitem [ref=f17e182]: SMA(20/50) + RSI(14)
+                  - listitem [ref=f17e184]: Multi-Agent (Debate ON)
+                  - listitem [ref=f17e186]: Multi-Agent (Debate OFF / Ablation)
+                  - listitem [ref=f17e188]: Technical + Sentiment + Polymarket
+              - group [ref=f17e190]:
+                - generic "View comparison dataset as table" [ref=f17e191] [cursor=pointer]
+            - generic [ref=f17e194]:
+              - generic [ref=f17e195]:
+                - generic [ref=f17e196]:
+                  - heading "Strategy Performance & Evaluation Tearsheet" [level=3] [ref=f17e197]
+                  - paragraph [ref=f17e198]: Deterministic baseline benchmark comparisons with point-in-time decision intelligence & operational telemetry
+                - generic [ref=f17e199]: "Symbol: AAPL | Total Evaluated: 5"
+              - table [ref=f17e201]:
+                - rowgroup [ref=f17e202]:
+                  - row [ref=f17e203]:
+                    - columnheader "Strategy Variant" [ref=f17e204]
+                    - columnheader "Total Return (Δ)" [ref=f17e205]
+                    - columnheader "Annualized (Δ)" [ref=f17e206]
+                    - columnheader "Sharpe (Δ)" [ref=f17e207]
+                    - columnheader "Sortino (Δ)" [ref=f17e208]
+                    - columnheader "Max Drawdown" [ref=f17e209]
+                    - columnheader "Win Rate" [ref=f17e210]
+                    - columnheader "Dir. Accuracy" [ref=f17e211]
+                    - columnheader "Brier Score" [ref=f17e212]
+                    - columnheader "Cost & Latency" [ref=f17e213]
+                    - columnheader "Lineage" [ref=f17e214]
+                - rowgroup [ref=f17e215]:
+                  - row [ref=f17e216]:
+                    - cell [ref=f17e217]:
+                      - button "Buy & Hold (Benchmark) Baseline Benchmark Passive 100% long buy-and-hold benchmark" [ref=f17e218] [cursor=pointer]:
+                        - generic [ref=f17e220]:
+                          - generic [ref=f17e221]:
+                            - generic [ref=f17e222]: Buy & Hold (Benchmark)
+                            - generic [ref=f17e223]: Baseline Benchmark
+                          - paragraph [ref=f17e224]: Passive 100% long buy-and-hold benchmark
+                    - cell "97.25% benchmark" [ref=f17e225]:
+                      - generic [ref=f17e226]: 97.25%
+                      - text: benchmark
+                    - cell "40.64% benchmark" [ref=f17e227]:
+                      - generic [ref=f17e228]: 40.64%
+                      - text: benchmark
+                    - cell "1.71 benchmark" [ref=f17e229]:
+                      - generic [ref=f17e230]: "1.71"
+                      - text: benchmark
+                    - cell "2.67 benchmark" [ref=f17e231]:
+                      - generic [ref=f17e232]: "2.67"
+                      - text: benchmark
+                    - cell "--16.71% benchmark" [ref=f17e233]:
+                      - generic [ref=f17e234]: "--16.71%"
+                      - text: benchmark
+                    - cell "0.00% 1 trades" [ref=f17e235]:
+                      - generic [ref=f17e236]: 0.00%
+                      - generic [ref=f17e237]: 1 trades
+                    - cell "—" [ref=f17e238]
+                    - cell "—" [ref=f17e239]
+                    - cell "$0.00 0ms" [ref=f17e240]:
+                      - generic [ref=f17e241]: $0.00
+                      - generic [ref=f17e242]: 0ms
+                    - cell [ref=f17e243]:
+                      - button "Audit Lineage" [ref=f17e244] [cursor=pointer]
+                  - row [ref=f17e245]:
+                    - cell [ref=f17e246]:
+                      - button "SMA(20/50) + RSI(14) Deterministic SMA(20/50) trend filter + Wilder RSI(14) oversold/overbought baseline" [ref=f17e247] [cursor=pointer]:
+                        - generic [ref=f17e249]:
+                          - generic [ref=f17e250]: SMA(20/50) + RSI(14)
+                          - paragraph [ref=f17e252]: Deterministic SMA(20/50) trend filter + Wilder RSI(14) oversold/overbought baseline
+                    - cell "42.29% -54.96%" [ref=f17e253]:
+                      - generic [ref=f17e254]: 42.29%
+                      - generic [ref=f17e255]: "-54.96%"
+                    - cell "19.37% -21.27%" [ref=f17e256]:
+                      - generic [ref=f17e257]: 19.37%
+                      - generic [ref=f17e258]: "-21.27%"
+                    - cell "1.27 -0.44" [ref=f17e259]:
+                      - generic [ref=f17e260]: "1.27"
+                      - generic [ref=f17e261]: "-0.44"
+                    - cell "1.99 -0.68" [ref=f17e262]:
+                      - generic [ref=f17e263]: "1.99"
+                      - generic [ref=f17e264]: "-0.68"
+                    - cell "--13.13% +3.59% Δ" [ref=f17e265]:
+                      - generic [ref=f17e266]: "--13.13%"
+                      - generic [ref=f17e267]: +3.59% Δ
+                    - cell "80.00% 41 trades" [ref=f17e268]:
+                      - generic [ref=f17e269]: 80.00%
+                      - generic [ref=f17e270]: 41 trades
+                    - cell "—" [ref=f17e271]
+                    - cell "—" [ref=f17e272]
+                    - cell "$0.00 0ms" [ref=f17e273]:
+                      - generic [ref=f17e274]: $0.00
+                      - generic [ref=f17e275]: 0ms
+                    - cell [ref=f17e276]:
+                      - button "Audit Lineage" [ref=f17e277] [cursor=pointer]
+                  - row [ref=f17e278]:
+                    - cell [ref=f17e279]:
+                      - button "Multi-Agent (Debate ON) Multi-agent committee with conditional debate synthesis on specialist disagreement" [ref=f17e280] [cursor=pointer]:
+                        - generic [ref=f17e282]:
+                          - generic [ref=f17e283]: Multi-Agent (Debate ON)
+                          - paragraph [ref=f17e285]: Multi-agent committee with conditional debate synthesis on specialist disagreement
+                    - cell "59.62% -37.64%" [ref=f17e286]:
+                      - generic [ref=f17e287]: 59.62%
+                      - generic [ref=f17e288]: "-37.64%"
+                    - cell "26.46% -14.18%" [ref=f17e289]:
+                      - generic [ref=f17e290]: 26.46%
+                      - generic [ref=f17e291]: "-14.18%"
+                    - cell "1.25 -0.46" [ref=f17e292]:
+                      - generic [ref=f17e293]: "1.25"
+                      - generic [ref=f17e294]: "-0.46"
+                    - cell "1.91 -0.76" [ref=f17e295]:
+                      - generic [ref=f17e296]: "1.91"
+                      - generic [ref=f17e297]: "-0.76"
+                    - cell "--16.71% 0.00% Δ" [ref=f17e298]:
+                      - generic [ref=f17e299]: "--16.71%"
+                      - generic [ref=f17e300]: 0.00% Δ
+                    - cell "50.00% 9 trades" [ref=f17e301]:
+                      - generic [ref=f17e302]: 50.00%
+                      - generic [ref=f17e303]: 9 trades
+                    - cell "55.32% 470 act / 31 neut" [ref=f17e304]:
+                      - generic [ref=f17e305]: 55.32%
+                      - generic [ref=f17e306]: 470 act / 31 neut
+                    - cell "0.253 MSE stance" [ref=f17e307]:
+                      - generic [ref=f17e308]: "0.253"
+                      - text: MSE stance
+                    - cell "$0.00 1ms (1% fb)" [ref=f17e309]:
+                      - generic [ref=f17e310]: $0.00
+                      - generic [ref=f17e311]: 1ms (1% fb)
+                    - cell [ref=f17e312]:
+                      - button "Audit Lineage" [ref=f17e313] [cursor=pointer]
+                  - row [ref=f17e314]:
+                    - cell [ref=f17e315]:
+                      - button "Multi-Agent (Debate OFF / Ablation) Multi-agent committee with neutral ablation fallback on specialist disagreement" [ref=f17e316] [cursor=pointer]:
+                        - generic [ref=f17e318]:
+                          - generic [ref=f17e319]: Multi-Agent (Debate OFF / Ablation)
+                          - paragraph [ref=f17e321]: Multi-agent committee with neutral ablation fallback on specialist disagreement
+                    - cell "64.74% -32.51%" [ref=f17e322]:
+                      - generic [ref=f17e323]: 64.74%
+                      - generic [ref=f17e324]: "-32.51%"
+                    - cell "28.48% -12.16%" [ref=f17e325]:
+                      - generic [ref=f17e326]: 28.48%
+                      - generic [ref=f17e327]: "-12.16%"
+                    - cell "1.63 -0.08" [ref=f17e328]:
+                      - generic [ref=f17e329]: "1.63"
+                      - generic [ref=f17e330]: "-0.08"
+                    - cell "2.63 -0.04" [ref=f17e331]:
+                      - generic [ref=f17e332]: "2.63"
+                      - generic [ref=f17e333]: "-0.04"
+                    - cell "--9.94% +6.77% Δ" [ref=f17e334]:
+                      - generic [ref=f17e335]: "--9.94%"
+                      - generic [ref=f17e336]: +6.77% Δ
+                    - cell "55.00% 41 trades" [ref=f17e337]:
+                      - generic [ref=f17e338]: 55.00%
+                      - generic [ref=f17e339]: 41 trades
+                    - cell "55.66% 318 act / 183 neut" [ref=f17e340]:
+                      - generic [ref=f17e341]: 55.66%
+                      - generic [ref=f17e342]: 318 act / 183 neut
+                    - cell "0.249 MSE stance" [ref=f17e343]:
+                      - generic [ref=f17e344]: "0.249"
+                      - text: MSE stance
+                    - cell "$0.00 1ms (1% fb)" [ref=f17e345]:
+                      - generic [ref=f17e346]: $0.00
+                      - generic [ref=f17e347]: 1ms (1% fb)
+                    - cell [ref=f17e348]:
+                      - button "Audit Lineage" [ref=f17e349] [cursor=pointer]
+                  - row [ref=f17e350]:
+                    - cell [ref=f17e351]:
+                      - button "Technical + Sentiment + Polymarket Multi-agent committee with Polymarket crowdsourced macro prediction probability curves" [ref=f17e352] [cursor=pointer]:
+                        - generic [ref=f17e354]:
+                          - generic [ref=f17e355]: Technical + Sentiment + Polymarket
+                          - paragraph [ref=f17e357]: Multi-agent committee with Polymarket crowdsourced macro prediction probability curves
+                    - cell "23.54% -73.71%" [ref=f17e358]:
+                      - generic [ref=f17e359]: 23.54%
+                      - generic [ref=f17e360]: "-73.71%"
+                    - cell "11.20% -29.44%" [ref=f17e361]:
+                      - generic [ref=f17e362]: 11.20%
+                      - generic [ref=f17e363]: "-29.44%"
+                    - cell "0.65 -1.05" [ref=f17e364]:
+                      - generic [ref=f17e365]: "0.65"
+                      - generic [ref=f17e366]: "-1.05"
+                    - cell "0.97 -1.70" [ref=f17e367]:
+                      - generic [ref=f17e368]: "0.97"
+                      - generic [ref=f17e369]: "-1.70"
+                    - cell "--23.33% -6.62% Δ" [ref=f17e370]:
+                      - generic [ref=f17e371]: "--23.33%"
+                      - generic [ref=f17e372]: "-6.62% Δ"
+                    - cell "55.56% 55 trades" [ref=f17e373]:
+                      - generic [ref=f17e374]: 55.56%
+                      - generic [ref=f17e375]: 55 trades
+                    - cell "56.22% 370 act / 131 neut" [ref=f17e376]:
+                      - generic [ref=f17e377]: 56.22%
+                      - generic [ref=f17e378]: 370 act / 131 neut
+                    - cell "0.263 MSE stance" [ref=f17e379]:
+                      - generic [ref=f17e380]: "0.263"
+                      - text: MSE stance
+                    - cell "$0.00 1ms (1% fb)" [ref=f17e381]:
+                      - generic [ref=f17e382]: $0.00
+                      - generic [ref=f17e383]: 1ms (1% fb)
+                    - cell [ref=f17e384]:
+                      - button "Audit Lineage" [ref=f17e385] [cursor=pointer]
+  - generic [aria-hidden] [ref=f17e386]: "-24%"
+```

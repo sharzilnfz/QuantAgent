@@ -1,0 +1,200 @@
+The Committee
+Portfolio
+Observatory
+Lineage
+Agent Config
+Signals
+
+demo@committee.local
+
+Paper trading
+
+Log out
+Evaluation Observatory
+MULTI-ASSET UNIVERSE LAB
+
+Cross-asset capital allocation, portfolio rebalancing, and multi-asset universe tearsheets (AAPL + NVDA + SPY).
+
+📜
+Audit Lineage
+DATASET TARGET:
+AAPL
+NVDA
+SPY
+🌐 Universe (AAPL+NVDA+SPY)
+Presets:
+All Strategies
+Macro Ablation
+Debate vs Ablation
+Baselines Only
+Deterministic Sweep ($N=3$, Offline Replay)
+📜
+Audit Lineage
+ACTIVE STRATEGY OVERLAY (5/5)
+1/N Equal-Weight Basket (Benchmark)
+BENCH
+Multi-Asset SMA(20/50) + RSI(14)
+Multi-Asset Committee (Debate ON)
+Multi-Asset Committee (Debate OFF / Ablation)
+Multi-Asset Committee + Polymarket
+Offline Replay (Zero Credential)
+SHA256: 843a27f591…
+Git: 65dc1e4
+Duration: 2414ms
+Token Cost: $0.00
+🌐
+Cross-Asset Capital Allocation & Universe Breakdown
+
+Dynamic capital distribution across universe assets with 5% risk cash reserve.
+
+Total Portfolio Equity:
+$245,172.01
+Active Asset Exposure
+94.7% Invested / 5.3% Cash
+Asset Symbol	Holding Shares	Latest Price	Market Value	Portfolio Weight	Turnover (NAV)	Trades Count
+
+AAPL
+257	$250.42	$64,357.94	26.3%	1864.6%	336
+
+NVDA
+469	$134.29	$62,982.01	25.7%	2054.6%	339
+
+SPY
+179	$586.08	$104,908.32	42.8%	2098.9%	338
+
+USD (Cash Buffer)
+—	$1.00	$12,923.74	5.3%	—	—
+Underwater Drawdown Profile (%)
+
+Peak-to-trough historical drawdowns across evaluated strategies
+
+📜
+Audit Lineage
+Equity Curve
+Drawdown (%)
+Jan 18
+Mar 10
+May 1
+Jun 21
+Aug 11
+Oct 2
+Nov 17
+Jan 11
+Mar 1
+Apr 22
+Jun 12
+Aug 1
+Sep 20
+Nov 8
+Dec 31
+0%
+1/N Equal-Weight Basket (Benchmark)Multi-Asset SMA(20/50) + RSI(14)Multi-Asset Committee (Debate ON)Multi-Asset Committee (Debate OFF / Ablation)Multi-Asset Committee + Polymarket
+View comparison dataset as table
+Strategy Performance & Evaluation Tearsheet
+
+Deterministic baseline benchmark comparisons with point-in-time decision intelligence & operational telemetry
+
+Symbol: | Total Evaluated: 5
+Strategy Variant	Total Return (Δ)	Annualized (Δ)	Sharpe (Δ)	Sortino (Δ)	Max Drawdown	Win Rate	Dir. Accuracy	Brier Score	Cost & Latency	Lineage
+
+1/N Equal-Weight Basket (Benchmark)
+BASELINE BENCHMARK
+
+1/N Equal-Weight Buy & Hold Universe Basket
+
+	
+307.51%
+benchmark	
+102.43%
+benchmark	
+2.30
+benchmark	
+3.81
+benchmark	
+--21.74%
+benchmark	
+0.00%
+3 trades	—	—	
+$0.00
+0ms	Audit Lineage
+
+Multi-Asset SMA(20/50) + RSI(14)
+
+Multi-Asset independent SMA(20/50) + RSI(14) rule-based strategy
+
+	
+81.37%
+-226.13%	
+34.83%
+-67.60%	
+1.47
+-0.83	
+2.38
+-1.43	
+--20.34%
++1.40% Δ	
+59.13%
+238 trades	—	—	
+$0.00
+0ms	Audit Lineage
+
+Multi-Asset Committee (Debate ON)
+
+Multi-Asset Committee with conditional debate synthesis & conviction-weighted allocation
+
+	
+145.17%
+-162.34%	
+56.86%
+-45.57%	
+2.11
+-0.19	
+3.50
+-0.30	
+--14.90%
++6.83% Δ	
+70.71%
+1013 trades	—	—	
+$0.00
+1ms (1% fb)	Audit Lineage
+
+Multi-Asset Committee (Debate OFF / Ablation)
+
+Multi-Asset Committee with neutral fallback ablation on specialist disagreement
+
+	
+114.98%
+-192.53%	
+46.84%
+-55.59%	
+1.80
+-0.50	
+3.13
+-0.68	
+--18.37%
++3.37% Δ	
+69.63%
+764 trades	—	—	
+$0.00
+1ms (1% fb)	Audit Lineage
+
+Multi-Asset Committee + Polymarket
+
+Multi-Asset Committee with Polymarket macro prediction probability curves
+
+	
+67.77%
+-239.74%	
+29.66%
+-72.77%	
+1.29
+-1.01	
+1.99
+-1.82	
+--20.12%
++1.62% Δ	
+65.48%
+797 trades	—	—	
+$0.00
+1ms (1% fb)	Audit Lineage
+-12%

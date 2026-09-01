@@ -1,0 +1,86 @@
+{
+  "suite": "Decision Lineage Inspector UI Verification (/lineage)",
+  "timestamp": "2026-09-01T22:44:00+06:00",
+  "status": "PASSED",
+  "testedUrl": "http://localhost:5173/lineage",
+  "results": {
+    "symbolSelection": {
+      "status": "PASSED",
+      "symbols": [
+        "AAPL",
+        "NVDA",
+        "SPY"
+      ],
+      "details": {
+        "AAPL": {
+          "totalDecisions": 502,
+          "activeSpecialists": 3,
+          "debateReconciliations": 169,
+          "finalBias": "bullish (53% CONF)",
+          "reconciliationMode": "consensus_short_circuit"
+        },
+        "NVDA": {
+          "totalDecisions": 502,
+          "activeSpecialists": 3,
+          "debateReconciliations": 181,
+          "finalBias": "bullish (68% CONF)",
+          "reconciliationMode": "consensus_short_circuit"
+        },
+        "SPY": {
+          "totalDecisions": 502,
+          "activeSpecialists": 3,
+          "debateReconciliations": 167,
+          "finalBias": "bullish (86% CONF)",
+          "reconciliationMode": "debate_synthesis"
+        }
+      }
+    },
+    "strategySelection": {
+      "status": "PASSED",
+      "strategiesTested": [
+        "buy-and-hold",
+        "sma-rsi",
+        "multi-agent-debate-on",
+        "multi-agent-debate-off",
+        "multi-agent-polymarket"
+      ]
+    },
+    "timelineNavigation": {
+      "status": "PASSED",
+      "keyboardStepping": "ArrowLeft / ArrowRight supported and verified",
+      "buttonStepping": "Prev Bar / Next Bar supported and boundary-verified"
+    },
+    "inspectorTabs": {
+      "tab1_multiAgentDebate": {
+        "status": "PASSED",
+        "snapshot": "artifacts/verify-committee/lineage-debate.snapshot.yml",
+        "screenshot": "artifacts/verify-committee/01_tab_debate_aapl.png"
+      },
+      "tab2_inputsAndData": {
+        "status": "PASSED",
+        "snapshot": "artifacts/verify-committee/lineage-inputs.snapshot.yml",
+        "screenshot": "artifacts/verify-committee/02_tab_inputs_aapl.png"
+      },
+      "tab3_promptsAndCompletions": {
+        "status": "PASSED",
+        "snapshot": "artifacts/verify-committee/lineage-prompts.snapshot.yml",
+        "screenshots": [
+          "artifacts/verify-committee/03_tab_prompts_technical_aapl.png",
+          "artifacts/verify-committee/03_tab_prompts_sentiment_aapl.png",
+          "artifacts/verify-committee/03_tab_prompts_fundamental_aapl.png",
+          "artifacts/verify-committee/06_polymarket_tab_prompt.png"
+        ]
+      },
+      "tab4_executionAndRisk": {
+        "status": "PASSED",
+        "snapshot": "artifacts/verify-committee/lineage-execution.snapshot.yml",
+        "screenshot": "artifacts/verify-committee/04_tab_execution_aapl.png"
+      }
+    },
+    "pointInTimeTemporalGuard": {
+      "status": "PASSED",
+      "leakageDetected": 0,
+      "assertion": "All OHLCV bars, SEC Edgar filings, and Benzinga news items strictly satisfy timestamp <= decisionTs"
+    }
+  }
+}

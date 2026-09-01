@@ -1,6 +1,6 @@
 # 🎓 The Committee — Sprint 1 Masterclass (Part 2)
 
-> Continues from [Part 1](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part1.md) (Chapters 0–2)
+> Continues from [Part 1](./masterclass-part1.md) (Chapters 0–2)
 
 ---
 
@@ -52,7 +52,7 @@ Browser                         API Server                     Database
 
 ## The Config System
 
-### [src/config.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/config.ts)
+### [src/config.ts](../../apps/api/src/config.ts)
 
 ```typescript
 const EnvSchema = z.object({
@@ -77,7 +77,7 @@ This code runs at **import time** — before any route handler processes a reque
 
 ## Password Hashing & Authentication
 
-### [src/auth/service.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/auth/service.ts)
+### [src/auth/service.ts](../../apps/api/src/auth/service.ts)
 
 ### 💡 How Password Hashing Works
 
@@ -144,7 +144,7 @@ Wrong email? `"invalid_credentials"`. Wrong password? `"invalid_credentials"`. S
 
 ## Server-Side Session Management
 
-### [src/auth/session.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/auth/session.ts)
+### [src/auth/session.ts](../../apps/api/src/auth/session.ts)
 
 ### Creating a Session
 
@@ -221,7 +221,7 @@ The `REFRESH_SKEW_MS = 60_000` (60 seconds) prevents excessive database writes �
 
 ## The Auth Guard: `requireAuth`
 
-### [src/auth/require-auth.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/auth/require-auth.ts)
+### [src/auth/require-auth.ts](../../apps/api/src/auth/require-auth.ts)
 
 ```typescript
 export async function requireAuth(request, reply) {
@@ -257,7 +257,7 @@ app.get("/portfolio", { preHandler: requireAuth }, async (request, reply) => {
 
 ## Log Redaction
 
-### [src/auth/redaction.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/auth/redaction.ts)
+### [src/auth/redaction.ts](../../apps/api/src/auth/redaction.ts)
 
 ```typescript
 export function installSensitiveErrorHandler(app) {
@@ -282,7 +282,7 @@ Imagine a user accidentally types their password in the email field. A validatio
 
 ## The Credential Vault
 
-### [src/credentials/crypto.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/credentials/crypto.ts)
+### [src/credentials/crypto.ts](../../apps/api/src/credentials/crypto.ts)
 
 This module encrypts Alpaca API keys before storing them. Here's the conceptual flow:
 
@@ -322,7 +322,7 @@ The dashboard shows "Connected ···WXYZ" — only the last 4 characters of the
 
 ## The Auth Routes
 
-### [src/auth/plugin.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/auth/plugin.ts)
+### [src/auth/plugin.ts](../../apps/api/src/auth/plugin.ts)
 
 The four auth routes:
 
@@ -381,7 +381,7 @@ Alpaca Market Data API  →  Normalize  →  Compute as_of  →  Store in price_
 
 ## The `as_of` Rules Engine
 
-### [src/ingest/as-of.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/as-of.ts)
+### [src/ingest/as-of.ts](../../apps/api/src/ingest/as-of.ts)
 
 This is the **most critical file in the ingest module**. It answers: "When did this data become knowable?"
 
@@ -424,7 +424,7 @@ If the current time is 2:30 PM ET and we're fetching daily bars, today's bar isn
 
 ## The Alpaca Client
 
-### [src/ingest/alpaca-client.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/alpaca-client.ts)
+### [src/ingest/alpaca-client.ts](../../apps/api/src/ingest/alpaca-client.ts)
 
 This module fetches data from Alpaca's REST API. Let's look at its key design decisions:
 
@@ -482,7 +482,7 @@ Each chunk is paginated (Alpaca returns a `next_page_token` for more results), w
 
 ### On-Disk Response Cache
 
-### [src/ingest/fs-cache.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/fs-cache.ts)
+### [src/ingest/fs-cache.ts](../../apps/api/src/ingest/fs-cache.ts)
 
 During development, you don't want to hit Alpaca's API every time you restart the server. The `FsResponseCache` stores API responses on disk:
 
@@ -501,7 +501,7 @@ The key is derived from the request parameters (symbol, timeframe, dates), so th
 
 ## The Price Normalization Pipeline
 
-### [src/ingest/prices.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/prices.ts)
+### [src/ingest/prices.ts](../../apps/api/src/ingest/prices.ts)
 
 This is the orchestration file that ties everything together:
 
@@ -537,7 +537,7 @@ This makes ingestion **idempotent** — running it twice with the same data prod
 
 ## The Store Seam
 
-### [src/ingest/store.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/store.ts)
+### [src/ingest/store.ts](../../apps/api/src/ingest/store.ts)
 
 Two implementations of `PriceBarStore`:
 
@@ -559,7 +559,7 @@ This pattern is fundamental to testable architecture.
 
 ## The Ingest CLI
 
-### [src/ingest/cli.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/ingest/cli.ts)
+### [src/ingest/cli.ts](../../apps/api/src/ingest/cli.ts)
 
 A command-line tool for manual ingestion:
 
@@ -696,7 +696,7 @@ sma50 = closes.rolling(window=50).mean()  # Average of last 50 closes
 
 ## The FastAPI Endpoint
 
-### [main.py](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/quant/main.py)
+### [main.py](../../apps/quant/main.py)
 
 ```python
 @app.post("/indicators")
@@ -761,4 +761,4 @@ ORDER BY ts DESC LIMIT 1
 
 ---
 
-> **Continue to [Part 3](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part3.md) for Specs 06–08 (Agent Framework, Technical Analyst, Dashboard & Frontend)**
+> **Continue to [Part 3](./masterclass-part3.md) for Specs 06–08 (Agent Framework, Technical Analyst, Dashboard & Frontend)**

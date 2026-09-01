@@ -1,0 +1,40 @@
+{
+  "step": "16-Daemon-Status",
+  "method": "GET",
+  "url": "/daemon/status",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 4.25,
+  "timestamp": "2026-09-01T16:38:30.801Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "committee_session=e94ea800-8bae-42c9-b1d8-6d545b5c6a58; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax",
+    "content-length": "281",
+    "date": "Tue, 01 Sep 2026 16:38:30 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "state": "idle",
+    "uptimeSeconds": 0,
+    "lastCycleAt": null,
+    "nextCycleAt": null,
+    "totalCycles": 0,
+    "successfulCycles": 0,
+    "failedCycles": 0,
+    "config": {
+      "enabled": false,
+      "intervalSeconds": 60,
+      "symbols": [
+        "AAPL",
+        "NVDA",
+        "SPY"
+      ],
+      "dryRun": true,
+      "autoExecute": false,
+      "debateEnabled": true,
+      "minConfidence": 0.6
+    }
+  }
+}

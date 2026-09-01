@@ -1,0 +1,189 @@
+{
+  "verifiedAt": "2026-09-01T16:38:31.679Z",
+  "totalEndpoints": 18,
+  "passedCount": 18,
+  "failedCount": 0,
+  "allPassed": true,
+  "results": [
+    {
+      "step": "01-Health-Check",
+      "method": "GET",
+      "url": "/health",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 10.89,
+      "payloadFile": "01-health.json"
+    },
+    {
+      "step": "02-Auth-Login",
+      "method": "POST",
+      "url": "/auth/login",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 133.14,
+      "payloadFile": "02-auth-login.json"
+    },
+    {
+      "step": "03-Auth-Me",
+      "method": "GET",
+      "url": "/auth/me",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 4.82,
+      "payloadFile": "03-auth-me.json"
+    },
+    {
+      "step": "04-Portfolio-State",
+      "method": "GET",
+      "url": "/portfolio",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 816.1,
+      "payloadFile": "04-portfolio.json"
+    },
+    {
+      "step": "05-Portfolio-History",
+      "method": "GET",
+      "url": "/portfolio/history",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 7.19,
+      "payloadFile": "05-portfolio-history.json"
+    },
+    {
+      "step": "06-Experiments-Suite-AAPL",
+      "method": "GET",
+      "url": "/experiments/suite?symbol=AAPL",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 1371.04,
+      "payloadFile": "06-experiments-suite-aapl.json"
+    },
+    {
+      "step": "07-Experiments-Suite-NVDA",
+      "method": "GET",
+      "url": "/experiments/suite?symbol=NVDA",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 1290.89,
+      "payloadFile": "07-experiments-suite-nvda.json"
+    },
+    {
+      "step": "08-Experiments-Suite-SPY",
+      "method": "GET",
+      "url": "/experiments/suite?symbol=SPY",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 1216.65,
+      "payloadFile": "08-experiments-suite-spy.json"
+    },
+    {
+      "step": "09-Experiments-Multi-Asset-Suite",
+      "method": "GET",
+      "url": "/experiments/multi-asset/suite?universe=AAPL,NVDA,SPY",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 2354.36,
+      "payloadFile": "09-experiments-multi-asset-suite.json"
+    },
+    {
+      "step": "10-Experiments-Variance-Sweep",
+      "method": "GET",
+      "url": "/experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 78.57,
+      "payloadFile": "10-experiments-variance-sweep.json"
+    },
+    {
+      "step": "11-Signals-Radar",
+      "method": "GET",
+      "url": "/signals/radar?symbols=AAPL,NVDA,SPY",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 25.23,
+      "payloadFile": "11-signals-radar.json"
+    },
+    {
+      "step": "12-Signals-Evaluate",
+      "method": "POST",
+      "url": "/signals/evaluate",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 834.69,
+      "payloadFile": "12-signals-evaluate.json"
+    },
+    {
+      "step": "13-Agents-Config-GET",
+      "method": "GET",
+      "url": "/agents/config",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 0.9,
+      "payloadFile": "13-agents-config-get.json"
+    },
+    {
+      "step": "14-Agents-Config-PUT",
+      "method": "PUT",
+      "url": "/agents/config",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 1.39,
+      "payloadFile": "14-agents-config-put.json"
+    },
+    {
+      "step": "15-Agents-Config-Reset",
+      "method": "POST",
+      "url": "/agents/config/reset",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 0.93,
+      "payloadFile": "15-agents-config-reset.json"
+    },
+    {
+      "step": "16-Daemon-Status",
+      "method": "GET",
+      "url": "/daemon/status",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 4.25,
+      "payloadFile": "16-daemon-status.json"
+    },
+    {
+      "step": "17-Daemon-Run-Cycle",
+      "method": "POST",
+      "url": "/daemon/run-cycle",
+      "statusCode": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "durationMs": 869.47,
+      "payloadFile": "17-daemon-run-cycle.json"
+    },
+    {
+      "step": "18-Auth-Logout",
+      "method": "POST",
+      "url": "/auth/logout",
+      "statusCode": 204,
+      "expectedStatus": 204,
+      "passed": true,
+      "durationMs": 4.76,
+      "payloadFile": "18-auth-logout.json"
+    }
+  ]
+}

@@ -16,8 +16,9 @@ export class AgentConfigService {
    * Retrieves active configuration for a user, or defaults to baseline.
    */
   async getConfig(userId?: string): Promise<CommitteeSystemConfig> {
-    if (userId && this.userConfigs.has(userId)) {
-      return this.userConfigs.get(userId)!;
+    const targetUser = userId ?? "default-user";
+    if (this.userConfigs.has(targetUser)) {
+      return this.userConfigs.get(targetUser)!;
     }
     return {
       ...DEFAULT_COMMITTEE_CONFIG,
@@ -37,8 +38,10 @@ export class AgentConfigService {
       ...current,
       ...newConfig,
       specialists: {
-        ...current.specialists,
-        ...(newConfig.specialists ?? {}),
+        technical: { ...current.specialists.technical, ...(newConfig.specialists?.technical ?? {}) },
+        sentiment: { ...current.specialists.sentiment, ...(newConfig.specialists?.sentiment ?? {}) },
+        fundamental: { ...current.specialists.fundamental, ...(newConfig.specialists?.fundamental ?? {}) },
+        polymarket: { ...current.specialists.polymarket, ...(newConfig.specialists?.polymarket ?? {}) },
       },
       risk: {
         ...current.risk,

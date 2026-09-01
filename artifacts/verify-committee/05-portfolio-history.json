@@ -1,0 +1,112 @@
+{
+  "step": "05-Portfolio-History",
+  "method": "GET",
+  "url": "/portfolio/history",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 7.19,
+  "timestamp": "2026-09-01T16:38:22.421Z",
+  "requestPayload": null,
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "committee_session=e94ea800-8bae-42c9-b1d8-6d545b5c6a58; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax",
+    "content-length": "1197",
+    "date": "Tue, 01 Sep 2026 16:38:22 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": [
+    {
+      "asOf": "2026-09-01T16:28:15.854Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:28:15.865Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:30:23.624Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:30:23.627Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:45.169Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:53.100Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:53.401Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:53.681Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:53.969Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:36:56.630Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:23.159Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:30.831Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:31.126Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:31.406Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:31.678Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:37:57.890Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:05.961Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:06.060Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:06.344Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:06.625Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:06.906Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:14.122Z",
+      "equity": 100000
+    },
+    {
+      "asOf": "2026-09-01T16:38:22.409Z",
+      "equity": 100000
+    }
+  ]
+}

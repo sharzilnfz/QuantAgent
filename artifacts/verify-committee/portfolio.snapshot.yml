@@ -1,0 +1,97 @@
+### Page
+- Page URL: http://localhost:5173/
+- Page Title: The Committee
+- Console: 1 errors, 0 warnings
+### Snapshot
+```yaml
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]: The Committee
+      - navigation "Primary" [ref=f1e9]:
+        - list [ref=f1e10]:
+          - listitem [ref=f1e11]:
+            - link "Portfolio" [ref=f1e12] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f1e15]:
+            - link "Observatory" [ref=f1e16] [cursor=pointer]:
+              - /url: /observatory
+          - listitem [ref=f1e20]:
+            - link "Lineage" [ref=f1e21] [cursor=pointer]:
+              - /url: /lineage
+          - listitem [ref=f1e24]:
+            - link "Agent Config" [ref=f1e25] [cursor=pointer]:
+              - /url: /config
+          - listitem [ref=f1e29]:
+            - link "Signals" [ref=f1e30] [cursor=pointer]:
+              - /url: /signals
+    - generic [ref=f1e33]:
+      - banner [ref=f1e34]:
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]:
+            - paragraph [ref=f1e37]: demo@committee.local
+            - paragraph [ref=f1e38]: Paper trading
+          - button "Switch to dark theme" [ref=f1e39] [cursor=pointer]
+          - button "Log out" [ref=f1e42] [cursor=pointer]
+      - main [ref=f1e43]:
+        - generic [ref=f1e44]:
+          - generic [ref=f1e45]:
+            - heading "Portfolio" [level=1] [ref=f1e46]
+            - paragraph [ref=f1e47]: Paper positions and the committee’s latest read.
+          - region "Key figures" [ref=f1e89]:
+            - generic [ref=f1e90]:
+              - paragraph [ref=f1e91]: Cash
+              - paragraph [ref=f1e92]:
+                - generic [ref=f1e93]: $100,000.00
+              - paragraph [ref=f1e94]: As of Sep 1, 2026, 10:30 PM
+            - generic [ref=f1e95]:
+              - paragraph [ref=f1e96]: Equity
+              - paragraph [ref=f1e97]:
+                - generic [ref=f1e98]: $100,000.00
+              - paragraph [ref=f1e99]: As of Sep 1, 2026, 10:30 PM
+            - generic [ref=f1e100]:
+              - paragraph [ref=f1e101]: Unrealized P&L
+              - paragraph [ref=f1e102]:
+                - generic [ref=f1e103]: Not reported
+              - paragraph [ref=f1e104]: The portfolio endpoint does not return an aggregate P&L yet. Per-position P&L is in the table below.
+          - generic [ref=f1e61]:
+            - generic [ref=f1e62]:
+              - generic [ref=f1e64]:
+                - heading "Portfolio value over time" [level=2] [ref=f1e65]
+                - paragraph [ref=f1e66]: Total equity, as reported by the portfolio service.
+              - generic [ref=f1e106]:
+                - img [ref=f1e110]:
+                  - generic [ref=f1e114]:
+                    - generic [ref=f1e115]: Sep 1
+                    - generic [ref=f1e117]: Sep 1
+                  - generic [ref=f1e120]:
+                    - generic [ref=f1e121]: $100K
+                    - generic [ref=f1e123]: $100K
+                    - generic [ref=f1e125]: $100K
+                    - generic [ref=f1e127]: $100K
+                    - generic [ref=f1e129]: $100K
+                - group [ref=f1e134]:
+                  - generic "View as table" [ref=f1e135] [cursor=pointer]
+            - generic [ref=f1e69]:
+              - generic [ref=f1e70]:
+                - generic [ref=f1e71]:
+                  - heading "Agent activity" [level=2] [ref=f1e72]
+                  - paragraph [ref=f1e73]: Latest technical-analyst output, rendered verbatim.
+                - generic [ref=f1e139]:
+                  - generic [ref=f1e140]: Watchlist symbol
+                  - combobox "Watchlist symbol" [ref=f1e141]:
+                    - option "AAPL" [selected]
+                    - option "MSFT"
+                    - option "SPY"
+              - generic [ref=f1e142]:
+                - paragraph [ref=f1e146]: No analysis yet
+                - paragraph [ref=f1e147]: The technical agent has not produced an output for AAPL yet. It will appear here after the next run.
+          - generic [ref=f1e79]:
+            - generic [ref=f1e81]:
+              - heading "Positions" [level=2] [ref=f1e82]
+              - paragraph [ref=f1e148]: As of Sep 1, 2026, 10:30 PM
+            - generic [ref=f1e150]:
+              - paragraph [ref=f1e154]: No open positions
+              - paragraph [ref=f1e155]: Nothing is held yet. Positions will appear here once the execution layer places its first paper trade.
+  - generic [aria-hidden] [ref=f1e156]: $100K
+```

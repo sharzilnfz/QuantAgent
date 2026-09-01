@@ -1,6 +1,6 @@
 # 🎓 The Committee — Sprint 1 Masterclass (Part 3)
 
-> Continues from [Part 2](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part2.md) (Chapters 3–5)
+> Continues from [Part 2](./masterclass-part2.md) (Chapters 3–5)
 
 ---
 
@@ -24,7 +24,7 @@ Think of it like building a factory assembly line before you have the actual rob
 
 ## The Base Agent
 
-### [src/agents/base.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/base.ts)
+### [src/agents/base.ts](../../apps/api/src/agents/base.ts)
 
 ```typescript
 export abstract class BaseAgent {
@@ -117,13 +117,13 @@ This is the **dead man's switch**. If anything goes wrong — network error, bad
 
 ## The Stub Agents
 
-### [src/agents/stubs/](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/stubs/)
+### [src/agents/stubs/](../../apps/api/src/agents/stubs/)
 
 Before the real LLM-powered agents are built, the team needs something to test with. Stubs are **deterministic fakes** — given the same input, they always produce the same output.
 
 ### The FNV-1a Hash (Deterministic Randomness)
 
-### [src/agents/stubs/seed.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/stubs/seed.ts)
+### [src/agents/stubs/seed.ts](../../apps/api/src/agents/stubs/seed.ts)
 
 ```typescript
 export function fnv1a(input: string): number {
@@ -169,7 +169,7 @@ The same symbol + date always gives the same direction and confidence. Perfect f
 
 ## The Parallel Runner
 
-### [src/agents/runner.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/runner.ts)
+### [src/agents/runner.ts](../../apps/api/src/agents/runner.ts)
 
 ```typescript
 export async function runAgents(
@@ -230,7 +230,7 @@ This is critical because agents are **independent**. If the sentiment agent's AP
 
 ## The Persistence Seam
 
-### [src/agents/persistence.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/persistence.ts)
+### [src/agents/persistence.ts](../../apps/api/src/agents/persistence.ts)
 
 ```typescript
 export interface AgentPersistence {
@@ -250,7 +250,7 @@ Another **seam** (like the price bar store). Tests use the in-memory version so 
 
 ## The Agent Routes
 
-### [src/agents/plugin.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/plugin.ts)
+### [src/agents/plugin.ts](../../apps/api/src/agents/plugin.ts)
 
 ### `GET /agents/latest?symbol=AAPL`
 ```
@@ -326,7 +326,7 @@ The Technical Agent has a split-brain architecture that enforces **Law 2 (Facts 
 
 ## The Deterministic Classifier
 
-### [src/agents/technical/classify.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/technical/classify.ts)
+### [src/agents/technical/classify.ts](../../apps/api/src/agents/technical/classify.ts)
 
 This file contains pure TypeScript rules — no AI, no randomness, no network calls:
 
@@ -423,7 +423,7 @@ Each indicator contributes ±1 to the score. With 4 indicators:
 
 ## The LLM Client
 
-### [src/agents/technical/llm-client.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/technical/llm-client.ts)
+### [src/agents/technical/llm-client.ts](../../apps/api/src/agents/technical/llm-client.ts)
 
 ```typescript
 export interface LlmClient {
@@ -468,7 +468,7 @@ It's like telling a student: "Write your answer on THIS specific form" instead o
 
 ### The Prompt
 
-### [src/agents/technical/prompt.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/technical/prompt.ts)
+### [src/agents/technical/prompt.ts](../../apps/api/src/agents/technical/prompt.ts)
 
 ```typescript
 export const TECHNICAL_SYSTEM_PROMPT = `
@@ -490,7 +490,7 @@ The prompt explicitly tells the LLM that its evidence will be overwritten. This 
 
 ## The Technical Agent: Putting It All Together
 
-### [src/agents/technical/agent.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/api/src/agents/technical/agent.ts)
+### [src/agents/technical/agent.ts](../../apps/api/src/agents/technical/agent.ts)
 
 ```typescript
 export class TechnicalAgent extends BaseAgent {
@@ -589,7 +589,7 @@ The classifier gets 70% weight because it's deterministic and verifiable. The LL
 
 ## The Design Token System
 
-### [src/index.css](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/index.css)
+### [src/index.css](../../apps/web/src/index.css)
 
 Instead of hardcoding colors like `bg-blue-500` everywhere, the app uses **CSS custom properties** (design tokens):
 
@@ -637,7 +637,7 @@ To switch between light and dark mode, you just toggle the `.dark` class on `<ht
 
 ## The Application Entry Point
 
-### [src/main.tsx](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/main.tsx)
+### [src/main.tsx](../../apps/web/src/main.tsx)
 
 ```typescript
 createRoot(document.getElementById("root")!).render(
@@ -662,7 +662,7 @@ Each `<Provider>` wraps the app and gives its children access to shared state:
 
 ## The Route Table
 
-### [src/App.tsx](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/App.tsx)
+### [src/App.tsx](../../apps/web/src/App.tsx)
 
 ```typescript
 export function AppRoutes() {
@@ -698,7 +698,7 @@ export function RequireAuth() {
 
 ## The API Client Layer
 
-### [src/lib/api.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/lib/api.ts)
+### [src/lib/api.ts](../../apps/web/src/lib/api.ts)
 
 This module handles all HTTP communication with the backend:
 
@@ -752,7 +752,7 @@ In development, the frontend runs on `localhost:5173` and the API on `localhost:
 
 ## TanStack Query (React Query) — Smart Data Fetching
 
-### [src/lib/queries.ts](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/lib/queries.ts)
+### [src/lib/queries.ts](../../apps/web/src/lib/queries.ts)
 
 ### 💡 What Problem Does React Query Solve?
 
@@ -824,7 +824,7 @@ export function useLogout() {
 
 ## The Portfolio Page (Main Dashboard)
 
-### [src/routes/PortfolioPage.tsx](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/routes/PortfolioPage.tsx)
+### [src/routes/PortfolioPage.tsx](../../apps/web/src/routes/PortfolioPage.tsx)
 
 The dashboard is composed of four sections:
 
@@ -878,7 +878,7 @@ Every section handles three states: **loading**, **error**, and **empty**:
 
 ## The Agent Activity Card
 
-### [src/components/agents/AgentActivityCard.tsx](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/components/agents/AgentActivityCard.tsx)
+### [src/components/agents/AgentActivityCard.tsx](../../apps/web/src/components/agents/AgentActivityCard.tsx)
 
 This renders the latest agent output:
 
@@ -941,7 +941,7 @@ A horizontal bar that fills proportionally to confidence. At 72% confidence, the
 
 ## The Theme System
 
-### [src/theme/ThemeProvider.tsx](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/apps/web/src/theme/ThemeProvider.tsx)
+### [src/theme/ThemeProvider.tsx](../../apps/web/src/theme/ThemeProvider.tsx)
 
 Three theme modes:
 - **`"light"`** — always light
@@ -1036,7 +1036,7 @@ cn("px-3 py-2", isActive && "bg-surface-well", disabled && "opacity-50")
 
 # Chapter 9: Follow-Ups & Known Bugs
 
-### [specs/sprint-1/FOLLOW-UPS.md](file:///Users/sharzilnafis/Desktop/Project/QuantAgent/specs/sprint-1/FOLLOW-UPS.md)
+### [specs/sprint-1/FOLLOW-UPS.md](../../specs/sprint-1/FOLLOW-UPS.md)
 
 The team maintains a living document of known issues:
 
@@ -1137,5 +1137,5 @@ The team maintains a living document of known issues:
 > every React hook, every security decision, and every architectural invariant
 > in the QuantAgent codebase.
 >
-> [← Part 1: Big Picture, Database, Contracts](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part1.md)
-> [← Part 2: Auth, Ingestion, Indicators](file:///Users/sharzilnafis/.gemini/antigravity-cli/brain/a8bc2f12-6b2f-4eec-ae60-135bffce8126/masterclass-part2.md)
+> [← Part 1: Big Picture, Database, Contracts](./masterclass-part1.md)
+> [← Part 2: Auth, Ingestion, Indicators](./masterclass-part2.md)

@@ -1,14 +1,38 @@
-# Dependencies and package managers
+# ==============================================================================
+# Comprehensive .dockerignore for QuantAgent
+# Excludes local dependencies, caches, build artifacts, environments, and secrets
+# ==============================================================================
+
+# Node / JavaScript dependencies and caches
 node_modules
 **/node_modules
 .pnpm-store
+**/.pnpm-store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn
 
-# Python environments and caches
+# Python virtual environments and bytecode caches
 .venv
+**/.venv
+venv
+**/venv
+env
+**/env
+.Python
+__pycache__
 **/__pycache__
+*.pyc
 **/*.pyc
+*.pyo
 **/*.pyo
+*.pyd
 **/*.pyd
+
+# Test and linter caches / reports
 .pytest_cache
 **/.pytest_cache
 .ruff_cache
@@ -16,38 +40,55 @@ node_modules
 .coverage
 **/coverage
 htmlcov
+**/.mypy_cache
+.vitest
+**/.vitest
 
-# Build outputs and caches
+# Build outputs and build caches
 dist
 **/dist
 build
 **/build
+out
+**/out
 .turbo
 **/.turbo
 .next
 **/.next
 *.tsbuildinfo
 **/*.tsbuildinfo
+.cache
+**/.cache
 
 # Version control and worktrees
 .git
-.worktrees
+**/.git
 .gitignore
 .gitattributes
+.worktrees
+**/.worktrees
 
-# Environment files and logs
+# Environment files and sensitive credentials
 .env
-.env.local
-.env.*.local
+.env.*
+.env*.local
+*.pem
+*.key
+*.cert
+*.crt
+
+# System logs
 *.log
 **/*.log
 
-# OS and IDE files
+# OS-generated files and IDE settings
 .DS_Store
 **/.DS_Store
 Thumbs.db
+**/.idea
+**/.vscode
 
-# Agent and temporary scratch directories
+# Agent, scratch, and temporary assistant workspaces
 .agents
 .claude
 .codex
@@ -56,8 +97,8 @@ Thumbs.db
 .scratch
 .cbmignore
 
-# Static repo documentation and specs not needed in runtime images
+# Documentation, specifications, and demo scripts not required in image runtime
 docs
 specs
 demo
-
+*.md

@@ -1,0 +1,608 @@
+{
+  "step": "17-Daemon-Run-Cycle",
+  "method": "POST",
+  "url": "/daemon/run-cycle",
+  "statusCode": 200,
+  "expectedStatus": 200,
+  "passed": true,
+  "durationMs": 869.47,
+  "timestamp": "2026-09-01T16:38:31.672Z",
+  "requestPayload": {},
+  "responseHeaders": {
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "committee_session=e94ea800-8bae-42c9-b1d8-6d545b5c6a58; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax",
+    "content-length": "29494",
+    "date": "Tue, 01 Sep 2026 16:38:31 GMT",
+    "connection": "keep-alive"
+  },
+  "responseBody": {
+    "id": "e49e4bb7-79aa-4a6c-b216-eaa40319f72d",
+    "startedAt": "2026-09-01T16:38:30.806Z",
+    "completedAt": "2026-09-01T16:38:31.670Z",
+    "durationMs": 864,
+    "symbolsEvaluated": [
+      "AAPL",
+      "NVDA",
+      "SPY"
+    ],
+    "results": [
+      {
+        "symbol": "AAPL",
+        "decisionTs": "2024-12-31T21:00:00.000Z",
+        "consensus": {
+          "lineageId": "d610ebd8-91ab-4477-8a27-e08964c9cd82",
+          "consensusReached": true,
+          "mode": "consensus_short_circuit",
+          "finalBias": "bullish",
+          "finalConfidence": 0.677,
+          "specialistVotes": {
+            "technical": {
+              "agent": "technical",
+              "direction": "neutral",
+              "confidence": 0.029,
+              "rationale": "Deterministic technical read: neutral with conviction 3% from point-in-time indicators (RSI 56.68, SMA20 249.81, SMA50 237.60).",
+              "evidence": {
+                "renderedPrompt": "Symbol: AAPL\nTimeframe: 1Day\nDecision timestamp: 2024-12-31T21:00:00.000Z\nIndicator snapshot as-of: 2024-12-31T21:00:00.000Z (point-in-time legal)\n\nCOMPUTED FACTS (authoritative — do not restate as your own figures):\n  rule: macd_bear_cross+sma20_above_sma50+close_above_sma20\n  rsiZone: neutral\n  mechanicalDirection: neutral\n  mechanicalStrength: 0.029\n  mechanicalScore: 0.029\n  indicatorCoverage: 1\n  rsi: 56.68039323549466\n  macd: 5.087179073584025\n  macdSignal: 5.549920377361955\n  bbUpper: 259.6808169840709\n  bbLower: 239.93818301592972\n  sma20: 249.8095000000003\n  sma50: 237.60300000000024\n  close: 250.42\n  macdHistogram: -0.463\n\nDETERMINISTIC RULES THAT FIRED:\n  - macd_bear_cross: bearish (weight 0.8)\n  - sma20_above_sma50: bullish (weight 0.5)\n  - close_above_sma20: bullish (weight 0.4)\n\nMECHANICAL READ: neutral with strength 0.029\n(signed score 0.029 over 1 indicator coverage)\n\nWeigh these signals and explain the bias. Do not introduce any number that is\nnot listed above.",
+                "rawCompletion": "{\"agent\":\"technical\",\"direction\":\"neutral\",\"confidence\":0.029}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "snapshotAsOf": "2024-12-31T21:00:00.000Z",
+                "snapshotTs": "2024-12-31T14:30:00.000Z",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "rule": "macd_bear_cross+sma20_above_sma50+close_above_sma20",
+                "rsiZone": "neutral",
+                "mechanicalDirection": "neutral",
+                "mechanicalStrength": 0.029,
+                "mechanicalScore": 0.029,
+                "indicatorCoverage": 1,
+                "rsi": 56.68039323549466,
+                "macd": 5.087179073584025,
+                "macdSignal": 5.549920377361955,
+                "bbUpper": 259.6808169840709,
+                "bbLower": 239.93818301592972,
+                "sma20": 249.8095000000003,
+                "sma50": 237.60300000000024,
+                "close": 250.42,
+                "macdHistogram": -0.463
+              }
+            },
+            "sentiment": {
+              "agent": "sentiment",
+              "direction": "bullish",
+              "confidence": 0.182,
+              "rationale": "Deterministic sentiment: 4 bullish, 2 bearish, 5 neutral out of 11 point-in-time headlines.",
+              "evidence": {
+                "renderedPrompt": "Symbol: AAPL\nDecision timestamp: 2024-12-31T21:00:00.000Z\n\nPOINT-IN-TIME NEWS HEADLINES:\n  1. [2023-02-01T19:00:00Z] Fed raises interest rates by 25 basis points, signals ongoing increases — The Federal Reserve raised its benchmark interest rate by a quarter percentage point and noted inflation remains elevated.\n  2. [2023-02-02T21:30:00Z] Apple reports Q1 FY23 revenue of $117.2 billion, down 5% year-over-year — Apple faced foreign exchange headwinds and supply constraints on iPhone 14 Pro during the holiday quarter.\n  3. [2023-05-04T20:30:00Z] Apple reports Q2 results with record iPhone revenue and services growth — Apple beats Wall Street estimates driven by emerging markets strength and iPhone 14 momentum.\n  4. [2023-06-05T18:00:00Z] Apple unveils Vision Pro spatial computer at WWDC23 — Apple enters spatial computing category with high-resolution micro-OLED headset priced at $3,499.\n  5. [2023-09-12T18:30:00Z] Apple launches iPhone 15 Pro with titanium frame and 3nm A17 Pro chip — New premium iPhones feature USB-C connectivity, lighter design, and enhanced camera zoom.\n  6. [2023-12-13T19:30:00Z] Fed holds rates steady, dot plot projects three rate cuts in 2024 — Chairman Jerome Powell indicates monetary policy easing is coming into view as inflation moderates.\n  7. [2024-02-01T21:30:00Z] Apple returns to revenue growth in Q1 FY24 with $119.6B, Vision Pro launches — iPhone sales rise 6% while China revenue softens amid competitive domestic offerings.\n  8. [2024-05-02T20:30:00Z] Apple authorizes historic $110 billion share buyback program, raises dividend — Largest share repurchase authorization in corporate history announced alongside Q2 results.\n  9. [2024-06-10T18:30:00Z] Apple announces 'Apple Intelligence' personal AI system integrated across iOS 18 and macOS — Partnership with OpenAI integrates ChatGPT alongside privacy-focused on-device foundation models.\n  10. [2024-09-18T18:00:00Z] Federal Reserve cuts interest rates by 50 basis points, beginning easing cycle — Fed makes aggressive first rate cut in four years, recalibrating policy toward labor market preservation.\n  11. [2024-10-31T20:30:00Z] Apple reports Q4 revenue of $94.9B, up 6% YoY, driven by iPhone 16 demand — Services revenue sets new all-time record of $25.0B as active device installed base expands.\n\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish\n  Net Sentiment Score: 0.182\n\nWeigh these headlines and explain the market sentiment. Provide directional bias, confidence, and rationale.",
+                "rawCompletion": "{\"agent\":\"sentiment\",\"direction\":\"bullish\",\"confidence\":0.182}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "headlinesConsidered": 11,
+                "netSentimentScore": 0.182,
+                "bullishCount": 4,
+                "bearishCount": 2,
+                "neutralCount": 5,
+                "symbol": "AAPL",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.182
+              }
+            },
+            "fundamental": {
+              "agent": "fundamental",
+              "direction": "bullish",
+              "confidence": 0.87,
+              "rationale": "SEC 10-K (2024 FY) filed 2024-11-01. Revenue: $94.93B (+6.1% YoY), Operating Margin: 31.2%. FCF: $24.40B, D/E: 5.41.",
+              "evidence": {
+                "form": "10-K",
+                "fiscalYear": 2024,
+                "fiscalPeriod": "FY",
+                "periodEndDate": "2024-09-28",
+                "filedAt": "2024-11-01T18:00:00.000Z",
+                "revenueBillion": 94.93,
+                "operatingMargin": 0.312,
+                "netMargin": 0.155,
+                "freeCashFlowBillion": 24.4,
+                "debtToEquity": 5.41,
+                "revenueGrowthYoY": 0.061,
+                "statementsConsidered": 8,
+                "symbol": "AAPL",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "renderedPrompt": "Symbol: AAPL\nDecision timestamp: 2024-12-31T21:00:00.000Z\nPOINT-IN-TIME SEC EDGAR FINANCIAL DISCLOSURE:\n  Form: 10-K (Fiscal Year: 2024, Period: FY)\n  Period End Date: 2024-09-28\n  SEC Acceptance / Filing Date: 2024-11-01T18:00:00.000Z\nFINANCIAL LINE ITEMS (USD):\n  Revenue: $94.93B (YoY Growth: 6.1%)\n  Gross Profit: $43.88B (Gross Margin: 46.2%)\n  Operating Income: $29.59B (Operating Margin: 31.2%)\n  Net Income: $14.74B (Net Margin: 15.5%)\n  Free Cash Flow: $24.40B\n  Total Debt / Stockholders Equity (D/E): 5.41\n  Current Ratio: 1.03\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish (Confidence: 0.87)\nEvaluate this financial disclosure and state whether corporate fundamentals support a bullish, bearish, or neutral stance."
+              }
+            },
+            "polymarket": {
+              "agent": "polymarket",
+              "direction": "bullish",
+              "confidence": 0.98,
+              "rationale": "Polymarket crowdsourced macro probability analysis identifies 'dovish_easing' regime. Fed rate cut odds are 99%. CPI inflation >3% probability stands at 18%. Recession risk is priced at 8%. Mechanical stance is bullish with conviction 98%.",
+              "evidence": {
+                "renderedPrompt": "Analyze macroeconomic prediction market conditions for AAPL as of 2024-12-31T21:00:00.000Z.\n\nComputed Macro Odds Facts (strictly as_of <= T_decision):\n- Markets Considered: 3\n- Macro Regime: dovish_easing\n- Mechanical Direction: bullish\n- Mechanical Conviction: 98.0%\n- Rate Cut Probability: 99.0%\n- CPI Inflation > 3% Probability: 18.0%\n- US Recession Probability: 8.0%\n\nSynthesize these crowdsourced probability distributions into an institutional macro stance.",
+                "rawCompletion": "{\"agent\":\"polymarket\",\"direction\":\"bullish\",\"confidence\":0.98}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "marketsConsidered": 3,
+                "macroRegime": "dovish_easing",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.98,
+                "rateCutProbability": 0.99,
+                "inflationExceedProbability": 0.18,
+                "recessionProbability": 0.08
+              }
+            }
+          },
+          "metadata": {
+            "runId": "d66c10f5-fd14-431c-94df-acd5271f7df9",
+            "durationMs": 1,
+            "tokenCost": 0,
+            "debateRounds": 1
+          }
+        },
+        "riskAssessment": {
+          "assessmentId": "4f22fe70-b5d6-47a8-9ea2-392daa081327",
+          "symbol": "AAPL",
+          "direction": "bullish",
+          "status": "MODIFIED",
+          "executionAllowed": true,
+          "evaluatedRules": [
+            {
+              "ruleId": "confidence_threshold",
+              "name": "Minimum Confidence Threshold",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0.677,
+              "threshold": 0.5,
+              "message": "Committee confidence 67.7% meets minimum threshold."
+            },
+            {
+              "ruleId": "drawdown_circuit_breaker",
+              "name": "Portfolio Drawdown Circuit Breaker",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.15,
+              "message": "Current drawdown of 0.0% is within the 15.0% limit."
+            },
+            {
+              "ruleId": "min_cash_reserve",
+              "name": "Minimum Cash Reserve",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 1,
+              "threshold": 0.1,
+              "message": "Deployable cash is $90000.00 above the 10.0% reserve buffer."
+            },
+            {
+              "ruleId": "max_exposure",
+              "name": "Max Single-Asset Exposure",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.2,
+              "message": "Current exposure to AAPL is 0.0% (cap: 20.0%)."
+            },
+            {
+              "ruleId": "volatility_ceiling",
+              "name": "Asset Volatility Ceiling",
+              "passed": true,
+              "severity": "INFO",
+              "message": "No volatility metric provided; rule skipped."
+            }
+          ],
+          "violations": [],
+          "adjustedConstraints": {
+            "maxAllowedNotional": 20000,
+            "maxAllowedWeight": 0.2
+          },
+          "asOf": "2024-12-31T21:00:00.000Z",
+          "evaluatedAt": "2026-09-01T16:38:31.092Z"
+        },
+        "orderResult": {
+          "orderId": "mock-dryrun-205f6c0b",
+          "clientOrderId": "dryrun-client-f3f9f7b6",
+          "symbol": "AAPL",
+          "qty": 19,
+          "side": "buy",
+          "type": "market",
+          "timeInForce": "day",
+          "status": "filled",
+          "filledQty": 19,
+          "filledAvgPrice": 250.42,
+          "submittedAt": "2024-12-31T21:00:00.000Z",
+          "filledAt": "2024-12-31T21:00:00.000Z"
+        },
+        "actionTaken": "dry_run_recorded"
+      },
+      {
+        "symbol": "NVDA",
+        "decisionTs": "2024-12-31T21:00:00.000Z",
+        "consensus": {
+          "lineageId": "50bbee33-2010-49b8-b69a-8f0dab429abc",
+          "consensusReached": true,
+          "mode": "consensus_short_circuit",
+          "finalBias": "bullish",
+          "finalConfidence": 0.782,
+          "specialistVotes": {
+            "technical": {
+              "agent": "technical",
+              "direction": "neutral",
+              "confidence": 0.029,
+              "rationale": "Deterministic technical read: neutral with conviction 3% from point-in-time indicators (RSI 45.17, SMA20 137.15, SMA50 139.89).",
+              "evidence": {
+                "renderedPrompt": "Symbol: NVDA\nTimeframe: 1Day\nDecision timestamp: 2024-12-31T21:00:00.000Z\nIndicator snapshot as-of: 2024-12-31T21:00:00.000Z (point-in-time legal)\n\nCOMPUTED FACTS (authoritative — do not restate as your own figures):\n  rule: macd_bull_cross+sma20_below_sma50+close_below_sma20\n  rsiZone: neutral\n  mechanicalDirection: neutral\n  mechanicalStrength: 0.029\n  mechanicalScore: -0.029\n  indicatorCoverage: 1\n  rsi: 45.17335636496269\n  macd: -0.7634360227214358\n  macdSignal: -0.9565201106788642\n  bbUpper: 146.1380234022721\n  bbLower: 128.15897659772764\n  sma20: 137.14849999999987\n  sma50: 139.89040000000026\n  close: 134.29\n  macdHistogram: 0.193\n\nDETERMINISTIC RULES THAT FIRED:\n  - macd_bull_cross: bullish (weight 0.8)\n  - sma20_below_sma50: bearish (weight 0.5)\n  - close_below_sma20: bearish (weight 0.4)\n\nMECHANICAL READ: neutral with strength 0.029\n(signed score -0.029 over 1 indicator coverage)\n\nWeigh these signals and explain the bias. Do not introduce any number that is\nnot listed above.",
+                "rawCompletion": "{\"agent\":\"technical\",\"direction\":\"neutral\",\"confidence\":0.029}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "snapshotAsOf": "2024-12-31T21:00:00.000Z",
+                "snapshotTs": "2024-12-31T14:30:00.000Z",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "rule": "macd_bull_cross+sma20_below_sma50+close_below_sma20",
+                "rsiZone": "neutral",
+                "mechanicalDirection": "neutral",
+                "mechanicalStrength": 0.029,
+                "mechanicalScore": -0.029,
+                "indicatorCoverage": 1,
+                "rsi": 45.17335636496269,
+                "macd": -0.7634360227214358,
+                "macdSignal": -0.9565201106788642,
+                "bbUpper": 146.1380234022721,
+                "bbLower": 128.15897659772764,
+                "sma20": 137.14849999999987,
+                "sma50": 139.89040000000026,
+                "close": 134.29,
+                "macdHistogram": 0.193
+              }
+            },
+            "sentiment": {
+              "agent": "sentiment",
+              "direction": "bullish",
+              "confidence": 0.417,
+              "rationale": "Deterministic sentiment: 7 bullish, 2 bearish, 3 neutral out of 12 point-in-time headlines.",
+              "evidence": {
+                "renderedPrompt": "Symbol: NVDA\nDecision timestamp: 2024-12-31T21:00:00.000Z\n\nPOINT-IN-TIME NEWS HEADLINES:\n  1. [2023-02-01T19:00:00Z] Fed raises interest rates by 25 basis points, signals ongoing increases — The Federal Reserve raised its benchmark interest rate by a quarter percentage point and noted inflation remains elevated.\n  2. [2023-02-22T21:20:00Z] Nvidia announces strong AI chip demand in Q4 earnings, CEO says AI at inflection point — Jensen Huang highlights generative AI computing needs driving demand for Hopper and Ampere architecture GPUs.\n  3. [2023-05-24T20:45:00Z] Nvidia shocks Wall Street with unprecedented $11B revenue guidance on AI boom — Nvidia shares skyrocket 25% after hours on historic demand for datacenter AI hardware.\n  4. [2023-08-23T20:30:00Z] Nvidia Q2 revenue doubles to $13.51B as Data Center sales surge 171% — AI mega-trend fuels massive profit expansion across enterprise and cloud providers.\n  5. [2023-11-21T21:20:00Z] Nvidia Q3 revenue triples to $18.12 billion, beats all expectations — Demand for HGX systems remains robust while company navigates updated US export restrictions.\n  6. [2023-12-13T19:30:00Z] Fed holds rates steady, dot plot projects three rate cuts in 2024 — Chairman Jerome Powell indicates monetary policy easing is coming into view as inflation moderates.\n  7. [2024-02-21T21:30:00Z] Nvidia posts 265% revenue surge in Q4, cementing market cap leadership — Datacenter revenue reaches $18.4B in single quarter as global AI infrastructure spending accelerates.\n  8. [2024-03-18T18:00:00Z] Nvidia introduces Blackwell B200 GPU, claiming 30x inference speedup — GTC 2024 keynote showcases next-generation architecture featuring 208 billion transistors.\n  9. [2024-05-22T20:20:00Z] Nvidia announces 10-for-1 stock split and 150% dividend increase on record Q1 results — Quarterly revenue hits $26.0B as Blackwell platform enters full production.\n  10. [2024-08-28T20:30:00Z] Nvidia Q2 revenue jumps 122% to $30.04B, approves additional $50B share buyback — CEO confirms Blackwell sample shipments to partners with production ramp on track.\n  11. [2024-09-18T18:00:00Z] Federal Reserve cuts interest rates by 50 basis points, beginning easing cycle — Fed makes aggressive first rate cut in four years, recalibrating policy toward labor market preservation.\n  12. [2024-11-20T21:30:00Z] Nvidia Q3 revenue hits $35.08B, beating consensus estimates — Blackwell chip delivers full operational readiness with cloud hyperscalers booking entire pipeline.\n\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish\n  Net Sentiment Score: 0.417\n\nWeigh these headlines and explain the market sentiment. Provide directional bias, confidence, and rationale.",
+                "rawCompletion": "{\"agent\":\"sentiment\",\"direction\":\"bullish\",\"confidence\":0.417}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "headlinesConsidered": 12,
+                "netSentimentScore": 0.417,
+                "bullishCount": 7,
+                "bearishCount": 2,
+                "neutralCount": 3,
+                "symbol": "NVDA",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.417
+              }
+            },
+            "fundamental": {
+              "agent": "fundamental",
+              "direction": "bullish",
+              "confidence": 0.95,
+              "rationale": "SEC 10-Q (2025 Q2) filed 2024-08-28. Revenue: $30.04B (+122.4% YoY), Operating Margin: 62.1%. FCF: $14.05B, D/E: 0.47.",
+              "evidence": {
+                "form": "10-Q",
+                "fiscalYear": 2025,
+                "fiscalPeriod": "Q2",
+                "periodEndDate": "2024-07-28",
+                "filedAt": "2024-08-28T18:00:00.000Z",
+                "revenueBillion": 30.04,
+                "operatingMargin": 0.621,
+                "netMargin": 0.553,
+                "freeCashFlowBillion": 14.05,
+                "debtToEquity": 0.47,
+                "revenueGrowthYoY": 1.224,
+                "statementsConsidered": 6,
+                "symbol": "NVDA",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "renderedPrompt": "Symbol: NVDA\nDecision timestamp: 2024-12-31T21:00:00.000Z\nPOINT-IN-TIME SEC EDGAR FINANCIAL DISCLOSURE:\n  Form: 10-Q (Fiscal Year: 2025, Period: Q2)\n  Period End Date: 2024-07-28\n  SEC Acceptance / Filing Date: 2024-08-28T18:00:00.000Z\nFINANCIAL LINE ITEMS (USD):\n  Revenue: $30.04B (YoY Growth: 122.4%)\n  Gross Profit: $22.57B (Gross Margin: 75.1%)\n  Operating Income: $18.64B (Operating Margin: 62.1%)\n  Net Income: $16.60B (Net Margin: 55.3%)\n  Free Cash Flow: $14.05B\n  Total Debt / Stockholders Equity (D/E): 0.47\n  Current Ratio: 4.01\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish (Confidence: 0.95)\nEvaluate this financial disclosure and state whether corporate fundamentals support a bullish, bearish, or neutral stance."
+              }
+            },
+            "polymarket": {
+              "agent": "polymarket",
+              "direction": "bullish",
+              "confidence": 0.98,
+              "rationale": "Polymarket crowdsourced macro probability analysis identifies 'dovish_easing' regime. Fed rate cut odds are 99%. CPI inflation >3% probability stands at 18%. Recession risk is priced at 8%. Mechanical stance is bullish with conviction 98%.",
+              "evidence": {
+                "renderedPrompt": "Analyze macroeconomic prediction market conditions for NVDA as of 2024-12-31T21:00:00.000Z.\n\nComputed Macro Odds Facts (strictly as_of <= T_decision):\n- Markets Considered: 3\n- Macro Regime: dovish_easing\n- Mechanical Direction: bullish\n- Mechanical Conviction: 98.0%\n- Rate Cut Probability: 99.0%\n- CPI Inflation > 3% Probability: 18.0%\n- US Recession Probability: 8.0%\n\nSynthesize these crowdsourced probability distributions into an institutional macro stance.",
+                "rawCompletion": "{\"agent\":\"polymarket\",\"direction\":\"bullish\",\"confidence\":0.98}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "marketsConsidered": 3,
+                "macroRegime": "dovish_easing",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.98,
+                "rateCutProbability": 0.99,
+                "inflationExceedProbability": 0.18,
+                "recessionProbability": 0.08
+              }
+            }
+          },
+          "metadata": {
+            "runId": "46f65cd7-3756-4774-a1e3-57f1d3751269",
+            "durationMs": 1,
+            "tokenCost": 0,
+            "debateRounds": 1
+          }
+        },
+        "riskAssessment": {
+          "assessmentId": "1bf42c04-133f-4cc3-8538-f8d9c2a4985c",
+          "symbol": "NVDA",
+          "direction": "bullish",
+          "status": "MODIFIED",
+          "executionAllowed": true,
+          "evaluatedRules": [
+            {
+              "ruleId": "confidence_threshold",
+              "name": "Minimum Confidence Threshold",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0.782,
+              "threshold": 0.5,
+              "message": "Committee confidence 78.2% meets minimum threshold."
+            },
+            {
+              "ruleId": "drawdown_circuit_breaker",
+              "name": "Portfolio Drawdown Circuit Breaker",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.15,
+              "message": "Current drawdown of 0.0% is within the 15.0% limit."
+            },
+            {
+              "ruleId": "min_cash_reserve",
+              "name": "Minimum Cash Reserve",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 1,
+              "threshold": 0.1,
+              "message": "Deployable cash is $90000.00 above the 10.0% reserve buffer."
+            },
+            {
+              "ruleId": "max_exposure",
+              "name": "Max Single-Asset Exposure",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.2,
+              "message": "Current exposure to NVDA is 0.0% (cap: 20.0%)."
+            },
+            {
+              "ruleId": "volatility_ceiling",
+              "name": "Asset Volatility Ceiling",
+              "passed": true,
+              "severity": "INFO",
+              "message": "No volatility metric provided; rule skipped."
+            }
+          ],
+          "violations": [],
+          "adjustedConstraints": {
+            "maxAllowedNotional": 20000,
+            "maxAllowedWeight": 0.2
+          },
+          "asOf": "2024-12-31T21:00:00.000Z",
+          "evaluatedAt": "2026-09-01T16:38:31.380Z"
+        },
+        "orderResult": {
+          "orderId": "mock-dryrun-4b345596",
+          "clientOrderId": "dryrun-client-cf4193e0",
+          "symbol": "NVDA",
+          "qty": 37,
+          "side": "buy",
+          "type": "market",
+          "timeInForce": "day",
+          "status": "filled",
+          "filledQty": 37,
+          "filledAvgPrice": 134.29,
+          "submittedAt": "2024-12-31T21:00:00.000Z",
+          "filledAt": "2024-12-31T21:00:00.000Z"
+        },
+        "actionTaken": "dry_run_recorded"
+      },
+      {
+        "symbol": "SPY",
+        "decisionTs": "2024-12-31T21:00:00.000Z",
+        "consensus": {
+          "lineageId": "0724dc60-f0f6-4284-a135-12121c55e808",
+          "consensusReached": false,
+          "mode": "debate_synthesis",
+          "finalBias": "bullish",
+          "finalConfidence": 0.855,
+          "specialistVotes": {
+            "technical": {
+              "agent": "technical",
+              "direction": "bearish",
+              "confidence": 0.206,
+              "rationale": "Deterministic technical read: bearish with conviction 21% from point-in-time indicators (RSI 40.18, SMA20 599.54, SMA50 592.82).",
+              "evidence": {
+                "renderedPrompt": "Symbol: SPY\nTimeframe: 1Day\nDecision timestamp: 2024-12-31T21:00:00.000Z\nIndicator snapshot as-of: 2024-12-31T21:00:00.000Z (point-in-time legal)\n\nCOMPUTED FACTS (authoritative — do not restate as your own figures):\n  rule: macd_bear_cross+sma20_above_sma50+close_below_sma20\n  rsiZone: neutral\n  mechanicalDirection: bearish\n  mechanicalStrength: 0.206\n  mechanicalScore: -0.206\n  indicatorCoverage: 1\n  rsi: 40.18349931614575\n  macd: -0.983445377089879\n  macdSignal: 0.9719100129547055\n  bbUpper: 615.0968961577015\n  bbLower: 583.9801038422974\n  sma20: 599.5384999999994\n  sma50: 592.8180000000007\n  close: 586.08\n  macdHistogram: -1.955\n\nDETERMINISTIC RULES THAT FIRED:\n  - macd_bear_cross: bearish (weight 0.8)\n  - sma20_above_sma50: bullish (weight 0.5)\n  - close_below_sma20: bearish (weight 0.4)\n\nMECHANICAL READ: bearish with strength 0.206\n(signed score -0.206 over 1 indicator coverage)\n\nWeigh these signals and explain the bias. Do not introduce any number that is\nnot listed above.",
+                "rawCompletion": "{\"agent\":\"technical\",\"direction\":\"bearish\",\"confidence\":0.206}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "snapshotAsOf": "2024-12-31T21:00:00.000Z",
+                "snapshotTs": "2024-12-31T14:30:00.000Z",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "rule": "macd_bear_cross+sma20_above_sma50+close_below_sma20",
+                "rsiZone": "neutral",
+                "mechanicalDirection": "bearish",
+                "mechanicalStrength": 0.206,
+                "mechanicalScore": -0.206,
+                "indicatorCoverage": 1,
+                "rsi": 40.18349931614575,
+                "macd": -0.983445377089879,
+                "macdSignal": 0.9719100129547055,
+                "bbUpper": 615.0968961577015,
+                "bbLower": 583.9801038422974,
+                "sma20": 599.5384999999994,
+                "sma50": 592.8180000000007,
+                "close": 586.08,
+                "macdHistogram": -1.955
+              }
+            },
+            "sentiment": {
+              "agent": "sentiment",
+              "direction": "bullish",
+              "confidence": 0.333,
+              "rationale": "Deterministic sentiment: 5 bullish, 2 bearish, 2 neutral out of 9 point-in-time headlines.",
+              "evidence": {
+                "renderedPrompt": "Symbol: SPY\nDecision timestamp: 2024-12-31T21:00:00.000Z\n\nPOINT-IN-TIME NEWS HEADLINES:\n  1. [2023-02-01T19:00:00Z] Fed raises interest rates by 25 basis points, signals ongoing increases — The Federal Reserve raised its benchmark interest rate by a quarter percentage point and noted inflation remains elevated.\n  2. [2023-05-24T20:45:00Z] Nvidia shocks Wall Street with unprecedented $11B revenue guidance on AI boom — Nvidia shares skyrocket 25% after hours on historic demand for datacenter AI hardware.\n  3. [2023-08-23T20:30:00Z] Nvidia Q2 revenue doubles to $13.51B as Data Center sales surge 171% — AI mega-trend fuels massive profit expansion across enterprise and cloud providers.\n  4. [2023-12-13T19:30:00Z] Fed holds rates steady, dot plot projects three rate cuts in 2024 — Chairman Jerome Powell indicates monetary policy easing is coming into view as inflation moderates.\n  5. [2024-02-21T21:30:00Z] Nvidia posts 265% revenue surge in Q4, cementing market cap leadership — Datacenter revenue reaches $18.4B in single quarter as global AI infrastructure spending accelerates.\n  6. [2024-05-02T20:30:00Z] Apple authorizes historic $110 billion share buyback program, raises dividend — Largest share repurchase authorization in corporate history announced alongside Q2 results.\n  7. [2024-05-22T20:20:00Z] Nvidia announces 10-for-1 stock split and 150% dividend increase on record Q1 results — Quarterly revenue hits $26.0B as Blackwell platform enters full production.\n  8. [2024-09-18T18:00:00Z] Federal Reserve cuts interest rates by 50 basis points, beginning easing cycle — Fed makes aggressive first rate cut in four years, recalibrating policy toward labor market preservation.\n  9. [2024-11-20T21:30:00Z] Nvidia Q3 revenue hits $35.08B, beating consensus estimates — Blackwell chip delivers full operational readiness with cloud hyperscalers booking entire pipeline.\n\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish\n  Net Sentiment Score: 0.333\n\nWeigh these headlines and explain the market sentiment. Provide directional bias, confidence, and rationale.",
+                "rawCompletion": "{\"agent\":\"sentiment\",\"direction\":\"bullish\",\"confidence\":0.333}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "headlinesConsidered": 9,
+                "netSentimentScore": 0.333,
+                "bullishCount": 5,
+                "bearishCount": 2,
+                "neutralCount": 2,
+                "symbol": "SPY",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.333
+              }
+            },
+            "fundamental": {
+              "agent": "fundamental",
+              "direction": "bullish",
+              "confidence": 0.95,
+              "rationale": "SEC 10-K (2023 FY) filed 2024-02-20. Revenue: $17.20B (+12.5% YoY), Operating Margin: 98.8%. FCF: $16.80B, D/E: 0.00.",
+              "evidence": {
+                "form": "10-K",
+                "fiscalYear": 2023,
+                "fiscalPeriod": "FY",
+                "periodEndDate": "2023-12-31",
+                "filedAt": "2024-02-20T18:00:00.000Z",
+                "revenueBillion": 17.2,
+                "operatingMargin": 0.988,
+                "netMargin": 0.988,
+                "freeCashFlowBillion": 16.8,
+                "debtToEquity": 0,
+                "revenueGrowthYoY": 0.125,
+                "statementsConsidered": 2,
+                "symbol": "SPY",
+                "decisionTs": "2024-12-31T21:00:00.000Z",
+                "renderedPrompt": "Symbol: SPY\nDecision timestamp: 2024-12-31T21:00:00.000Z\nPOINT-IN-TIME SEC EDGAR FINANCIAL DISCLOSURE:\n  Form: 10-K (Fiscal Year: 2023, Period: FY)\n  Period End Date: 2023-12-31\n  SEC Acceptance / Filing Date: 2024-02-20T18:00:00.000Z\nFINANCIAL LINE ITEMS (USD):\n  Revenue: $17.20B (YoY Growth: 12.5%)\n  Gross Profit: $17.20B (Gross Margin: 100.0%)\n  Operating Income: $17.00B (Operating Margin: 98.8%)\n  Net Income: $17.00B (Net Margin: 98.8%)\n  Free Cash Flow: $16.80B\n  Total Debt / Stockholders Equity (D/E): 0.00\n  Current Ratio: 275.00\nMECHANICAL CLASSIFICATION:\n  Mechanical Direction: bullish (Confidence: 0.95)\nEvaluate this financial disclosure and state whether corporate fundamentals support a bullish, bearish, or neutral stance."
+              }
+            },
+            "polymarket": {
+              "agent": "polymarket",
+              "direction": "bullish",
+              "confidence": 0.98,
+              "rationale": "Polymarket crowdsourced macro probability analysis identifies 'dovish_easing' regime. Fed rate cut odds are 99%. CPI inflation >3% probability stands at 18%. Recession risk is priced at 8%. Mechanical stance is bullish with conviction 98%.",
+              "evidence": {
+                "renderedPrompt": "Analyze macroeconomic prediction market conditions for SPY as of 2024-12-31T21:00:00.000Z.\n\nComputed Macro Odds Facts (strictly as_of <= T_decision):\n- Markets Considered: 3\n- Macro Regime: dovish_easing\n- Mechanical Direction: bullish\n- Mechanical Conviction: 98.0%\n- Rate Cut Probability: 99.0%\n- CPI Inflation > 3% Probability: 18.0%\n- US Recession Probability: 8.0%\n\nSynthesize these crowdsourced probability distributions into an institutional macro stance.",
+                "rawCompletion": "{\"agent\":\"polymarket\",\"direction\":\"bullish\",\"confidence\":0.98}",
+                "completionMode": "deterministic-offline",
+                "completionValidated": true,
+                "deterministic": true,
+                "marketsConsidered": 3,
+                "macroRegime": "dovish_easing",
+                "mechanicalDirection": "bullish",
+                "mechanicalStrength": 0.98,
+                "rateCutProbability": 0.99,
+                "inflationExceedProbability": 0.18,
+                "recessionProbability": 0.08
+              }
+            }
+          },
+          "synthesis": {
+            "direction": "bullish",
+            "confidence": 0.855,
+            "rationale": "SEC EDGAR fundamental metrics (bullish, 0.95) corroborate Sentiment conviction (0.33) over technical indicators.",
+            "dissentingView": "Technical specialist dissents based on price action (Deterministic technical read: bearish with conviction 21% from point-in-time indicators (RSI 40.18, SMA20 599.54, SMA50 592.82).).",
+            "primaryDriver": "fundamental",
+            "rounds": 1,
+            "tokenCost": 0,
+            "latencyMs": 0
+          },
+          "metadata": {
+            "runId": "016481cf-9d06-486f-91dc-89d2411f23ca",
+            "durationMs": 1,
+            "tokenCost": 0,
+            "debateRounds": 1
+          }
+        },
+        "riskAssessment": {
+          "assessmentId": "a467cc46-5760-4ed6-b308-fc009444c05e",
+          "symbol": "SPY",
+          "direction": "bullish",
+          "status": "MODIFIED",
+          "executionAllowed": true,
+          "evaluatedRules": [
+            {
+              "ruleId": "confidence_threshold",
+              "name": "Minimum Confidence Threshold",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0.855,
+              "threshold": 0.5,
+              "message": "Committee confidence 85.5% meets minimum threshold."
+            },
+            {
+              "ruleId": "drawdown_circuit_breaker",
+              "name": "Portfolio Drawdown Circuit Breaker",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.15,
+              "message": "Current drawdown of 0.0% is within the 15.0% limit."
+            },
+            {
+              "ruleId": "min_cash_reserve",
+              "name": "Minimum Cash Reserve",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 1,
+              "threshold": 0.1,
+              "message": "Deployable cash is $90000.00 above the 10.0% reserve buffer."
+            },
+            {
+              "ruleId": "max_exposure",
+              "name": "Max Single-Asset Exposure",
+              "passed": true,
+              "severity": "BLOCKING",
+              "currentValue": 0,
+              "threshold": 0.2,
+              "message": "Current exposure to SPY is 0.0% (cap: 20.0%)."
+            },
+            {
+              "ruleId": "volatility_ceiling",
+              "name": "Asset Volatility Ceiling",
+              "passed": true,
+              "severity": "INFO",
+              "message": "No volatility metric provided; rule skipped."
+            }
+          ],
+          "violations": [],
+          "adjustedConstraints": {
+            "maxAllowedNotional": 20000,
+            "maxAllowedWeight": 0.2
+          },
+          "asOf": "2024-12-31T21:00:00.000Z",
+          "evaluatedAt": "2026-09-01T16:38:31.670Z"
+        },
+        "orderResult": {
+          "orderId": "mock-dryrun-a3434e59",
+          "clientOrderId": "dryrun-client-122835aa",
+          "symbol": "SPY",
+          "qty": 8,
+          "side": "buy",
+          "type": "market",
+          "timeInForce": "day",
+          "status": "filled",
+          "filledQty": 8,
+          "filledAvgPrice": 586.08,
+          "submittedAt": "2024-12-31T21:00:00.000Z",
+          "filledAt": "2024-12-31T21:00:00.000Z"
+        },
+        "actionTaken": "dry_run_recorded"
+      }
+    ]
+  }
+}
