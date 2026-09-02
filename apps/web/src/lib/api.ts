@@ -142,15 +142,13 @@ async function request(path: string, options: RequestOptions = {}): Promise<unkn
     }
   }
 
-  // If the server returned HTML (e.g. Vercel static fallback 404/405/200) instead of JSON
-  if (raw && !payload && raw.includes("<!DOCTYPE html>")) {
-    if (response.status === 405 || response.status === 404) {
-      throw new ApiError(
-        `Backend API endpoint not found (${response.status}) at ${targetUrl}. Ensure the Fastify API backend is running and VITE_API_URL is configured.`,
-        response.status,
-        path,
-      );
-    }
+  // If the server returned HTML (e.g. Vercel static fallback or SPA rewrite 404/405/200 index.html) instead of JSON
+  if (raw && !payload && (raw.includes("<!DOCTYPE html>") || raw.includes("<html") || raw.includes("<head"))) {
+    throw new ApiError(
+      `Backend API endpoint unreachable (returned static HTML) at ${targetUrl}. Ensure the Fastify API backend is running and VITE_API_URL is configured.`,
+      response.status === 200 ? 0 : response.status,
+      path,
+    );
   }
 
   if (!response.ok) {

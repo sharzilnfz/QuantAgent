@@ -23,8 +23,10 @@ export function useMarketStream(options: UseMarketStreamOptions = {}) {
       return;
     }
 
+    const envApi = import.meta.env.VITE_API_URL;
+    const apiBase = envApi ? envApi.replace(/\/$/, "") : "/api";
     const query = symbols.length > 0 ? `?symbols=${encodeURIComponent(symbols.join(","))}` : "";
-    const url = `/api/streaming/market-data${query}`;
+    const url = `${apiBase}/streaming/market-data${query}`;
 
     try {
       const es = new EventSource(url);
