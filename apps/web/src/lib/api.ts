@@ -31,7 +31,8 @@ import {
   VarianceSweepResult,
 } from "@committee/contracts";
 
-const API_BASE = "/api";
+const envApi = import.meta.env.VITE_API_URL;
+const API_BASE = envApi ? envApi.replace(/\/$/, "") : "/api";
 
 /** Everything this client throws. `status` 0 means the request never landed. */
 export class ApiError extends Error {
@@ -102,11 +103,16 @@ async function request(path: string, options: RequestOptions = {}): Promise<unkn
   }
 
   let response: Response;
+  const targetUrl = `${API_BASE}${path}`;
   try {
-    response = await fetch(`${API_BASE}${path}`, init);
+    response = await fetch(targetUrl, init);
   } catch {
     // Server down / offline / DNS. Distinguishable from a 4xx by status 0.
-    throw new ApiError("Could not reach the API. Check that the server is running.", 0, path);
+    throw new ApiError(
+      `Could not reach the API at ${targetUrl}. Check that the backend server is running.`,
+      0,
+      path,
+    );
   }
 
   const raw = response.status === 204 ? "" : await response.text();
@@ -119,13 +125,24 @@ async function request(path: string, options: RequestOptions = {}): Promise<unkn
     }
   }
 
+  // If the server returned HTML (e.g. Vercel static fallback 404/405/200) instead of JSON
+  if (raw && !payload && raw.includes("<!DOCTYPE html>")) {
+    if (response.status === 405 || response.status === 404) {
+      throw new ApiError(
+        `Backend API endpoint not found (${response.status}) at ${targetUrl}. Ensure the Fastify API backend is running and VITE_API_URL is configured.`,
+        response.status,
+        path,
+      );
+    }
+  }
+
   if (!response.ok) {
-    throw new ApiError(errorMessage(payload, response), response.status, path);
+    throw new ApiError(errorMessage(payload, response, targetUrl), response.status, path);
   }
   return payload;
 }
 
-function errorMessage(payload: unknown, response: Response): string {
+function errorMessage(payload: unknown, response: Response, targetUrl?: string): string {
   const record = asRecord(payload);
   if (record) {
     for (const key of ["message", "error"] as const) {
@@ -134,6 +151,9 @@ function errorMessage(payload: unknown, response: Response): string {
     }
   }
   if (response.status === 401) return "Your session has expired.";
+  if (response.status === 405) {
+    return `HTTP 405 Method Not Allowed at ${targetUrl ?? "endpoint"}. The backend API server is either offline or unreachable.`;
+  }
   return `Request failed (${response.status}).`;
 }
 
