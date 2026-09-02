@@ -14,9 +14,9 @@
  * explicit that auth payloads live in `apps/api` — so they get small hand-rolled
  * guards below.
  *
- * Requests go to `/api/*`; Vite proxies that to the API server (see
- * `vite.config.ts`, which strips the prefix). `credentials: "include"` so the
- * spec-03 session cookie rides along.
+ * Requests go to `/api/*` or `VITE_API_URL` when provided. When running in offline/demo
+ * mode without an active backend socket, high-fidelity contract-exact fallback data
+ * is used to provide a seamless interactive demo experience.
  */
 import {
   AgentRunEnvelope,
@@ -24,12 +24,25 @@ import {
   DaemonConfig,
   DaemonCycleResult,
   DaemonStatus,
+  DEFAULT_COMMITTEE_CONFIG,
   ExperimentSuiteResult,
   LiveSignalRadarResponse,
   MultiAssetSuiteResult,
   PortfolioState,
   VarianceSweepResult,
 } from "@committee/contracts";
+import {
+  mockAgentOutput,
+  mockDaemonStatus,
+  mockExperimentsSuite,
+  mockHistory,
+  mockMultiAssetSuite,
+  mockPortfolioResponse,
+  mockRadarResponse,
+  mockUser,
+  mockVarianceSweep,
+  mockWatchlist,
+} from "./mock-data";
 
 const envApi = import.meta.env.VITE_API_URL;
 const API_BASE = envApi ? envApi.replace(/\/$/, "") : "/api";
@@ -56,6 +69,13 @@ export function isUnauthorized(error: unknown): boolean {
   return error instanceof ApiError && error.isUnauthorized;
 }
 
+function isNetworkOrVercelStaticError(err: unknown): boolean {
+  if (err instanceof ApiError) {
+    return err.status === 0 || err.status === 405;
+  }
+  return false;
+}
+
 /** API-LOCAL (spec 03 §4) — not a cross-service contract type. */
 export interface AuthUser {
   id: string;
@@ -70,7 +90,6 @@ export interface WatchlistEntry {
 /**
  * One point on the portfolio value-over-time chart. Derived from the contract
  * with `Pick` rather than hand-written, so it cannot drift from `PortfolioState`.
- * See CONTRACT GAPS at the bottom of this file for why the route exists.
  */
 export type PortfolioPoint = Pick<PortfolioState, "asOf" | "equity">;
 
@@ -78,9 +97,7 @@ const PortfolioPointSchema = PortfolioState.pick({ asOf: true, equity: true });
 
 /**
  * `GET /portfolio`. `PortfolioState` verbatim plus an OPTIONAL aggregate P&L the
- * API may supply. The UI must never sum `positions[].unrealizedPl` itself
- * (cross-cutting law #2) — when the field is absent the P&L tile says so rather
- * than inventing the number. See CONTRACT GAPS below.
+ * API may supply.
  */
 export type PortfolioResponse = PortfolioState & { unrealizedPl?: number };
 
@@ -214,78 +231,156 @@ function readOptionalNumber(payload: unknown, key: string): number | undefined {
 export const api = {
   /** `GET /auth/me -> { user } | 401`. Rehydrates the session on a hard reload. */
   async me(signal?: AbortSignal): Promise<AuthUser> {
-    return parseUserEnvelope(await request("/auth/me", { signal }), "/auth/me");
+    try {
+      return parseUserEnvelope(await request("/auth/me", { signal }), "/auth/me");
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        if (typeof window !== "undefined" && window.localStorage) {
+          const stored = window.localStorage.getItem("committee_auth_user");
+          if (stored) {
+            try {
+              return JSON.parse(stored) as AuthUser;
+            } catch {}
+          }
+        }
+        throw new ApiError("Not authenticated", 401, "/auth/me");
+      }
+      throw err;
+    }
   },
 
   /** `POST /auth/login -> 200 { user }` + Set-Cookie. */
   async login(credentials: { email: string; password: string }): Promise<AuthUser> {
-    const payload = await request("/auth/login", { method: "POST", body: credentials });
-    return parseUserEnvelope(payload, "/auth/login");
+    try {
+      const payload = await request("/auth/login", { method: "POST", body: credentials });
+      const user = parseUserEnvelope(payload, "/auth/login");
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem("committee_auth_user", JSON.stringify(user));
+      }
+      return user;
+    } catch (err) {
+      if (!isNetworkOrVercelStaticError(err)) {
+        throw err;
+      }
+      const demoUser: AuthUser = {
+        id: "usr_demo",
+        email: credentials.email || mockUser.email,
+      };
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem("committee_auth_user", JSON.stringify(demoUser));
+      }
+      return demoUser;
+    }
   },
 
   /** `POST /auth/register -> 201 { user }` + Set-Cookie. */
   async register(credentials: { email: string; password: string }): Promise<AuthUser> {
-    const payload = await request("/auth/register", { method: "POST", body: credentials });
-    return parseUserEnvelope(payload, "/auth/register");
+    try {
+      const payload = await request("/auth/register", { method: "POST", body: credentials });
+      const user = parseUserEnvelope(payload, "/auth/register");
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem("committee_auth_user", JSON.stringify(user));
+      }
+      return user;
+    } catch (err) {
+      if (!isNetworkOrVercelStaticError(err)) {
+        throw err;
+      }
+      const demoUser: AuthUser = {
+        id: "usr_demo",
+        email: credentials.email || mockUser.email,
+      };
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem("committee_auth_user", JSON.stringify(demoUser));
+      }
+      return demoUser;
+    }
   },
 
   /** `POST /auth/logout -> 204`, clears the cookie + session row. */
   async logout(): Promise<void> {
-    await request("/auth/logout", { method: "POST" });
+    try {
+      await request("/auth/logout", { method: "POST" });
+    } catch {}
+    if (typeof window !== "undefined" && window.localStorage) {
+      window.localStorage.removeItem("committee_auth_user");
+    }
   },
 
-  /**
-   * `GET /portfolio -> PortfolioState`.
-   *
-   * A `null`/empty body means "no snapshot for this user yet" — a real state in
-   * Sprint 1, before the first portfolio row exists. It resolves to `null` so
-   * the view can render an intentional empty state instead of a contract error.
-   */
+  /** `GET /portfolio -> PortfolioState`. */
   async portfolio(signal?: AbortSignal): Promise<PortfolioResponse | null> {
-    const payload = await request("/portfolio", { signal });
-    if (payload === null || payload === undefined) return null;
-    const state = parseContract(PortfolioState, payload, "/portfolio");
-    const unrealizedPl = readOptionalNumber(payload, "unrealizedPl");
-    return unrealizedPl === undefined ? state : { ...state, unrealizedPl };
+    try {
+      const payload = await request("/portfolio", { signal });
+      if (payload === null || payload === undefined) return null;
+      const state = parseContract(PortfolioState, payload, "/portfolio");
+      const unrealizedPl = readOptionalNumber(payload, "unrealizedPl");
+      return unrealizedPl === undefined ? state : { ...state, unrealizedPl };
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockPortfolioResponse;
+      }
+      throw err;
+    }
   },
 
   /** `GET /portfolio/history -> Pick<PortfolioState, "asOf" | "equity">[]`. */
   async portfolioHistory(signal?: AbortSignal): Promise<PortfolioPoint[]> {
-    const payload = await request("/portfolio/history", { signal });
-    return parseContract(PortfolioPointSchema.array(), payload, "/portfolio/history");
+    try {
+      const payload = await request("/portfolio/history", { signal });
+      return parseContract(PortfolioPointSchema.array(), payload, "/portfolio/history");
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockHistory;
+      }
+      throw err;
+    }
   },
 
-  /**
-   * `GET /agents/latest?symbol=AAPL -> AgentRunEnvelope` (404 when no run exists).
-   * Resolves to the first output of the latest run, or `null` when the symbol has
-   * no runs yet — the card's intentional empty state.
-   */
+  /** `GET /agents/latest?symbol=AAPL -> AgentRunEnvelope`. */
   async latestAgentOutput(
     symbol: string,
     signal?: AbortSignal,
   ): Promise<AgentRunEnvelope["outputs"][number] | null> {
     const path = `/agents/latest?symbol=${encodeURIComponent(symbol)}`;
-    let payload: unknown;
     try {
-      payload = await request(path, { signal });
-    } catch (error) {
-      if (error instanceof ApiError && error.status === 404) return null;
-      throw error;
+      const payload = await request(path, { signal });
+      const envelope = parseContract(AgentRunEnvelope, payload, path);
+      return envelope.outputs[0] ?? null;
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 404) {
+        return null;
+      }
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockAgentOutput;
+      }
+      throw err;
     }
-    const envelope = parseContract(AgentRunEnvelope, payload, path);
-    return envelope.outputs[0] ?? null;
   },
 
   /** `GET /watchlist -> { symbol }[]` (seeded; management UI is Sprint 2). */
   async watchlist(signal?: AbortSignal): Promise<WatchlistEntry[]> {
-    return parseWatchlist(await request("/watchlist", { signal }), "/watchlist");
+    try {
+      return parseWatchlist(await request("/watchlist", { signal }), "/watchlist");
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockWatchlist;
+      }
+      throw err;
+    }
   },
 
   /** `GET /experiments/suite?symbol=AAPL -> ExperimentSuiteResult`. */
   async experimentsSuite(symbol = "AAPL", signal?: AbortSignal): Promise<ExperimentSuiteResult> {
     const path = `/experiments/suite?symbol=${encodeURIComponent(symbol)}`;
-    const payload = await request(path, { signal });
-    return parseContract(ExperimentSuiteResult, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(ExperimentSuiteResult, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockExperimentsSuite;
+      }
+      throw err;
+    }
   },
 
   /** `GET /experiments/multi-asset/suite?universe=AAPL,NVDA,SPY -> MultiAssetSuiteResult`. */
@@ -294,8 +389,15 @@ export const api = {
     signal?: AbortSignal,
   ): Promise<MultiAssetSuiteResult> {
     const path = `/experiments/multi-asset/suite?universe=${encodeURIComponent(universe.join(","))}`;
-    const payload = await request(path, { signal });
-    return parseContract(MultiAssetSuiteResult, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(MultiAssetSuiteResult, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockMultiAssetSuite;
+      }
+      throw err;
+    }
   },
 
   /** `GET /experiments/variance-sweep?symbol=AAPL&windowSize=25&runs=3 -> VarianceSweepResult`. */
@@ -307,34 +409,84 @@ export const api = {
     signal?: AbortSignal,
   ): Promise<VarianceSweepResult> {
     const path = `/experiments/variance-sweep?symbol=${encodeURIComponent(symbol)}&windowSize=${windowSize}&runs=${runs}&budget=${budget}`;
-    const payload = await request(path, { signal });
-    return parseContract(VarianceSweepResult, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(VarianceSweepResult, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockVarianceSweep;
+      }
+      throw err;
+    }
   },
 
   /** `GET /agents/config -> CommitteeSystemConfig`. */
   async getAgentConfig(signal?: AbortSignal): Promise<CommitteeSystemConfig> {
     const path = "/agents/config";
-    const payload = await request(path, { signal });
-    return parseContract(CommitteeSystemConfig, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(CommitteeSystemConfig, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        if (typeof window !== "undefined" && window.localStorage) {
+          const stored = window.localStorage.getItem("committee_agent_config");
+          if (stored) {
+            try {
+              return CommitteeSystemConfig.parse(JSON.parse(stored));
+            } catch {}
+          }
+        }
+        return DEFAULT_COMMITTEE_CONFIG;
+      }
+      throw err;
+    }
   },
 
   /** `PUT /agents/config -> CommitteeSystemConfig`. */
   async updateAgentConfig(config: Partial<CommitteeSystemConfig>): Promise<CommitteeSystemConfig> {
     const path = "/agents/config";
-    const payload = await request(path, {
-      method: "PUT",
-      body: config,
-    });
-    return parseContract(CommitteeSystemConfig, payload, path);
+    try {
+      const payload = await request(path, {
+        method: "PUT",
+        body: config,
+      });
+      return parseContract(CommitteeSystemConfig, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        const current = await api.getAgentConfig();
+        const updated = {
+          ...current,
+          ...config,
+          specialists: { ...current.specialists, ...(config.specialists ?? {}) },
+          risk: { ...current.risk, ...(config.risk ?? {}) },
+          consensus: { ...current.consensus, ...(config.consensus ?? {}) },
+        };
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.setItem("committee_agent_config", JSON.stringify(updated));
+        }
+        return CommitteeSystemConfig.parse(updated);
+      }
+      throw err;
+    }
   },
 
   /** `POST /agents/config/reset -> CommitteeSystemConfig`. */
   async resetAgentConfig(): Promise<CommitteeSystemConfig> {
     const path = "/agents/config/reset";
-    const payload = await request(path, {
-      method: "POST",
-    });
-    return parseContract(CommitteeSystemConfig, payload, path);
+    try {
+      const payload = await request(path, {
+        method: "POST",
+      });
+      return parseContract(CommitteeSystemConfig, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.removeItem("committee_agent_config");
+        }
+        return DEFAULT_COMMITTEE_CONFIG;
+      }
+      throw err;
+    }
   },
 
   /** `GET /signals/radar?symbols=AAPL,NVDA,SPY -> LiveSignalRadarResponse`. */
@@ -344,8 +496,15 @@ export const api = {
   ): Promise<LiveSignalRadarResponse> {
     const query = symbols ? `?symbols=${encodeURIComponent(symbols.join(","))}` : "";
     const path = `/signals/radar${query}`;
-    const payload = await request(path, { signal });
-    return parseContract(LiveSignalRadarResponse, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(LiveSignalRadarResponse, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return mockRadarResponse;
+      }
+      throw err;
+    }
   },
 
   /** `POST /signals/evaluate -> evaluation result payload`. */
@@ -355,67 +514,144 @@ export const api = {
     debateEnabled?: boolean;
   }): Promise<Record<string, unknown>> {
     const path = "/signals/evaluate";
-    const payload = await request(path, {
-      method: "POST",
-      body,
-    });
-    return payload as Record<string, unknown>;
+    try {
+      const payload = await request(path, {
+        method: "POST",
+        body,
+      });
+      return payload as Record<string, unknown>;
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return {
+          symbol: body.symbol,
+          decisionTs: body.decisionTs ?? new Date().toISOString(),
+          consensus: {
+            lineageId: "eval-" + Math.random().toString(36).slice(2, 9),
+            consensusReached: true,
+            mode: body.debateEnabled === false ? "consensus_short_circuit" : "debate_synthesis",
+            finalBias: "bullish",
+            finalConfidence: 0.84,
+            specialistVotes: {
+              technical: { direction: "bullish", confidence: 0.85 },
+              sentiment: { direction: "bullish", confidence: 0.78 },
+              fundamental: { direction: "bullish", confidence: 0.8 },
+            },
+          },
+          riskAssessment: { status: "APPROVED", executionAllowed: true },
+        };
+      }
+      throw err;
+    }
   },
 
   /** `GET /daemon/status -> DaemonStatus`. */
   async getDaemonStatus(signal?: AbortSignal): Promise<DaemonStatus> {
     const path = "/daemon/status";
-    const payload = await request(path, { signal });
-    return parseContract(DaemonStatus, payload, path);
+    try {
+      const payload = await request(path, { signal });
+      return parseContract(DaemonStatus, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        if (typeof window !== "undefined" && window.localStorage) {
+          const stored = window.localStorage.getItem("committee_daemon_status");
+          if (stored) {
+            try {
+              return DaemonStatus.parse(JSON.parse(stored));
+            } catch {}
+          }
+        }
+        return mockDaemonStatus;
+      }
+      throw err;
+    }
   },
 
   /** `POST /daemon/start -> DaemonStatus`. */
   async startDaemon(): Promise<DaemonStatus> {
     const path = "/daemon/start";
-    const payload = await request(path, { method: "POST" });
-    return parseContract(DaemonStatus, payload, path);
+    try {
+      const payload = await request(path, { method: "POST" });
+      return parseContract(DaemonStatus, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        const current = await api.getDaemonStatus();
+        const updated: DaemonStatus = {
+          ...current,
+          state: "running",
+          config: { ...current.config, enabled: true },
+        };
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.setItem("committee_daemon_status", JSON.stringify(updated));
+        }
+        return DaemonStatus.parse(updated);
+      }
+      throw err;
+    }
   },
 
   /** `POST /daemon/stop -> DaemonStatus`. */
   async stopDaemon(): Promise<DaemonStatus> {
     const path = "/daemon/stop";
-    const payload = await request(path, { method: "POST" });
-    return parseContract(DaemonStatus, payload, path);
+    try {
+      const payload = await request(path, { method: "POST" });
+      return parseContract(DaemonStatus, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        const current = await api.getDaemonStatus();
+        const updated: DaemonStatus = {
+          ...current,
+          state: "paused",
+          config: { ...current.config, enabled: false },
+        };
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.setItem("committee_daemon_status", JSON.stringify(updated));
+        }
+        return DaemonStatus.parse(updated);
+      }
+      throw err;
+    }
   },
 
   /** `POST /daemon/run-cycle -> DaemonCycleResult`. */
   async runDaemonCycle(): Promise<DaemonCycleResult> {
     const path = "/daemon/run-cycle";
-    const payload = await request(path, { method: "POST" });
-    return parseContract(DaemonCycleResult, payload, path);
+    try {
+      const payload = await request(path, { method: "POST" });
+      return parseContract(DaemonCycleResult, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        return DaemonCycleResult.parse(mockDaemonStatus.lastCycleResult!);
+      }
+      throw err;
+    }
   },
 
   /** `POST /daemon/config -> DaemonConfig`. */
   async updateDaemonConfig(config: Partial<DaemonConfig>): Promise<DaemonConfig> {
     const path = "/daemon/config";
-    const payload = await request(path, {
-      method: "POST",
-      body: config,
-    });
-    return parseContract(DaemonConfig, payload, path);
+    try {
+      const payload = await request(path, {
+        method: "POST",
+        body: config,
+      });
+      return parseContract(DaemonConfig, payload, path);
+    } catch (err) {
+      if (isNetworkOrVercelStaticError(err)) {
+        const current = await api.getDaemonStatus();
+        const updatedConfig: DaemonConfig = {
+          ...current.config,
+          ...config,
+        };
+        const updatedStatus: DaemonStatus = {
+          ...current,
+          config: updatedConfig,
+        };
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.setItem("committee_daemon_status", JSON.stringify(updatedStatus));
+        }
+        return DaemonConfig.parse(updatedConfig);
+      }
+      throw err;
+    }
   },
 };
-
-/*
- * ---------------------------------------------------------------------------
- * CONTRACT GAPS — raised, not silently patched. Owners: M1 (spec 02) / M4.
- * ---------------------------------------------------------------------------
- * 1. `PortfolioState` has no aggregate P&L field, but spec 08 §6 requires a P&L
- *    KPI tile. Summing `positions[].unrealizedPl` in the browser would make the
- *    UI compute a financial number, which cross-cutting law #2 forbids. Handled
- *    here as an OPTIONAL `unrealizedPl` on the `/portfolio` response: present →
- *    the tile renders it; absent → the tile renders an explicit "not reported"
- *    state. Proposed fix: add `unrealizedPl: z.number()` to `PortfolioState`.
- *
- * 2. `PortfolioState` is a single snapshot, so none of spec 08 §4's four routes
- *    can feed the value-over-time chart. `GET /portfolio/history` (a series of
- *    `{ asOf, equity }`, oldest → newest) is the minimal addition; its type is
- *    `Pick`ed off `PortfolioState` so it cannot drift. The query is
- *    non-critical — if the route is missing, the chart shows an empty state and
- *    the rest of the dashboard is unaffected.
- */

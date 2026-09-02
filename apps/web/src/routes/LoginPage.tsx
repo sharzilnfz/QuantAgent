@@ -154,6 +154,27 @@ export function LoginPage() {
               {active.isPending ? <Spinner className="h-3.5 w-3.5" /> : null}
               {mode === "login" ? "Sign in" : "Create account"}
             </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-hairline" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-surface px-2 text-ink-3">or</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full"
+              disabled={active.isPending}
+              onClick={() => {
+                login.mutate({ email: "analyst@committee.test", password: "Password123!" });
+              }}
+            >
+              Explore Live Demo (1-Click)
+            </Button>
           </form>
 
           <p className="mt-4 text-center text-xs text-ink-2">
