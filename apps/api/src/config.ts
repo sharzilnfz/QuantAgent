@@ -36,6 +36,8 @@ const EnvSchema = z.object({
   LLM_PROVIDER: z.enum(["anthropic", "openai", "openrouter", "gemini", "auto"]).default("auto"),
   LLM_CHEAP_MODEL: z.string().default("meta-llama/llama-3.3-70b-instruct:free"),
   QUANT_SERVICE_URL: z.string().default("http://localhost:8000"),
+  TELEGRAM_BOT_TOKEN: z.string().default(""),
+  TELEGRAM_CHAT_ID: z.string().default(""),
   API_PORT: z.coerce.number().int().positive().default(3000),
   NODE_ENV: z.string().default("development"),
 });

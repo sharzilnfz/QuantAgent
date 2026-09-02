@@ -36,7 +36,8 @@ export class TelegramBotService {
     customApprovalStore?: PendingTradeApprovalStore;
     executionRouter?: ExecutionRouter;
   }) {
-    const envToken = options?.token ?? process.env.TELEGRAM_BOT_TOKEN;
+    const isTest = process.env.NODE_ENV === "test" || Boolean(process.env.VITEST);
+    const envToken = options?.token ?? (isTest ? undefined : process.env.TELEGRAM_BOT_TOKEN);
     const envChatId = options?.chatId ?? process.env.TELEGRAM_CHAT_ID ?? "demo-chat-id";
 
     this.defaultChatId = envChatId;
