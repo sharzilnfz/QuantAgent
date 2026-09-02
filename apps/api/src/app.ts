@@ -1,5 +1,6 @@
 import Fastify, { type FastifyInstance } from "fastify";
 import cookie from "@fastify/cookie";
+import cors from "@fastify/cors";
 
 import { authPlugin } from "./auth/plugin.js";
 import { credentialsPlugin } from "./credentials/plugin.js";
@@ -33,6 +34,11 @@ export async function buildApp(): Promise<FastifyInstance> {
       // Never log auth/credential bodies — see auth/credentials plugins for redaction.
       redact: ["req.headers.authorization", "req.headers.cookie"],
     },
+  });
+
+  await app.register(cors, {
+    origin: true,
+    credentials: true,
   });
 
   await app.register(cookie);
